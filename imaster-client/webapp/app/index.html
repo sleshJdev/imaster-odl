@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru" ng-app="imaster" ng-controller="AppController">
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <link href="index.css" rel="stylesheet" type="text/css"/>
+    <script src="index.js" type="text/javascript"></script>
+</head>
+<body>
+<header class="header">
+    <div class="header__user block--right">
+        <span>Hello, <a href="#/api/users/private">{{vm.user}}</a></span>
+        <a href="#/api/logout" class="button button--warning">Выйти</a>
+        <a href="#/api/login" class="button">Войти</a>
+    </div>
+    <div class="header--menu">
+        <div class="menu">
+            <ul>
+                <li><a ui-sref="/">Главгая</a></li>
+                <li><a ui-sref="users">Пользователи</a></li>
+                <li><a href="#/api/students">Ученики</a></li>
+                <li><a href="#/api/teachers">Преподаватели</a></li>
+                <li><a href="#/api/file/upload">Загрузить материал</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="content" ui-view></div>
+</body>
+</html>
