@@ -8,6 +8,8 @@
 *.swp
 *.out
 
+dependencies/
+tmp/
 lib/
 
 # rails specific
