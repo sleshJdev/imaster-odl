@@ -18,6 +18,10 @@ object ImagisterBuild extends Build {
         "org.scalatra" %% "scalatra" % ScalatraVersion,
         "org.scalatra" %% "scalatra-scalatest" % "2.4.0.RC1" % "test",
 
+        "com.typesafe.slick" %% "slick" % "3.1.1",
+        "com.typesafe.slick" %% "slick-hikaricp" % "3.1.1",
+        "com.h2database" % "h2" % "1.4.181",
+
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
 
