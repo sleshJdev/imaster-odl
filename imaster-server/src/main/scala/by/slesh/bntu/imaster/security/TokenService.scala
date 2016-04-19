@@ -7,19 +7,21 @@ import org.slf4j.LoggerFactory
   * @author yauheni.putsykovich
   */
 object TokenService {
-  private val LOGGER = LoggerFactory.getLogger(getClass)
+  private val logger = LoggerFactory.getLogger(getClass)
 
   var secretKey = "secretkey"
   var algorithm = "HS384"
 
-  def createToken(claim: Map[String, String]): String = {
+  def createToken(claims: Map[String, String]): String = {
+    logger.info("create token: {}", claims)
     val header = JwtHeader(algorithm)
-    val claimsSet = JwtClaimsSet(claim)
+    val claimsSet = JwtClaimsSet(claims)
     JsonWebToken(header, claimsSet, secretKey)
   }
 
-  def parseToken(jwt: String): Option[Map[String, String]] = {
-    jwt match {
+  def parseToken(tokenJson: String): Option[Map[String, String]] = {
+    logger.info("parse token: {}", tokenJson)
+    tokenJson match {
       case JsonWebToken(header, claimsSet, signature) =>
         claimsSet.asSimpleMap.toOption
       case x =>
@@ -27,5 +29,7 @@ object TokenService {
     }
   }
 
-  def validate(jwt: String) = JsonWebToken.validate(jwt, secretKey)
+  def validate(tokenJson: String) = JsonWebToken.validate(tokenJson, secretKey)
 }
+
+
