@@ -5,6 +5,7 @@ import sbt._
 
 object ImagisterBuild extends Build {
   val ScalatraVersion = "2.4.0-RC2-2"
+  val SlickVersion = "3.1.1"
   lazy val project = Project(
     "imaster-server",
     file("."),
@@ -16,10 +17,13 @@ object ImagisterBuild extends Build {
       resolvers += Classpaths.typesafeReleases,
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
-        "org.scalatra" %% "scalatra-scalatest" % "2.4.0.RC1" % "test",
+        "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
 
-        "com.typesafe.slick" %% "slick" % "3.1.1",
-        "com.typesafe.slick" %% "slick-hikaricp" % "3.1.1",
+        "org.scalatra" %% "scalatra-auth" % ScalatraVersion,
+        "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
+
+        "com.typesafe.slick" %% "slick" % SlickVersion,
+        "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
         "com.h2database" % "h2" % "1.4.181",
 
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
