@@ -1,14 +1,16 @@
 package by.slesh.bntu.imaster.web
 
+import by.slesh.bntu.imaster.security.AuthenticationSupport
 import org.scalatra.ScalatraServlet
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConversions
 
-abstract class AbstractController extends ScalatraServlet {
+abstract class AbstractController extends ScalatraServlet with AuthenticationSupport {
   private val LOGGER = LoggerFactory.getLogger(getClass)
 
   before() {
+    authenticate()
     LOGGER.info(requestToString)
   }
 

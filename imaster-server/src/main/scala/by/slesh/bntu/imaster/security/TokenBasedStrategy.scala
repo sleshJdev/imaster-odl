@@ -23,7 +23,7 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
   private val logger = LoggerFactory.getLogger(getClass)
   private val userRepository = new UserRepository
 
-  var tokenLifeTime = Duration(1L, TimeUnit.MINUTES).toMillis
+  var tokenLifeTime = Duration(10L, TimeUnit.MINUTES).toMillis
 
   override def name: String = getClass.getSimpleName
 
@@ -35,7 +35,7 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
 
   override def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[UserDetails] = {
     val tokenJson = request.getHeader(TOKEN_AUTH_NAME)
-    logger.info("authenticate with token: {}", tokenLifeTime)
+    logger.info("authenticate with token: {}", tokenJson)
     TokenService.parseToken(tokenJson) match {
       case None => None
       case Some(claims) => validateToken(tokenJson, claims)

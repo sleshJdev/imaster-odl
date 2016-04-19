@@ -41,6 +41,14 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   override protected def registerAuthStrategies = {
     scentry.register(tokenBasedStrategy.name, app => tokenBasedStrategy)
   }
+
+  override protected def fromSession: PartialFunction[String, UserDetails] = {
+    case id: String => UserDetails("", "")
+  }
+
+  override protected def toSession: PartialFunction[UserDetails, String] = {
+    case user: UserDetails => ""
+  }
 }
 
 
