@@ -17,8 +17,8 @@ object DatabaseConnector {
   private var instance: Option[Database] = None
 
   def db: Database = instance match {
-    case x: Some[Database] => x.get
-    case _ => throw new IllegalAccessError("database not created")
+    case Some(x) => x
+    case _ => throw new IllegalAccessException("database not created")
   }
 
   def initialize(): Unit = {
