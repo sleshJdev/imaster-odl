@@ -6,7 +6,18 @@ import org.slf4j.LoggerFactory
 class AppController extends AbstractController {
   val LOGGER = LoggerFactory.getLogger(getClass)
 
-  get("/?"){
+  get("/?") {
     LOGGER.info("open home page")
+  }
+
+  post("/login") {
+    val username = params("username")
+    val password = params("password")
+    LOGGER.info("login with username: {} and password: {}", username, password, "")
+    getToken
+  }
+
+  def getToken: String = {
+    "auth-token"
   }
 }
