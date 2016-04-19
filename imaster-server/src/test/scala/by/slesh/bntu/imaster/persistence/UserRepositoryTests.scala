@@ -7,11 +7,15 @@ import org.slf4j.LoggerFactory
   * @author yauheni.putsykovich
   */
 class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll {
+  protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
+
+  override protected def beforeAll(): Unit = DatabaseConnector.initialize()
+
+  override protected def afterAll(): Unit = DatabaseConnector.release()
+
   private val LOGGER = LoggerFactory.getLogger(getClass)
 
   val repository = new UserRepository
-
-  protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
   "A UserRepository" should "return User instance by existing id" in {
     val userId = 1
@@ -34,8 +38,4 @@ class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll {
       }
     }
   }
-
-  override protected def beforeAll(): Unit = DatabaseConnector.initialize()
-
-  override protected def afterAll(): Unit = DatabaseConnector.release()
 }
