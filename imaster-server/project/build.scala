@@ -26,7 +26,7 @@ object ImagisterBuild extends Build {
         "com.typesafe.slick" %% "slick-hikaricp" % SlickVersion,
         "com.h2database" % "h2" % "1.4.181",
 
-        "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container",
+        "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "container;compile",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
 
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime"

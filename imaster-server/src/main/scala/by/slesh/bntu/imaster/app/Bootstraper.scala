@@ -1,3 +1,5 @@
+package by.slesh.bntu.imaster.app
+
 import javax.servlet.ServletContext
 
 import by.slesh.bntu.imaster.persistence.DatabaseConnector
@@ -11,7 +13,7 @@ class Bootstraper extends LifeCycle {
   override def init(context: ServletContext) {
     LOGGER.info("initialize context ... ")
     DatabaseConnector.initialize()
-    context.mount(new AppController, "/*")
+    context.mount(new AppController, "/api/*")
     LOGGER.info("initialize context ... done!")
   }
 
