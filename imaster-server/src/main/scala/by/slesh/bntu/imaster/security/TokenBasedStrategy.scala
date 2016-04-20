@@ -42,7 +42,6 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     }
   }
 
-
   override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse): Unit = {
     logger.info("unauthenticated")
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)

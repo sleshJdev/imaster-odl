@@ -1,18 +1,18 @@
 package by.slesh.bntu.imaster.security
 
+import by.slesh.bntu.imaster.persistence.UserRepository
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.slf4j.LoggerFactory
 
 /**
-  * @author slesh
-  */
+ * @author slesh
+ */
 trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails] {
   self: ScalatraBase =>
 
-  private val LOGGER = LoggerFactory.getLogger(getClass)
+  private val logger = LoggerFactory.getLogger(getClass)
   private val tokenBasedStrategy = new TokenBasedStrategy(self)
-
 
   override protected def scentryConfig: ScentryConfiguration = (new ScentryConfig {
     override val login: String = "/login"
@@ -25,9 +25,9 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   }
 
   /**
-    * If an unauthenticated user attempts to access a route which is protected by Scentry,
-    * run the unauthenticated() method on the UserPasswordStrategy.
-    */
+   * If an unauthenticated user attempts to access a route which is protected by Scentry,
+   * run the unauthenticated() method on the UserPasswordStrategy.
+   */
   override protected def configureScentry = {
     scentry.unauthenticated {
       scentry.strategies(tokenBasedStrategy.name).unauthenticated()
@@ -35,9 +35,9 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   }
 
   /**
-    * Register auth strategies with Scentry. Any controller with this trait mixed in will attempt to
-    * progressively use all registered strategies to log the user in, falling back if necessary.
-    */
+   * Register auth strategies with Scentry. Any controller with this trait mixed in will attempt to
+   * progressively use all registered strategies to log the user in, falling back if necessary.
+   */
   override protected def registerAuthStrategies = {
     scentry.register(tokenBasedStrategy.name, app => tokenBasedStrategy)
   }

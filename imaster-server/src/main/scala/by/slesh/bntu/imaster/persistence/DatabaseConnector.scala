@@ -12,37 +12,40 @@ import scala.concurrent.duration.DurationInt
  */
 
 object DatabaseConnector {
-  private val LOGGER = LoggerFactory.getLogger(getClass)
+  private val logger = LoggerFactory.getLogger(getClass)
 
   private var instance: Option[Database] = None
+  private val userTable = new UserTable
 
   def db: Database = instance match {
     case Some(x) => x
-    case _ => throw new IllegalAccessException("database not created")
+    case _ =>
+      logger.error("database not created")
+      throw new IllegalAccessException("database not created")
   }
 
   def initialize(): Unit = {
-    LOGGER.info("initialization database ... ")
+    logger.info("initialization database ... ")
     val config = ConfigFactory.load()
     instance = Some(Database.forConfig(config.getString("databaseConfig")))
-    LOGGER.info("initialization database ... done")
+    logger.info("initialization database ... done")
   }
 
   def release(): Unit = {
-    LOGGER.info("release database resources ...")
+    logger.info("release database resources ...")
     instance match {
       case x: Some[Database] =>
-        LOGGER.info("waiting for database shutdown ...")
+        logger.info("waiting for database shutdown ...")
         Await.ready(x.get.shutdown, 60 second)
-        LOGGER.info("database shutdown ...  done")
+        logger.info("database shutdown ...  done")
       case _ => ()
     }
-    LOGGER.info("release database resources ... done")
+    logger.info("release database resources ... done")
   }
 
   def fillData(): Unit = {
     val query = DBIO.seq(
-      Tables.user ++= Seq(
+      userTable ++= Seq(
         User(1, "admin", "adminp", "adminfn", "adminln", Some("adminp")),
         User(1, "student", "studentp", "studentfn", "studentln", Some("studentp"))
       )
@@ -51,10 +54,10 @@ object DatabaseConnector {
   }
 
   def createSchema(): Unit = {
-    db.run(Tables.user.schema.create)
+    db.run(userTable.schema.create)
   }
 
   def dropSchema(): Unit = {
-    db.run(Tables.user.schema.drop)
+    db.run(userTable.schema.drop)
   }
 }

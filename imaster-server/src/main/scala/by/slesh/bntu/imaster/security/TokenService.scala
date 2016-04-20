@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory
   * @author yauheni.putsykovich
   */
 object TokenService {
-  private val logger = LoggerFactory.getLogger(getClass)
-
   var secretKey = "secretkey"
   var algorithm = "HS384"
 

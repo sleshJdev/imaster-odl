@@ -13,8 +13,6 @@ class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll {
 
   override protected def afterAll(): Unit = DatabaseConnector.release()
 
-  private val LOGGER = LoggerFactory.getLogger(getClass)
-
   val repository = new UserRepository
 
   "A UserRepository" should "return User instance by existing id" in {
