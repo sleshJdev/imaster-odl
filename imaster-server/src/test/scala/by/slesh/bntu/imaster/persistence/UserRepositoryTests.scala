@@ -8,14 +8,12 @@ import org.slf4j.LoggerFactory
   */
 class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll {
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
-
   override protected def beforeAll(): Unit = DatabaseConnector.initialize()
-
   override protected def afterAll(): Unit = DatabaseConnector.release()
 
   val repository = new UserRepository
 
-  "A UserRepository" should "return User instance by existing id" in {
+  "A UserRepository" should "returns User instance by existing id" in {
     val userId = 1
     repository getUserById userId onComplete { u =>
       val user = u.getOrElse(fail("can't find user with id=%s" format userId))
@@ -26,7 +24,7 @@ class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll {
     }
   }
 
-  it should "return valid User instance by username" in {
+  it should "returns valid User instance by username" in {
     val username = "student"
     repository getUserByName username onComplete { u =>
       val student = u.getOrElse(fail("can't find user with username %s" format username))
