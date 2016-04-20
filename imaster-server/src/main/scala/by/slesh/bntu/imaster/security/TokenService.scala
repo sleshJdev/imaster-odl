@@ -13,16 +13,12 @@ object TokenService {
   var algorithm = "HS384"
 
   def createToken(claims: Map[String, String]): String = {
-    logger.info("create token from {} claims", claims)
     val header = JwtHeader(algorithm)
     val claimsSet = JwtClaimsSet(claims)
-    val token = JsonWebToken(header, claimsSet, secretKey)
-    logger.info("token: {}", token)
-    token
+    JsonWebToken(header, claimsSet, secretKey)
   }
 
   def parseToken(tokenJson: String): Option[Map[String, String]] = {
-    logger.info("parse token: {}", tokenJson)
     tokenJson match {
       case JsonWebToken(header, claimsSet, signature) =>
         claimsSet.asSimpleMap.toOption

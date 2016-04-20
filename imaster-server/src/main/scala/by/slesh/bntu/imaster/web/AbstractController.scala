@@ -10,7 +10,6 @@ abstract class AbstractController extends ScalatraServlet with AuthenticationSup
   private val LOGGER = LoggerFactory.getLogger(getClass)
 
   before() {
-    authenticate()
     LOGGER.info(requestToString)
   }
 

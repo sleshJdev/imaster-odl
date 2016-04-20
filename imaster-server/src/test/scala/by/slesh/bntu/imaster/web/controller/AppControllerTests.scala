@@ -6,8 +6,8 @@ import org.scalatra.test.scalatest.ScalatraSuite
 import org.slf4j.LoggerFactory
 
 /**
-  * @author yauheni.putsykovich
-  */
+ * @author yauheni.putsykovich
+ */
 class AppControllerTests extends ScalatraSuite with FlatSpecLike {
   override protected def beforeAll(): Unit = {
     DatabaseConnector.initialize()
@@ -19,21 +19,29 @@ class AppControllerTests extends ScalatraSuite with FlatSpecLike {
     super.afterAll()
   }
 
-  private val LOGGER = LoggerFactory.getLogger(getClass)
-
   addServlet(new AppController, "/*")
 
-  "A AppController" should "for GET '/' path return status 200" in {
+  "A AppController" should "for GET '/' path return status 401" in {
     get("/") {
-      status should equal(200)
+      status should equal(401)
+      body shouldBe empty
     }
   }
+
+  it should "for GET '/nofound' path return 404 status" in {
+    val username = "student"
+    val password = "studentp"
+    post("/nofound") {
+      status should equal(404)
+    }
+  }
+
   it should "return auth token for existing username/password" in {
     val username = "student"
     val password = "studentp"
-    post("/login", Map("username" -> username, "password" -> password), headers = Map("X-Auth" -> "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwidXNlcm5hbWUiOiJzdHVkZW50IiwiY3JlYXRlZFRpbWUiOiIxNDYxMTA4MzQ3MzIzIn0.Wcnpj734jh1f3nKRBVoL-dqKIHePfDb7YrffDbAO8Br5kx6wKxysk0f2ta03XdVN")) {
+    post("/login", Map("username" -> username, "password" -> password)) {
       status should equal(200)
-      body should not be empty
+      body should not be null
     }
   }
 }

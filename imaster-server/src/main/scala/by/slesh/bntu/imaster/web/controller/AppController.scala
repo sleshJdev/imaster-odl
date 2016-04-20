@@ -1,7 +1,7 @@
 package by.slesh.bntu.imaster.web.controller
 
 import by.slesh.bntu.imaster.persistence.{User, UserRepository}
-import by.slesh.bntu.imaster.security.{AuthenticationSupport, ClaimsKeys, TokenService}
+import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
 
@@ -14,22 +14,25 @@ class AppController extends AbstractController {
   val userRepository = new UserRepository
 
   get("/?") {
+    authenticate()
     logger.info("open home page")
   }
 
   post("/login") {
     val username = params("username")
-    var password = params("password")
+    val password = params("password")
     logger.info("login with username: {} and password: {}", username, password, "")
-    val userOption = Await.result(userRepository.getUserByName(username), 60 second)
+    val userOption = Await.result(userRepository.getUserByName(username), 10 second)
     logger.info("user option: {}", userOption)
     userOption match {
       case Some(x) =>
         if (x.password == password) {
           val claims = getClaimsForUser(x)
-          TokenService.createToken(claims)
-        } else ""
-      case None => ""
+          val token = TokenService.createToken(claims)
+          logger.info("created authentication token: {}", token)
+          token
+        } else halt(status = 401)
+      case None => halt(status = 401)
     }
   }
 

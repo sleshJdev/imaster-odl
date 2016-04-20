@@ -13,8 +13,8 @@ import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.postfixOps
 
 /**
-  * @author slesh
-  */
+ * @author slesh
+ */
 class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: HttpServletRequest, response: HttpServletResponse)
   extends ScentryStrategy[UserDetails] {
 
@@ -29,7 +29,7 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
 
   override def isValid(implicit request: HttpServletRequest): Boolean = {
     val isOk = Option(request.getHeader(TOKEN_AUTH_NAME)).isDefined
-    if (!isOk) logger.info("header '{}' not present in request", TOKEN_AUTH_NAME)
+    logger.info("header '{}' {} present in request", TOKEN_AUTH_NAME, if (isOk) "" else "not", "")
     isOk
   }
 
@@ -42,23 +42,39 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     }
   }
 
+
+  override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    logger.info("unauthenticated")
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+    response.setHeader(TOKEN_AUTH_NAME, null)
+  }
+
   def validateToken(tokenJson: String, providedClaims: Map[String, String]): Option[UserDetails] = {
-    logger.info("validateToken with providedClaims: {}", providedClaims)
-    if (TokenService.validate(tokenJson)) throw new InvalidTokenException("invalid token")
+    logger.info("validateToken with provided claims: {}", providedClaims)
+    if (!TokenService.validate(tokenJson)) {
+      logger.info("invalid token")
+      throw new InvalidTokenException("invalid token")
+    }
 
     val createdTime = providedClaims.get(ClaimsKeys.CREATED_TIME).get.toLong
-    logger.info("validate token life time: %d from %d", createdTime, tokenLifeTime)
-    if (System.currentTimeMillis() - createdTime > tokenLifeTime) throw new InvalidTokenException("token is expired")
+    val currentLifeTime = System.currentTimeMillis() - createdTime
+    logger.info("validate token life time: {} from {}", currentLifeTime, tokenLifeTime)
+    if (currentLifeTime > tokenLifeTime) {
+      logger.info("token is expired")
+      throw new InvalidTokenException("token is expired")
+    }
 
     logger.info("loading user from database...")
     val id = providedClaims.get(ClaimsKeys.ID).get.toInt
-    val user = Await.result(userRepository.getUserById(id), 60 second) match {
+    val user = Await.result(userRepository.getUserById(id), 10 second) match {
       case Some(u) => u
-      case None => throw new InvalidTokenException("invalid user information")
+      case None =>
+        logger.info("invalid user information")
+        throw new InvalidTokenException("invalid user information")
     }
 
-    var userDetails = Some(UserDetails(user.username, user.password))
-    logger.info("created user details: {}", userDetails)
+    val userDetails = Some(UserDetails(user.username, user.password))
+    logger.info("user details: {}", userDetails)
     userDetails
   }
 }
