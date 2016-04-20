@@ -9,6 +9,10 @@ class DatabaseConnectorTests extends FlatSpec with BeforeAndAfter {
     DatabaseConnector.initialize()
   }
 
+  it should "droped database schema" in {
+    DatabaseConnector.dropSchema()
+  }
+
   it should "create database schema" in {
     DatabaseConnector.createSchema()
   }

@@ -8,14 +8,15 @@ import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
 /**
- * @author yauheni.putsykovich
- */
+  * @author yauheni.putsykovich
+  */
 
 object DatabaseConnector {
   private val logger = LoggerFactory.getLogger(getClass)
 
-  private var instance: Option[Database] = None
-  private val userTable = new UserTable
+  var instance: Option[Database] = None
+  val userTable = new UserTable
+  val roleTable = new RoleTable
 
   def db: Database = instance match {
     case Some(x) => x
@@ -37,6 +38,7 @@ object DatabaseConnector {
       case x: Some[Database] =>
         logger.info("waiting for database shutdown ...")
         Await.ready(x.get.shutdown, 60 second)
+        instance = None
         logger.info("database shutdown ...  done")
       case _ => ()
     }
@@ -48,16 +50,23 @@ object DatabaseConnector {
       userTable ++= Seq(
         User(1, "admin", "adminp", "adminfn", "adminln", Some("adminp")),
         User(1, "student", "studentp", "studentfn", "studentln", Some("studentp"))
+      ),
+      roleTable ++= Seq(
+        Role(1, "student", Some("student role")),
+        Role(2, "teacher", Some("teacher role")),
+        Role(3, "admin", Some("admin role"))
       )
     )
-    db.run(query)
+    Await.result(db.run(query), 60 second)
   }
 
   def createSchema(): Unit = {
-    db.run(userTable.schema.create)
+    val schema = (userTable.schema ++ roleTable.schema).create
+    Await.result(db.run(schema), 60 second)
   }
 
   def dropSchema(): Unit = {
-    db.run(userTable.schema.drop)
+    val drop = (userTable.schema ++ roleTable.schema).drop
+    Await.result(db.run(drop), 60 second)
   }
 }
