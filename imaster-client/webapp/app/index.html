@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru" ng-app="imaster" ng-controller="AppController">
+<html lang="en" ng-app="imaster" ng-controller="AppController">
 <head>
     <title></title>
     <meta charset="utf-8"/>
@@ -9,7 +9,7 @@
 <body>
 <header class="header">
     <div class="header__user block--right">
-        <span>Hello, <a href="#/api/users/private">{{vm.user}}</a></span>
+        <span>Hello, <a href="#/api/users/private">User: {{vm.getUserName()}}</a></span>
         <a href="#/api/logout" class="button button--warning">Выйти</a>
         <a href="#/api/login" class="button">Войти</a>
     </div>

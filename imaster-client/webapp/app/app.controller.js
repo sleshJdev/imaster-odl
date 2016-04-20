@@ -4,9 +4,18 @@
 
 /* jshint undef: false */
 angular.module('imaster').controller('AppController', [
-    'AppService',
-    function (AppService) {
+    'AuthService',
+    function (AuthService) {
         'use strict';
+
         var vm = this;
-        vm.user = 'user';
+
+        vm.isLoggedUser = function () {
+            return AuthService.isAuthenticated();
+        };
+
+        vm.getUserName = function () {
+            var auth = AuthService.getAuthentication();
+            return auth ? auth.username : null;
+        };
     }]);

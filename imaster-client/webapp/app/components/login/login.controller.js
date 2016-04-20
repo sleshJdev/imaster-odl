@@ -4,11 +4,13 @@
 
 /* jshint undef: false */
 angular.module('imaster').controller('LoginController', [
-    'LoginService',
-    function (LoginService) {
+    'AuthService', '$location',
+    function (AuthService, $location) {
         'use strict';
         var vm = this;
         vm.login = function () {
-            LoginService.login(vm.username, vm.password);
+            AuthService.login(vm.username, vm.password).then(function () {
+                $location.path("/");
+            });
         };
     }]);
