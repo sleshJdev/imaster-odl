@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConversions
 
 abstract class AbstractController extends ScalatraServlet with AuthenticationSupport {
-  private val LOGGER = LoggerFactory.getLogger(getClass)
+  protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
+
+  private val logger = LoggerFactory.getLogger(getClass)
 
   before() {
-    LOGGER.info(requestToString)
+    logger.info(requestToString)
   }
 
   private def requestToString = {
