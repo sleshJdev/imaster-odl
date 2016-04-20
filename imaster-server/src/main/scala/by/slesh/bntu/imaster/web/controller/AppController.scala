@@ -1,5 +1,7 @@
 package by.slesh.bntu.imaster.web.controller
 
+import javax.servlet.http.HttpServletResponse
+
 import by.slesh.bntu.imaster.persistence.{User, UserRepository}
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
@@ -22,7 +24,7 @@ class AppController extends AbstractController {
 
   post("/login") {
     val account = parsedBody.extract[Account]
-    logger.info("{} is login", account)
+    logger.info("{} is login...", account)
     repository.getUserByName(account.username) flatMap { userOption =>
       logger.info("found account: {}", userOption)
       val token = userOption match {
@@ -30,12 +32,13 @@ class AppController extends AbstractController {
           if (user.password == account.password) {
             val token = TokenService.createToken(getClaimsForUser(user))
             logger.info("created authentication token: {}", token)
-            token
-          } else ""
-        case None => ""
+            Some(token)
+          } else None
+        case None => None
       }
       Future {
-        pretty("token" -> token)
+        if(token.isEmpty) response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+        pretty("token" -> token.orNull)
       }
     }
   }
