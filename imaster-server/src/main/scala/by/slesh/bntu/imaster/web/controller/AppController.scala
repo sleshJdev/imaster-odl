@@ -3,8 +3,12 @@ package by.slesh.bntu.imaster.web.controller
 import by.slesh.bntu.imaster.persistence.{User, UserRepository}
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
+import by.slesh.bntu.imaster.web.model.Account
+import org.json4s.JsonDSL._
+import org.json4s._
 import org.slf4j.LoggerFactory
 
+import scala.concurrent.Future
 import scala.language.postfixOps
 
 class AppController extends AbstractController {
@@ -17,21 +21,21 @@ class AppController extends AbstractController {
   }
 
   post("/login") {
-    val username = params("username")
-    val password = params("password")
-    logger.info("login with username: {} and password: {}", username, password, "")
-    repository.getUserByName(username) onComplete { u =>
-      val userOption = u.getOrElse(halt(401))
-      logger.info("user option: {}", userOption)
-      userOption match {
-        case Some(x) =>
-          if (x.password == password) {
-            val claims = getClaimsForUser(x)
-            val token = TokenService.createToken(claims)
+    val account = parsedBody.extract[Account]
+    logger.info("{} is login", account)
+    repository.getUserByName(account.username) flatMap { userOption =>
+      logger.info("found account: {}", userOption)
+      val token = userOption match {
+        case Some(user) =>
+          if (user.password == account.password) {
+            val token = TokenService.createToken(getClaimsForUser(user))
             logger.info("created authentication token: {}", token)
             token
-          } else halt(401)
-        case None => halt(401)
+          } else ""
+        case None => ""
+      }
+      Future {
+        pretty("token" -> token)
       }
     }
   }

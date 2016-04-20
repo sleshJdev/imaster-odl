@@ -4,7 +4,7 @@ import sbt.Keys._
 import sbt._
 
 object ImagisterBuild extends Build {
-  val ScalatraVersion = "2.4.0-RC2-2"
+  val scalatraVersion = "2.4.0-RC2-2"
   val SlickVersion = "3.1.1"
   lazy val project = Project(
     "imaster-server",
@@ -16,10 +16,13 @@ object ImagisterBuild extends Build {
       scalaVersion := "2.11.7",
       resolvers += Classpaths.typesafeReleases,
       libraryDependencies ++= Seq(
-        "org.scalatra" %% "scalatra" % ScalatraVersion,
-        "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
+        "org.scalatra" %% "scalatra" % scalatraVersion,
+        "org.scalatra" %% "scalatra-scalatest" % scalatraVersion % "test",
 
-        "org.scalatra" %% "scalatra-auth" % ScalatraVersion,
+        "org.scalatra" %% "scalatra-json" % scalatraVersion,
+        "org.json4s" %% "json4s-jackson" % "3.3.0.RC2",
+      
+        "org.scalatra" %% "scalatra-auth" % scalatraVersion,
         "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
 
         "com.typesafe.slick" %% "slick" % SlickVersion,
