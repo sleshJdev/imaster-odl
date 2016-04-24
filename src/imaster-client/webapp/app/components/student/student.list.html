@@ -1,0 +1,25 @@
+<div class="block--center">
+    <table class="table">
+        <caption>
+            <h3>Students</h3>
+        </caption>
+        <thead>
+            <tr>
+                <td>#</td>
+                <td></td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Role Name</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in vm.userList">
+                <td>{{$index}}</td>
+                <td><input type="checkbox" ng-model="item.user.checked"></td>
+                <td>{{item.user.firstName}}</td>
+                <td>{{item.user.lastName}}</td>
+                <td>{{item.role.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

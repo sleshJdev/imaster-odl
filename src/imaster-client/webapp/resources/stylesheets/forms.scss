@@ -1,0 +1,52 @@
+@import "layout";
+
+$color--shadow: darken($color--default, 10%);
+
+.form {
+  font-size: 1.2em;
+  padding: 25px;
+  border: none;
+  box-shadow: 0 0 10px $color--shadow;
+  button {
+    margin-top: 30px;
+  }
+}
+
+.form__control {
+  padding: 8px 5px;
+  margin: 5px;
+  float: left;
+  width: $width--12;
+  background-color: #ffffff;
+}
+
+.form__row {
+  width: $width--12;
+  line-height: 1.3em;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  input.form__control, textarea.form__control, select.form__control {
+    box-shadow: 0 0 5px $color--shadow;
+    &:focus {
+      box-shadow: 0 0 5px $color--warning;
+    }
+  }
+  textarea.form__control {
+    height: 200px;
+  }
+  label.form__control {
+    text-align: left;
+    vertical-align: middle;
+  }
+}
+
+.form--login {
+  display: inline-block;
+  margin: 100px auto;
+}
+
+.form--default {
+  margin: 0 auto;
+  display: inline-block;
+  width: $width--7;
+}

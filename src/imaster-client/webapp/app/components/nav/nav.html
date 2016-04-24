@@ -1,0 +1,17 @@
+<header class="header">
+    <div class="header__user block--right">
+        <span ng-show="vm.isLoggedUser()">Здравствуйте, <a href="#/api/users/private">{{vm.getUserName()}}!</a></span>
+        <a ng-click="vm.logout()" class="button button--warning" ng-show="vm.isLoggedUser()">Выйти</a>
+        <a ng-hide="vm.isLoggedUser()" href="#/api/login" class="button">Войти</a>
+    </div>
+    <div class="header--menu">
+        <div class="menu">
+            <ul>
+                <li><a ui-sref="/">Главгая</a></li>
+                <li><a ui-sref="students">Студенты</a></li>
+                <li><a href="#/api/teachers">Преподаватели</a></li>
+                <li><a href="#/api/file/upload">Загрузить материал</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
