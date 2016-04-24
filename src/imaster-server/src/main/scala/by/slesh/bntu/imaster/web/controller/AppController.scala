@@ -15,11 +15,10 @@ import scala.concurrent.Future
 import scala.language.postfixOps
 
 class AppController extends AbstractController {
-  val logger = LoggerFactory.getLogger(getClass)
+  override val logger = LoggerFactory.getLogger(getClass)
   val repository = new UserRepository
 
   get("/?") {
-    authenticate()
     logger.info("open home page")
   }
 

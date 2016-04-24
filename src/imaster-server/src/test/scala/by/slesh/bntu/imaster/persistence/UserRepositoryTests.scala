@@ -14,14 +14,12 @@ class UserRepositoryTests extends TestConfig {
 
   "getUserById method" should "returns User instance by existing id" in {
     val userId = 1
-    repository getUserById userId onComplete { u =>
-      val user = u.getOrElse(fail("can't find user with id=%s" format userId))
-      user match {
-        case Some(UserExtended(user, rs)) =>
-          assertResult(userId)(user.id.get)
-          rs should have length 2
-        case _ => fail("user with id %d not found" format userId)
-      }
+    repository getById userId onComplete {
+      case Success(Some(UserExtended(user, roles))) =>
+        assertResult(userId)(user.id.get)
+        roles should not be empty
+      case Failure(ex) => fail(ex)
+      case _ => fail("user with id %d not found" format userId)
     }
   }
 
@@ -35,7 +33,7 @@ class UserRepositoryTests extends TestConfig {
   }
 
   "getAll method" should "returns all users with appropriated roles" in {
-    repository.getAllUsers onComplete {
+    repository.getAll onComplete {
       case Success(list) => list should not be empty
       case Failure(ex) => fail(ex)
     }

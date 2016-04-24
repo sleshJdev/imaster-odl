@@ -15,7 +15,7 @@ class RoleRepositoryTests extends TestConfig {
 
   "getRoleById method" should "returns role by valid id" in {
     val roleId = 1
-    roleRepository.getRoleById(roleId) onComplete {
+    roleRepository.getById(roleId) onComplete {
       case Success(Some(x)) => assertResult(roleId)(x.id.get)
       case Failure(ex) => fail(ex)
       case _ => fail("role with id %d not found" format roleId)

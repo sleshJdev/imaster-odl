@@ -9,12 +9,12 @@ import scala.util.Failure
 /**
   * @author slesh
   */
-class StudentRepositoryTests extends TestConfig{
+class StudentRepositoryTests extends TestConfig {
   val repository = new StudentRepository
 
   "getStudentById method" should "returns valid Student instance with given id" in {
     val studentId = 1
-    repository.getStudentById(studentId) onComplete {
+    repository.getById(studentId) onComplete {
       case Success(Some(student)) => student.id.get shouldEqual studentId
       case Failure(ex) => fail(ex)
       case _ => fail()
@@ -23,7 +23,7 @@ class StudentRepositoryTests extends TestConfig{
 
   "addStudent method" should "insert Student into table" in {
     val student = Student(None, "test", "test", Some("test"), 0)
-    repository.addStudent(student) onComplete {
+    repository.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)
     }

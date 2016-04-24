@@ -1,9 +1,15 @@
 package by.slesh.bntu.imaster.security
 
+import javax.servlet.http.HttpServletRequest
+
 import by.slesh.bntu.imaster.persistence.Repositories._
+import org.eclipse.jetty.server.Request
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.slf4j.LoggerFactory
+
+import scala.concurrent.Await
+import scala.concurrent.duration.DurationInt
 
 /**
  * @author slesh
@@ -11,16 +17,18 @@ import org.slf4j.LoggerFactory
 trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails] {
   self: ScalatraBase =>
 
-  private val logger = LoggerFactory.getLogger(getClass)
-  private val tokenBasedStrategy = new TokenBasedStrategy(self)
+  val logger = LoggerFactory.getLogger(getClass)
+  val tokenBasedStrategy = new TokenBasedStrategy(self)
+  val userRepository = new UserRepository
 
-  override protected def scentryConfig: ScentryConfiguration = (new ScentryConfig {
+  override protected def scentryConfig: ScentryConfiguration = new ScentryConfig {
     override val login: String = "/login"
-  }).asInstanceOf[ScentryConfiguration]
+  }.asInstanceOf[ScentryConfiguration]
 
-  protected def requireLogin() = {
-    if (!isAuthenticated) {
-      redirect(scentryConfig.login)
+  protected def requireLogin(implicit request: HttpServletRequest) = {
+    request.getPathInfo match {
+      case path: String => if(!path.contains(scentryConfig.login)) authenticate()
+      case _ => ()
     }
   }
 
@@ -43,15 +51,19 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   }
 
   /*
-  * TODO: i think need provide some stub to these methods, because they will be not used
+  * TODO: i think need provide some stub to these methods, because they will be not used??????
   * */
 
   override protected def fromSession: PartialFunction[String, UserDetails] = {
-    case id: String => UserDetails("", "")
+    case username: String =>
+      Await.result(userRepository.getUserByName(username), 60 second) match {
+        case Some(user) => UserDetails(user.username, user.password)
+        case None => throw new NullPointerException("user with name %s not found" format username)
+      }
   }
 
   override protected def toSession: PartialFunction[UserDetails, String] = {
-    case user: UserDetails => ""
+    case user: UserDetails => user.username
   }
 }
 

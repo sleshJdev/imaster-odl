@@ -7,17 +7,16 @@ import org.slf4j.LoggerFactory
 
 
 class StudentController extends AbstractController {
-  val logger = LoggerFactory.getLogger(getClass)
+  override val logger = LoggerFactory.getLogger(getClass)
   val repository = new StudentRepository
 
   get("/?") {
-    authenticate()
-    repository.getAllStudents
+    repository.getAll
   }
 
   post("/?") {
     val student = parsedBody.extract[Student]
     logger.info("add new student: {}", student)
-    repository.addStudent(student)
+    repository.add(student)
   }
 }

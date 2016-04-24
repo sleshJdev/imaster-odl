@@ -18,16 +18,17 @@ abstract class AbstractController
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats + StringToInt
-  private val logger = LoggerFactory.getLogger(getClass)
+  override val logger = LoggerFactory.getLogger(getClass)
 
   before() {
+    requireLogin(request)
     contentType = formats("json")
     logger.info(requestToString)
   }
 
   private def requestToString = {
     var message: String = "%s url=%s, uri=%s, path=%s"
-      .format(request.getProtocol, request.getRequestURL, request.getRequestURI, request.getPathInfo)
+      .format(request.getMethod, request.getRequestURL, request.getRequestURI, request.getPathInfo)
     val names = JavaConversions.enumerationAsScalaIterator(request.getParameterNames)
     if (names.nonEmpty) {
       message += ", parameters="

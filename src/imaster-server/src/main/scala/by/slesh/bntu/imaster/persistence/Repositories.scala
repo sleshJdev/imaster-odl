@@ -1,11 +1,11 @@
 package by.slesh.bntu.imaster.persistence
 
 import by.slesh.bntu.imaster.persistence.DatabaseConnector.db
+import by.slesh.bntu.imaster.persistence.Extensions._
 import by.slesh.bntu.imaster.persistence.Models._
-import com.sun.media.sound.InvalidDataException
+import org.slf4j.LoggerFactory
 import slick.driver.H2Driver.api._
 
-import scala.collection.mutable
 import scala.concurrent.Future
 import scala.language.higherKinds
 
@@ -15,52 +15,46 @@ import scala.language.higherKinds
 object Repositories {
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
-  implicit class UserExtensions[C[_]](query: Query[UserRow, User, C]){
-    def joinRoles = query
-      .join(userRoleTable).on(_.id === _.userId)
-      .join(roleTable).on(_._2.roleId === _.id)
-  }
-  implicit class UserExtendedExtension(list: Seq[((User, (Int, Int)), Role)]) {
-    def toExtendedUsers = {
-      val map: mutable.Map[User, List[Role]] = mutable.Map.empty
-      list.map({
-        case ((u, _), r) =>
-          if (!map.isDefinedAt(u)) map += (u -> List.empty)
-          if (map.isDefinedAt(u)) map += (u -> (r :: map(u)))
-        case _ => throw new IllegalArgumentException("bad data format")
-      })
-      map.map(UserExtended.tupled).toList
-    }
-    def toExtendedUser = toExtendedUsers.headOption
+  trait Repository[E, ID]{
+    def getAll: Future[Seq[E]]
+
+    def getById(id: ID): Future[Option[E]]
+
+    def add(item: E): Future[ID]
   }
 
-  class UserRepository {
-    def getAllUsers: Future[Seq[UserExtended]] =
-      db.run(userTable.joinRoles.result).map(_.toExtendedUsers)
+  class UserRepository extends Repository[UserExtended, Int] {
+    val logger = LoggerFactory.getLogger(getClass)
 
-    def getUserById(id: Int): Future[Option[UserExtended]] =
-      db.run(userTable.filter(_.id === id).joinRoles.result).map(_.toExtendedUser)
+    override def getById(id: Int): Future[Option[UserExtended]] = db.run(userTable.filter(_.id === id).joinRoles.result).map(_.toExtendedUser)
 
-    def getUserByName(username: String): Future[Option[User]] =
+    override def getAll: Future[Seq[UserExtended]] = db.run(userTable.joinRoles.result).map(_.toExtendedUsers)
+
+    //todo: add implementaion
+    override def add(item: UserExtended): Future[Int] = ???
+
+    def getUserByName(username: String): Future[Option[User]] = {
+      logger.info("find user by name: {}", username)
       db.run(userTable.filter(_.username === username).result.headOption)
+    }
   }
 
-  class RoleRepository {
-    def getRoleByName(name: String): Future[Option[Role]] =
-      db.run(roleTable.filter(_.name === name).result.headOption)
+  class RoleRepository extends Repository[Role, Int] {
+    override def getById(id: Int): Future[Option[Role]] = db.run(roleTable.filter(_.id === id).result.headOption)
 
-    def getRoleById(id: Int): Future[Option[Role]] =
-      db.run(roleTable.filter(_.id === id).result.headOption)
+    override def getAll: Future[Seq[Role]] = db.run(roleTable.result)
+
+    //todo: add implementaion
+    override def add(item: Role): Future[Int] = ???
+
+    def getRoleByName(name: String): Future[Option[Role]] = db.run(roleTable.filter(_.name === name).result.headOption)
   }
 
-  class StudentRepository {
-    def addStudent(student: Student): Future[Int] =
-      db.run(studentTable insertOrUpdate student).map(_.toInt)
+  class StudentRepository extends Repository[Student, Int] {
+    override def getById(id: Int): Future[Option[Student]] = db.run(studentTable.filter(_.id === id).result.headOption)
 
-    def getAllStudents: Future[Seq[Student]] =
-      db.run(studentTable.result)
+    override def getAll: Future[Seq[Student]] = db.run(studentTable.result)
 
-    def getStudentById(id: Int): Future[Option[Student]] =
-      db.run(studentTable.filter(_.id === id).result.headOption)
+    def add(student: Student): Future[Int] = db.run(studentTable insertOrUpdate student).map(_.toInt)
   }
 }
