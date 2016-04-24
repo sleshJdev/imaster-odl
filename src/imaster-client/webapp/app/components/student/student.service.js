@@ -11,11 +11,11 @@ angular.module('imaster').service('StudentService', [
         var self = this;
 
         self.getAllStudents = function () {
-            return $http.get("/api/students");
+            return $http.get('/api/students');
         };
 
         self.addStudent = function (student) {
-            return $http.post("/api/students", student);
+            return $http.post('/api/students', student);
         };
     }
 ]);

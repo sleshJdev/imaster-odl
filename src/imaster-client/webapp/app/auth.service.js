@@ -67,22 +67,5 @@ angular.module('imaster').service('AuthService', [
         service.getAuthentication = function () {
             return angular.copy(service.authentication);
         };
-
-        function hasRole(role) {
-            return service.isAuthenticated() &&
-                service.authentication &&
-                service.authentication.roles &&
-                service.authentication.roles.indexOf(role) !== -1;
-        }
-
-        service.isAdmin = function () {
-            return hasRole("ADMIN");
-        };
-        service.isManager = function () {
-            return hasRole("MANAGER");
-        };
-        service.isSpecialist = function () {
-            return hasRole("SPECIALIST");
-        };
     }
 ]);

@@ -4,8 +4,8 @@
 
 /* jshint undef: false */
 angular.module('imaster').controller('StudentAddController', [
-    'StudentService', '$state', '$log',
-    function (StudentService, $state, $log) {
+    'StudentService', '$state',
+    function (StudentService, $state) {
         'use strict';
 
         var vm = this;
@@ -13,8 +13,7 @@ angular.module('imaster').controller('StudentAddController', [
         vm.student = {};
 
         vm.save = function () {
-            StudentService.addStudent(vm.student).then(function (response) {
-                $log.log('add student response: ', response);
+            StudentService.addStudent(vm.student).then(function () {
                 $state.go('students');
             });
         };
