@@ -12,6 +12,11 @@ var sourcemaps = require('gulp-sourcemaps');
 var connect = require('gulp-connect');
 var proxyMiddleware = require('http-proxy-middleware');
 
+gulp.task('images', function () {
+   return gulp.src([path.join(conf.resources, 'images/**/*')])
+       .pipe(gulp.dest(path.join(conf.target, '/images')))
+});
+
 gulp.task('sass', function () {
     return gulp.src([path.join(conf.app, '/**/*.scss'), path.join(conf.resources, '/**/*.scss')])
         .pipe(sourcemaps.init())
@@ -65,7 +70,7 @@ gulp.task('scripts', ['lint'], function () {
 function copyScripts() {
     gulp.src([path.join(conf.temp, '/*.js')])
         .pipe(concat('index.js'))
-        .pipe(gulp.dest(conf.target))
+        .pipe(gulp.dest(conf.target));
 }
 
 gulp.task('bundle-scripts', ['scripts'], function () {
@@ -90,9 +95,10 @@ gulp.task('server', function () {
 });
 
 gulp.task('watch', function () {
+    gulp.watch(path.join(conf.resources, '/images/**/*'), ['images']);
     gulp.watch(path.join(conf.app, '/**/*.html'), ['bundle-html']);
-    gulp.watch(path.join(conf.app, '**/*.js'), ['bundle-scripts']);
+    gulp.watch(path.join(conf.app, '/**/*.js'), ['bundle-scripts']);
     gulp.watch([path.join(conf.app, '/**/*.scss'), path.join(conf.resources, '/**/*.scss')], ['sass']);
 });
 
-gulp.task('default', ['bundle-html', 'bundle-scripts', 'sass', 'watch']);
+gulp.task('default', ['bundle-html', 'bundle-scripts', 'images', 'sass', 'watch']);

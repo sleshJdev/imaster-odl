@@ -1,18 +1,21 @@
 <div class="block--center">
     <table class="table">
         <caption>
-            <h3>Students</h3>
-            <ul class="block--right">
-                <li><a ui-sref="student-add">Add</a></li>
+            <h3 class="block--left text--left">Список студентов</h3>
+            <ul class="list--group block--right">
+                <li><a ui-sref="student-add" class="icon--add" title="Добавить"></a></li>
+                <li><a ng-click="vm.remove()" class="icon--remove" title="Удалить"></a></li>
             </ul>
         </caption>
         <thead>
             <tr>
-                <td>#</td>
+                <td class="table__column--numbering">#</td>
+                <td class="table__column--checking"></td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Отчество</td>
+                <td>Возраст</td>
                 <td></td>
-                <td>First Name</td>
-                <td>Last Name</td>
-                <td>Age</td>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +24,9 @@
                 <td><input type="checkbox" ng-model="student.checked"></td>
                 <td>{{student.firstName}}</td>
                 <td>{{student.lastName}}</td>
+                <td>{{student.patronymic}}</td>
                 <td>{{student.age}}</td>
+                <td><span ng-click="vm.edit(student)" class="icon--edit" title="Изменить"></span></td>
             </tr>
         </tbody>
     </table>

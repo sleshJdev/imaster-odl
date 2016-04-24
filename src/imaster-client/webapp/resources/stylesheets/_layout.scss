@@ -37,11 +37,35 @@ a {
   color: #aa1110;
 }
 
-.icon--edit {
+.list--group {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+}
+
+.icon {
   display: inline-block;
   width: 32px;
   height: 32px;
-  background: url("/webapp/resources/images/edit.svg");
+}
+
+.icon--add {
+  @extend .icon;
+  background: url("../images/add.png");
+}
+
+.icon--edit{
+  @extend .icon;
+  background: url("../images/edit.png");
+}
+
+.icon--remove{
+  @extend .icon;
+  background: url("../images/remove.png");
 }
 
 .block--center {
@@ -58,7 +82,7 @@ a {
 
 .header {
   @extend .block--center;
-  width: $width--10;
+  width: $width--12;
 }
 
 .header__user {
@@ -97,7 +121,6 @@ a {
 .content {
   width: $width--10;
   min-height: 600px;
-  border: 1px solid #000;
   text-align: center;
   vertical-align: middle;
   margin: 15px auto;

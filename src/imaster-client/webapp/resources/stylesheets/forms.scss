@@ -12,6 +12,13 @@ $color--shadow: darken($color--default, 10%);
   }
 }
 
+.form__legend {
+  display: block;
+  padding-left: 2px;
+  padding-right: 2px;
+  border: none;
+}
+
 .form__control {
   padding: 8px 5px;
   margin: 5px;
@@ -41,11 +48,13 @@ $color--shadow: darken($color--default, 10%);
 }
 
 .form--login {
+  @extend .form;
   display: inline-block;
   margin: 100px auto;
 }
 
 .form--default {
+  @extend .form;
   margin: 0 auto;
   display: inline-block;
   width: $width--7;

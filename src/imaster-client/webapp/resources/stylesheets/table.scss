@@ -2,9 +2,11 @@
 
 .table {
   border-collapse: collapse;
-  margin: 0 auto;
   width: 100%;
-  tr {
+  thead {
+    font-size: 1.2em;
+  }
+  tbody tr {
     margin: 8px 5px;
     &:hover {
       cursor: pointer;
@@ -16,13 +18,10 @@
   }
 }
 
-.table--user {
-  width: $width--6;
-  tr td:first-child {
-    padding-left: 15px;
-    width: $width--5;
-    text-align: left;
-    font-weight: bold;
-    font-size: 1.1em;
-  }
+.table__column--numbering {
+  width: 25px;
+}
+
+.table__column--checking {
+  width: 25px;
 }

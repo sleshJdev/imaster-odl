@@ -9,10 +9,12 @@
 }
 
 .button--success {
+  @extend .button;
   background-color: $color--success;
 }
 
 .button--warning {
+  @extend .button;
   background-color: $color--warning;
 }
 
