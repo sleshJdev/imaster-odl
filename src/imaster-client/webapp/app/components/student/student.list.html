@@ -17,7 +17,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="student in vm.studentList">
-                <td>{{$index}}</td>
+                <td>{{$index + 1}}</td>
                 <td><input type="checkbox" ng-model="student.checked"></td>
                 <td>{{student.firstName}}</td>
                 <td>{{student.lastName}}</td>
