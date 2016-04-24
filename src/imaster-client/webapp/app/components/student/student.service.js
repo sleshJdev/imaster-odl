@@ -3,14 +3,14 @@
  */
 
 /*jshint undef: false*/
-angular.module('imaster').service('UserService', [
+angular.module('imaster').service('StudentService', [
     '$http',
     function ($http) {
         'use strict';
 
         var self = this;
 
-        self.getAllUsers = function () {
+        self.getAllStudents = function () {
             return $http.get("/api/students");
         };
     }

@@ -65,18 +65,25 @@ object DatabaseConnector {
         (2, 3),
         (3, 1),
         (3, 4)
+      ),
+      studentTable ++= Seq(
+        Student(Some(1), "vasya", "vasya", Some("vasya"), 21),
+        Student(Some(2), "kolya", "kolya", Some("kolya"), 22),
+        Student(Some(3), "petya", "petya", Some("petya"), 23),
+        Student(Some(4), "vitalya", "vitalya", Some("vitalya"), 24),
+        Student(Some(5), "igor", "igor", Some("igor"), 25)
       )
     )
     Await.result(db.run(query), 60 second)
   }
 
   def createSchema(): Unit = {
-    val schema = (userTable.schema ++ roleTable.schema ++ userRoleTable.schema).create
+    val schema = (userTable.schema ++ roleTable.schema ++ userRoleTable.schema ++ studentTable.schema).create
     Await.result(db.run(schema), 60 second)
   }
 
   def dropSchema(): Unit = {
-    val drop = (userTable.schema ++ roleTable.schema ++ userRoleTable.schema).drop
+    val drop = (userTable.schema ++ roleTable.schema ++ userRoleTable.schema ++ studentTable.schema).drop
     Await.result(db.run(drop), 60 second)
   }
 }

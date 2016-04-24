@@ -9,16 +9,16 @@
                 <td></td>
                 <td>First Name</td>
                 <td>Last Name</td>
-                <td>Role Name</td>
+                <td>Age</td>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="item in vm.userList">
+            <tr ng-repeat="student in vm.studentList">
                 <td>{{$index}}</td>
-                <td><input type="checkbox" ng-model="item.user.checked"></td>
-                <td>{{item.user.firstName}}</td>
-                <td>{{item.user.lastName}}</td>
-                <td>{{item.role.name}}</td>
+                <td><input type="checkbox" ng-model="student.checked"></td>
+                <td>{{student.firstName}}</td>
+                <td>{{student.lastName}}</td>
+                <td>{{student.age}}</td>
             </tr>
         </tbody>
     </table>

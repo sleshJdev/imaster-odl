@@ -9,9 +9,7 @@ import org.scalatest._
   */
 class UserRepositoryTests extends FlatSpec with BeforeAndAfterAll with Matchers {
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
-
   override protected def beforeAll(): Unit = DatabaseConnector.initialize()
-
   override protected def afterAll(): Unit = DatabaseConnector.release()
 
   val repository = new UserRepository

@@ -52,4 +52,12 @@ object Repositories {
     def getRoleById(id: Int): Future[Option[Role]] =
       db.run(roleTable.filter(_.id === id).result.headOption)
   }
+
+  class StudentRepository {
+    def getAllStudents: Future[Seq[Student]] =
+      db.run(studentTable.result)
+
+    def getStudentById(id: Int): Future[Option[Student]] =
+      db.run(studentTable.filter(_.id === id).result.headOption)
+  }
 }

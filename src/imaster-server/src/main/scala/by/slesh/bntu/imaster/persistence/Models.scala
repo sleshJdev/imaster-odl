@@ -21,6 +21,12 @@ object Models {
   case class UserExtended(user: User,
                           roles: List[Role])
 
+  case class Student(id: Option[Int],
+                     firstName: String,
+                     lastName: String,
+                     patronymic: Option[String],
+                     age: Int)
+
   class UserRow(tag: Tag) extends Table[User](tag, "user") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def username = column[String]("username", O.Length(30, varying = true))
@@ -48,11 +54,22 @@ object Models {
     def role = foreignKey("fk_role", roleId, roleTable)(_.id)
   }
 
+  class StudentRow(tag: Tag) extends Table[Student](tag, "student"){
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    def firstName = column[String]("firstName", O.Length(60, varying = true))
+    def lastName = column[String]("lastName", O.Length(60, varying = true))
+    def patronymic = column[Option[String]]("patronymic", O.Length(60, varying = true))
+    def age = column[Int]("age")
+    override def * : ProvenShape[Student] = (id.?, firstName, lastName, patronymic, age) <> (Student.tupled, Student.unapply)
+  }
+
   class UserTable extends TableQuery(new UserRow(_))
   class RoleTable extends TableQuery(new RoleRow(_))
   class UserRoleTable extends TableQuery(new UserRoleRow(_))
+  class StudentTable extends TableQuery(new StudentRow(_))
 
   val userTable = new UserTable
   val roleTable = new RoleTable
   val userRoleTable = new UserRoleTable
+  val studentTable = new StudentTable
 }

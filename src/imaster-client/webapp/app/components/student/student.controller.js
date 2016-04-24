@@ -3,16 +3,15 @@
  */
 
 /* jshint undef: false */
-angular.module('imaster').controller('UserController', [
-    'UserService', '$log',
-    function (UserService, $log) {
+angular.module('imaster').controller('StudentController', [
+    'StudentService', '$log',
+    function (StudentService, $log) {
         'use strict';
 
         var vm = this;
 
-        UserService.getAllUsers().then(function (response) {
-            $log.log('response: ', response);
-            vm.userList = response.data;
+        StudentService.getAllStudents().then(function (response) {
+            vm.studentList = response.data;
         });
     }
 ]);
