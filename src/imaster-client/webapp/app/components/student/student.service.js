@@ -13,5 +13,9 @@ angular.module('imaster').service('StudentService', [
         self.getAllStudents = function () {
             return $http.get("/api/students");
         };
+
+        self.addStudent = function (student) {
+            return $http.post("/api/students", student);
+        };
     }
 ]);

@@ -21,6 +21,12 @@ angular.module('imaster', ['ui.router']).config([
                 controller: 'StudentController',
                 controllerAs: 'vm'
             })
+            .state('student-add', {
+                url: '/api/students/add',
+                templateUrl: 'components/student/student.html',
+                controller: 'StudentAddController',
+                controllerAs: 'vm'
+            })
             .state('login', {
                 url: '/api/login',
                 templateUrl: 'components/login/login.html',

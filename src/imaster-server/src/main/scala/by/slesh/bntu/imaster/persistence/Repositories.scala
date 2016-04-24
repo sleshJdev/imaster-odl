@@ -54,6 +54,9 @@ object Repositories {
   }
 
   class StudentRepository {
+    def addStudent(student: Student): Future[Int] =
+      db.run(studentTable insertOrUpdate student).map(_.toInt)
+
     def getAllStudents: Future[Seq[Student]] =
       db.run(studentTable.result)
 

@@ -1,0 +1,16 @@
+<form class="form--default">
+    <div class="form__row">
+        <label for="label-firstName" class="form__control">Имя</label>
+        <input id="label-firstName" class="form__control" name="firstName" ng-model="vm.student.firstName">
+    </div>
+    <div class="form__row">
+        <label for="label-lastName" class="form__control">Отчество</label>
+        <input id="label-lastName" class="form__control" name="lastName" ng-model="vm.student.lastName">
+    </div>
+    <div class="form__row">
+        <label for="label-age" class="form__control">Год рождения</label>
+        <input id="label-age" class="form__control" name="age" ng-model="vm.student.age">
+    </div>
+    <button class="block--right button button--success" ng-click="vm.cancel()">Отмена</button>
+    <button class="block--right button button--warning" ng-click="vm.save()">Сохранить</button>
+</form>
