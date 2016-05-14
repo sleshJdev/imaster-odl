@@ -3,7 +3,6 @@ package by.slesh.bntu.imaster.security
 import javax.servlet.http.HttpServletRequest
 
 import by.slesh.bntu.imaster.persistence.Repositories._
-import org.eclipse.jetty.server.Request
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.slf4j.LoggerFactory
@@ -28,7 +27,7 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   protected def requireLogin(implicit request: HttpServletRequest) = {
     request.getPathInfo match {
       case path: String => if(!path.contains(scentryConfig.login)) authenticate()
-      case _ => ()
+      case _ => authenticate()
     }
   }
 
@@ -57,13 +56,17 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   override protected def fromSession: PartialFunction[String, UserDetails] = {
     case username: String =>
       Await.result(userRepository.getUserByName(username), 60 second) match {
-        case Some(user) => UserDetails(user.username, user.password)
+        case Some(x) =>
+          logger.info("from session {} -> {}", username, x, "")
+          UserDetails(x.user.username, x.user.password)
         case None => throw new NullPointerException("user with name %s not found" format username)
       }
   }
 
   override protected def toSession: PartialFunction[UserDetails, String] = {
-    case user: UserDetails => user.username
+    case user: UserDetails =>
+      logger.info("to session {} -> {}", user, user.username, "")
+      user.username
   }
 }
 

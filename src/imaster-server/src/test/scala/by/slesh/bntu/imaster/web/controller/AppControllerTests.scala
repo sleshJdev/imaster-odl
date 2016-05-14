@@ -1,6 +1,7 @@
 package by.slesh.bntu.imaster.web.controller
 
 import by.slesh.bntu.imaster.persistence.DatabaseConnector
+import by.slesh.bntu.imaster.persistence.Models.Role
 import org.json4s.JsonDSL._
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
@@ -38,13 +39,15 @@ class AppControllerTests extends ScalatraSuite with FlatSpecLike {
       status should equal(404)
     }
   }
-
-  it should "for POST '/api/login' returns auth token for existing username/password" in {
-    post("/api/login", pretty(("username" -> "student") ~ ("password" -> "studentp"))) {
+  it should "for POST '/api/login' returns auth data for valid username/password" in {
+    val username = "student"
+    post("/api/login", pretty(("username" -> username) ~ ("password" -> "studentp"))) {
       status should equal(200)
       response.getContentType() should include("application/json")
       val bodyJson = parse(body)
       (bodyJson \ "token").extract[String] should not be empty
+      (bodyJson \ "username").extract[String] shouldEqual username
+      (bodyJson \ "roles").extract[List[Role]] should not be empty
     }
   }
 }

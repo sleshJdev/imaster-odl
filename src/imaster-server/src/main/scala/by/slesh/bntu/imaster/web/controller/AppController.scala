@@ -6,8 +6,7 @@ import by.slesh.bntu.imaster.persistence.Models._
 import by.slesh.bntu.imaster.persistence.Repositories._
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
-import by.slesh.bntu.imaster.web.model.Account
-import org.json4s.JsonDSL._
+import by.slesh.bntu.imaster.web.model.{Account, AuthData}
 import org.json4s._
 import org.slf4j.LoggerFactory
 
@@ -25,20 +24,26 @@ class AppController extends AbstractController {
   post("/login") {
     val account = parsedBody.extract[Account]
     logger.info("{} is login...", account)
-    repository.getUserByName(account.username) flatMap { userOption =>
-      logger.info("found account: {}", userOption)
-      val token = userOption match {
-        case Some(user) =>
-          if (user.password == account.password) {
-            val token = TokenService.createToken(getClaimsForUser(user))
+    repository.getUserByName(account.username) map { userExtended =>
+      logger.info("found account: {}", userExtended)
+      val token = userExtended match {
+        case Some(x) =>
+          if (x.user.password == account.password) {
+            val token = TokenService.createToken(getClaimsForUser(x.user))
             logger.info("created authentication token: {}", token)
             Some(token)
           } else None
         case None => None
       }
       Future {
-        if (token.isEmpty) response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
-        pretty(("token" -> token.orNull) ~ ("username" -> account.username))
+        if (token.isEmpty) {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
+        } else {
+          userExtended match {
+            case Some(x) => AuthData(token.orNull, x.user.username, x.roles.map(_.name))
+            case None => None
+          }
+        }
       }
     }
   }

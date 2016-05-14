@@ -33,9 +33,9 @@ object Repositories {
     //todo: add implementaion
     override def add(item: UserExtended): Future[Int] = ???
 
-    def getUserByName(username: String): Future[Option[User]] = {
+    def getUserByName(username: String): Future[Option[UserExtended]] = {
       logger.info("find user by name: {}", username)
-      db.run(userTable.filter(_.username === username).result.headOption)
+      db.run(userTable.filter(_.username === username).joinRoles.result).map(_.toExtendedUser)
     }
   }
 

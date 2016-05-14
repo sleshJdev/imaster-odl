@@ -66,7 +66,7 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     logger.info("loading user from database...")
     val id = providedClaims.get(ClaimsKeys.ID).get.toInt
     val user = Await.result(userRepository.getById(id), 10 second) match {
-      case Some(u) => u.user
+      case Some(x) => x.user
       case None =>
         logger.info("invalid user information")
         throw new InvalidTokenException("invalid user information")

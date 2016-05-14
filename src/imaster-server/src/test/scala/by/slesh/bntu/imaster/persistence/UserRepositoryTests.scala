@@ -2,9 +2,8 @@ package by.slesh.bntu.imaster.persistence
 
 import by.slesh.bntu.imaster.persistence.Models.UserExtended
 import by.slesh.bntu.imaster.persistence.Repositories._
-import org.scalatest._
-import scala.util.Success
-import scala.util.Failure
+
+import scala.util.{Failure, Success}
 
 /**
   * @author yauheni.putsykovich
@@ -26,7 +25,7 @@ class UserRepositoryTests extends TestConfig {
   "getUserByName method" should "returns valid User instance by username" in {
     val username = "student"
     repository getUserByName username onComplete {
-      case Success(Some(x)) => assertResult(username)(x.username)
+      case Success(Some(x)) => assertResult(username)(x.user.username)
       case Failure(ex) => fail(ex)
       case _ => fail("user with name %s not found" format username)
     }

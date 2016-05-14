@@ -5,17 +5,18 @@
             <span class="product__logo"></span>
         </div>
     </div>
-    <div class="nav__menu">
+    <div ng-hide="vm.isLogging()" class="nav__menu">
         <ul>
             <li><a ui-sref="/">Главгая</a></li>
-            <li><a ui-sref="students">Студенты</a></li>
-            <li><a href="#/api/teachers">Преподаватели</a></li>
-            <li><a href="#/api/file/upload">Загрузить материал</a></li>
+            <li ng-show="vm.isAdmin() || vm.isTeacher()"><a ui-sref="students">Студенты</a></li>
+            <li ng-show="vm.isAdmin()"><a href="#/api/teachers">Преподаватели</a></li>
+            <li ng-show="vm.isAdmin()"><a href="#/api/users">Пользователи</a></li>
+            <li ng-show="vm.isTeacher()"><a href="#/api/file/upload">Загрузить материал</a></li>
         </ul>
     </div>
     <div class="nav__user">
         <span ng-show="vm.isLoggedUser()">Здравствуйте, <a href="#/api/users/private">{{vm.getUserName()}}!</a></span>
         <a class="button" ng-click="vm.logout()" ng-show="vm.isLoggedUser()">Выйти</a>
-        <a class="button" ng-hide="vm.isLoggedUser()" href="#/api/login">Войти</a>
+        <a class="button" ng-hide="vm.isLoggedUser() || vm.isLogging()" href="#/api/login">Войти</a>
     </div>
 </header>

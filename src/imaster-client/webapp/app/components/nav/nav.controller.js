@@ -8,16 +8,7 @@ angular.module('imaster').controller('NavController', [
     function (AuthService, $state) {
         'use strict';
         var vm = this;
-
-        vm.isLoggedUser = function () {
-            return AuthService.isAuthenticated();
-        };
-
-        vm.getUserName = function () {
-            var auth = AuthService.getAuthentication();
-            return auth ? auth.username : null;
-        };
-
+        AuthService.addMethods(vm);
         vm.logout = function () {
             AuthService.logout();
             $state.go('login');
