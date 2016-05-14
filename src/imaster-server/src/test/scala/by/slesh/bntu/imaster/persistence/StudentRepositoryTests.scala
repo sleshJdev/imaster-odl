@@ -12,20 +12,27 @@ import scala.util.{Failure, Success}
   * @author slesh
   */
 class StudentRepositoryTests extends TestConfig {
-  val repository = new StudentRepository
+  val studentRepository = new StudentRepository
 
-  "getStudentById method" should "returns valid Student instance with given id" in {
+  "A StudentRepository " should "returns not empty student list" in {
+    studentRepository.getAll onComplete {
+      case Success(list) => list should not be empty
+      case Failure(ex) => fail(ex)
+    }
+  }
+
+  it should "returns valid student with given id" in {
     val studentId = 1
-    repository.getById(studentId) onComplete {
+    studentRepository.getById(studentId) onComplete {
       case Success(Some(student)) => student.id.get shouldEqual studentId
       case Failure(ex) => fail(ex)
       case _ => fail()
     }
   }
 
-  "addStudent method" should "insert Student into table" in {
+  it should "insert student and returns his id " in {
     val student = Student(None, "test", "test", Some("test"), new Date(currentTimeMillis()))
-    repository.add(student) onComplete {
+    studentRepository.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)
     }

@@ -13,7 +13,14 @@ import scala.concurrent.duration.DurationInt
 class RoleRepositoryTests extends TestConfig {
   val roleRepository = new RoleRepository
 
-  "getRoleById method" should "returns role by valid id" in {
+  "A RoleRepository" should "returns not empty role list" in {
+    roleRepository.getAll onComplete {
+      case Success(x) => x should not be empty
+      case Failure(ex) => fail(ex)
+    }
+  }
+
+  it should "returns role by valid id" in {
     val roleId = 1
     roleRepository.getById(roleId) onComplete {
       case Success(Some(x)) => assertResult(roleId)(x.id.get)
@@ -22,7 +29,7 @@ class RoleRepositoryTests extends TestConfig {
     }
   }
 
-  "getRoleByName method" should "returns role by valid name" in {
+  it should "returns role by valid name" in {
     val roleName = "student"
     roleRepository.getRoleByName(roleName) onComplete {
       case Success(Some(x)) => assertResult(roleName)(x.name)

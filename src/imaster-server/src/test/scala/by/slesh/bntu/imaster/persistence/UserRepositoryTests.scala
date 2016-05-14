@@ -11,7 +11,16 @@ import scala.util.{Failure, Success}
 class UserRepositoryTests extends TestConfig {
   val repository = new UserRepository
 
-  "getUserById method" should "returns User instance by existing id" in {
+  "A UserRepository" should "returns all users with appropriated roles" in {
+    repository.getAll onComplete {
+      case Success(list) =>
+        list should not be empty
+        forAll(list) { user => user.roles should not be empty }
+      case Failure(ex) => fail(ex)
+    }
+  }
+
+  it should "returns user by existing id" in {
     val userId = 1
     repository getById userId onComplete {
       case Success(Some(UserExtended(user, roles))) =>
@@ -22,7 +31,7 @@ class UserRepositoryTests extends TestConfig {
     }
   }
 
-  "getUserByName method" should "returns valid User instance by username" in {
+  it should "returns valid user by username" in {
     val username = "student"
     repository getUserByName username onComplete {
       case Success(Some(x)) => assertResult(username)(x.user.username)
@@ -31,10 +40,4 @@ class UserRepositoryTests extends TestConfig {
     }
   }
 
-  "getAll method" should "returns all users with appropriated roles" in {
-    repository.getAll onComplete {
-      case Success(list) => list should not be empty
-      case Failure(ex) => fail(ex)
-    }
-  }
 }
