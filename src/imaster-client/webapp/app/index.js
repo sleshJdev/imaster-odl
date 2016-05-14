@@ -9,8 +9,8 @@ require('angular-ui-router');
 
 angular.module('imaster', ['ui.router'])
     .config([
-        '$stateProvider', '$urlRouterProvider',
-        function ($stateProvider, $urlRouterProvider) {
+        '$stateProvider', '$urlRouterProvider', '$httpProvider',
+        function ($stateProvider, $urlRouterProvider, $httpProvider) {
             'use strict';
             $stateProvider
                 .state('/', {
@@ -35,6 +35,7 @@ angular.module('imaster', ['ui.router'])
                     controllerAs: 'vm'
                 });
             $urlRouterProvider.otherwise('/');
+            $httpProvider.interceptors.push('httpInterceptor');
         }
     ])
     .run([
@@ -43,8 +44,11 @@ angular.module('imaster', ['ui.router'])
             'use strict';
             $log.debug('session interceptor was added');
             if (AuthService.isAnonymous()) {
-                $log.debug('try restire token');
-                AuthService.restore();
+                if (AuthService.restore()) {
+                    $log.debug('restored token');
+                } else {
+                    $log.debug('token not found');
+                }
             }
         }
     ]);

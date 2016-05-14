@@ -1,5 +1,7 @@
 package by.slesh.bntu.imaster.web
 
+import javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
+
 import by.slesh.bntu.imaster.security.AuthenticationSupport
 import by.slesh.bntu.imaster.web.json.{DateToString, StringToInt}
 import org.json4s.{DefaultFormats, Formats}
@@ -21,7 +23,10 @@ abstract class AbstractController
   override val logger = LoggerFactory.getLogger(getClass)
 
   before() {
-    requireLogin(request)
+    if (requireLogin){
+      authenticate()
+      if(isAnonymous) halt(SC_UNAUTHORIZED)
+    }
     contentType = formats("json")
     logger.info(requestToString)
   }
@@ -32,7 +37,9 @@ abstract class AbstractController
     val names = JavaConversions.enumerationAsScalaIterator(request.getParameterNames)
     if (names.nonEmpty) {
       message += ", parameters="
-      for (name <- names) { message += name + "::" + params(name) + " "}
+      for (name <- names) {
+        message += name + "::" + params(name) + " "
+      }
     }
     message
   }

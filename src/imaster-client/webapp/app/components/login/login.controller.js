@@ -13,8 +13,8 @@ angular.module('imaster').controller('LoginController', [
             AuthService.login(vm.username, vm.password).then(function () {
                 $log.log("login successfully");
                 $state.go("students");
+                AuthService.endLogging();
             });
-            AuthService.endLogging();
         };
 
         vm.cancel = function () {

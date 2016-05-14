@@ -25,10 +25,7 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   }.asInstanceOf[ScentryConfiguration]
 
   protected def requireLogin(implicit request: HttpServletRequest) = {
-    request.getPathInfo match {
-      case path: String => if(!path.contains(scentryConfig.login)) authenticate()
-      case _ => authenticate()
-    }
+    !Option(request.getPathInfo).getOrElse("").contains(scentryConfig.login)
   }
 
   /**
