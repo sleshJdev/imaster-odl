@@ -2,18 +2,22 @@
 
 .table {
   border-collapse: collapse;
-  width: 100%;
+  width: $width--12;
+  caption {
+    color: $color--primary;
+  }
   thead {
-    font-size: 1.2em;
+    color: $color--primary;
+    font-size: 1.1em;
   }
   tbody tr {
-    margin: 8px 5px;
+    margin: 0;
     &:hover {
       cursor: pointer;
-      background-color: darken($color--default, 10%);
+      background-color: darken($color--white, 5%);
     }
     td {
-      padding: 8px 5px;
+      padding: 0;
     }
   }
 }

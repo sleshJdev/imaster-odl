@@ -2,22 +2,18 @@
 
 .button {
   cursor: pointer;
-  box-shadow: 1px 1px 3px;
-  border: none;
   padding: 10px 25px;
   margin: 2px;
 }
 
 .button--success {
   @extend .button;
+  color: $color--white;
   background-color: $color--success;
 }
 
 .button--warning {
   @extend .button;
+  color: $color--white;
   background-color: $color--warning;
-}
-
-.button--login {
-  @extend .button--success
 }

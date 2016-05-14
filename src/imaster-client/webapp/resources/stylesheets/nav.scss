@@ -1,0 +1,51 @@
+@import "layout";
+
+.product {
+  border-bottom: solid 7px $color--primary;
+  .product__logo {
+    display: inline-block;
+    width: 150px;
+    height: 90px;
+    background: url("../images/product-logo.gif");
+  }
+  .product__name {
+    display: inline-block;
+    width: 808px;
+    height: 28px;
+    background: url("../images/product-name.gif");
+  }
+}
+
+.nav {
+  margin: 0 auto;
+  width: $width--12;
+}
+
+.nav__product .product {
+  text-align: center;
+}
+
+.nav__product .product__logo {
+  float: left;
+  margin-left: 10px;
+}
+
+.nav__menu {
+  display: inline-block;
+  ul {
+    list-style: none;
+    text-align: center;
+    li {
+      display: inline-block;
+      a:hover {
+        color: #f4f5cd;
+        background-color: $color--primary;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.nav__user {
+  float: right;
+}

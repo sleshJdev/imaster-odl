@@ -1,7 +1,29 @@
 $font-stack: Helvetica, sans-serif;
-$color--default: #f4f5cd;
-$color--success: #7cce63;
-$color--warning: #eee600;
+
+
+$color--black: #001f3f;
+$color--blue: #0074d9;
+$color--aqua: #7fdbff;
+$color--olive: #3d9970;
+//$color--green: #2ecc40;
+$color--green: #2c802c;
+$color--lime: #01ff70;
+$color--yellow: #ff851b;
+$color--orange: #ffdc00;
+$color--red: #ff4136;
+$color--marron: #85144b;
+$color--fuchsia: #f012be;
+$color--purple: #b10dc9;
+$color--gray: #aaaaaa;
+$color--silver: #dddddd;
+$color--orange: #ff851b;
+$color--white: #ffffff;
+
+$color--primary: #a39d49;
+$color--info: $color--blue;
+$color--success: $color--green;
+$color--warning: $color--yellow;
+$color--error: $color--red;
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -32,10 +54,13 @@ body {
 }
 
 a {
+  display: inline-block;
+  color: #a39d49;
+  padding: 5px;
+  text-transform: uppercase;
   text-decoration: none;
-  font-size: 1.1em;
-  color: #aa1110;
 }
+
 
 .list--group {
   padding: 0;
@@ -78,44 +103,6 @@ a {
 
 .block--right {
   float: right;
-}
-
-.header {
-  @extend .block--center;
-  width: $width--12;
-}
-
-.header__user {
-  display: block;
-  margin: 15px;
-  .button {
-    margin-left: 15px;
-  }
-}
-
-.header--menu {
-  ul li {
-    display: inline-block;
-    &:hover {
-      background-color: darken($color--default, 25%);
-      cursor: pointer;
-    }
-    a {
-      display: inline-block;
-      padding: 20px 25px;
-      box-shadow: 1px 1px 3px #000000;
-    }
-  }
-}
-
-.menu {
-  ul {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 0;
-    list-style: none;
-    text-align: center;
-  }
 }
 
 .content {

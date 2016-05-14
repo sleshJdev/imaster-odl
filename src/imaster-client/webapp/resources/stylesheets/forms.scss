@@ -1,14 +1,10 @@
 @import "layout";
 
-$color--shadow: darken($color--default, 10%);
-
 .form {
-  font-size: 1.2em;
   padding: 25px;
-  border: none;
-  box-shadow: 0 0 10px $color--shadow;
+  border: 1px solid $color--primary;
   button {
-    margin-top: 30px;
+    margin-top: 2em;
   }
 }
 
@@ -16,7 +12,7 @@ $color--shadow: darken($color--default, 10%);
   display: block;
   padding-left: 2px;
   padding-right: 2px;
-  border: none;
+  border-bottom: 1px solid $color--black;
 }
 
 .form__control {
@@ -24,7 +20,6 @@ $color--shadow: darken($color--default, 10%);
   margin: 5px;
   float: left;
   width: $width--12;
-  background-color: #ffffff;
 }
 
 .form__row {
@@ -32,25 +27,37 @@ $color--shadow: darken($color--default, 10%);
   line-height: 1.3em;
   margin-bottom: 15px;
   margin-top: 5px;
-  input.form__control, textarea.form__control, select.form__control {
-    box-shadow: 0 0 5px $color--shadow;
-    &:focus {
-      box-shadow: 0 0 5px $color--warning;
-    }
+}
+
+input.form__control,
+textarea.form__control,
+select.form__control {
+  &:focus {
+    background-color: $color--primary;
+    color: $color--white;
+    border-bottom: 1px solid $color--white;
   }
-  textarea.form__control {
-    height: 200px;
-  }
-  label.form__control {
-    text-align: left;
-    vertical-align: middle;
-  }
+}
+
+input.form__control,
+textarea.form__control {
+  border-bottom: 1px solid $color--green;
+}
+
+textarea.form__control {
+  height: 200px;
+}
+
+label.form__control {
+  text-align: left;
+  vertical-align: middle;
 }
 
 .form--login {
   @extend .form;
   display: inline-block;
-  margin: 100px auto;
+  margin: 20px auto;
+  width: $width--4;
 }
 
 .form--default {
