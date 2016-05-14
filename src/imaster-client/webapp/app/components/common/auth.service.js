@@ -4,8 +4,8 @@
 
 /* jshint undef: false */
 angular.module('imaster').service('AuthService', [
-    '$http', '$q',
-    function ($http, $q) {
+    '$http', '$q', '$log',
+    function ($http, $q, $log) {
         'use strict';
         var self = this;
         self.authentication = null;
@@ -24,6 +24,7 @@ angular.module('imaster').service('AuthService', [
 
         function exportMethodsTo(scope) {
             scope.isAuthenticated = isAuthenticated;
+            scope.isAnonymous = isAnonymous;
             scope.getUserName = getUserName;
             scope.isStudent = isRole('student');
             scope.isTeacher = isRole('teacher');
@@ -35,8 +36,7 @@ angular.module('imaster').service('AuthService', [
 
         function setAuthentication(authData) {
             self.authentication = authData;
-            $http.defaults.headers.common['X-Auth'] =
-                authData ? authData.token : undefined;
+            $http.defaults.headers.common['X-Auth'] = authData ? authData.token : undefined;
             if (sessionStorage) {
                 if (authData) {
                     sessionStorage.setItem("auth.data", JSON.stringify(authData));
@@ -71,7 +71,7 @@ angular.module('imaster').service('AuthService', [
                         setAuthentication(JSON.parse(authData));
                         return true;
                     } catch (e) {
-                        console.log(e);
+                        $log.error(e);
                     }
                 }
             }
@@ -79,7 +79,11 @@ angular.module('imaster').service('AuthService', [
         }
 
         function isAuthenticated() {
-            return !!self.authentication;
+            return !isAnonymous();
+        }
+
+        function isAnonymous() {
+            return !self.authentication;
         }
 
         function getUserName() {
@@ -91,8 +95,7 @@ angular.module('imaster').service('AuthService', [
         }
 
         function hasRole(role) {
-            return isAuthenticated() && !!self.authentication.roles &&
-                !!self.authentication.roles.length &&
+            return isAuthenticated() && !!self.authentication.roles && !!self.authentication.roles.length &&
                 self.authentication.roles.indexOf(role) !== -1;
         }
 

@@ -59,7 +59,7 @@ gulp.task('scripts', ['lint'], function () {
         }
     });
 
-    return gulp.src([path.join(conf.app, 'app.js'), path.join(conf.app, '/**/*.js')])
+    return gulp.src([path.join(conf.app, 'index.js'), path.join(conf.app, '/**/*.js')])
         .pipe(sourcemaps.init())
         .pipe(concat('index.js'))
         .pipe(browserifyTask)
@@ -95,6 +95,7 @@ gulp.task('server', function () {
 });
 
 gulp.task('watch', function () {
+    copyScripts();
     gulp.watch(path.join(conf.resources, '/images/**/*'), ['images']);
     gulp.watch(path.join(conf.app, '/**/*.html'), ['bundle-html']);
     gulp.watch(path.join(conf.app, '/**/*.js'), ['bundle-scripts']);
