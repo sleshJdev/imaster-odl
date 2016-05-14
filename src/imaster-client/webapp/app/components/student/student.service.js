@@ -8,14 +8,17 @@ angular.module('imaster').service('StudentService', [
     function ($http) {
         'use strict';
 
-        var self = this;
+        return {
+            getAllStudents: getAllStudents,
+            addStudent: addStudent
+        };
 
-        self.getAllStudents = function () {
+        function getAllStudents() {
             return $http.get('/api/students');
-        };
+        }
 
-        self.addStudent = function (student) {
+        function addStudent(student) {
             return $http.post('/api/students', student);
-        };
+        }
     }
 ]);

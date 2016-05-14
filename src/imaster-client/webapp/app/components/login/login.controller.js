@@ -8,16 +8,23 @@ angular.module('imaster').controller('LoginController', [
     function (AuthService, $state, $log) {
         'use strict';
         var vm = this;
-        AuthService.isLogging = true;
+
         vm.login = function () {
             AuthService.login(vm.username, vm.password).then(function () {
                 $log.log("login successfully");
                 $state.go("students");
             });
-            AuthService.isLogging = false;
+            AuthService.endLogging();
         };
+
         vm.cancel = function () {
-            AuthService.isLogging = false;
+            AuthService.endLogging();
             $state.go('/');
         };
+
+        init();
+
+        function init() {
+            AuthService.startLogging();
+        }
     }]);

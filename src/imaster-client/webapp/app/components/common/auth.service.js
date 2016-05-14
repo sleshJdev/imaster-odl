@@ -11,6 +11,28 @@ angular.module('imaster').service('AuthService', [
         self.authentication = null;
         self.isLogging = false;
 
+        var service = {
+            login: login,
+            logout: logout,
+            restore: restore,
+            getAuthentication: getAuthentication,
+            exportMethodsTo: exportMethodsTo
+        };
+        exportMethodsTo(service);
+
+        return service;
+
+        function exportMethodsTo(scope) {
+            scope.isAuthenticated = isAuthenticated;
+            scope.getUserName = getUserName;
+            scope.isStudent = isRole('student');
+            scope.isTeacher = isRole('teacher');
+            scope.isAdmin = isRole('admin');
+            scope.isLogging = isLogging;
+            scope.startLogging = startLogging;
+            scope.endLogging = endLogging;
+        }
+
         function setAuthentication(authData) {
             self.authentication = authData;
             $http.defaults.headers.common['X-Auth'] =
@@ -24,7 +46,7 @@ angular.module('imaster').service('AuthService', [
             }
         }
 
-        self.login = function (username, password) {
+        function login(username, password) {
             return $http.post('/api/login', {
                 username: username,
                 password: password
@@ -35,13 +57,13 @@ angular.module('imaster').service('AuthService', [
                 setAuthentication(null);
                 return $q.reject(error);
             });
-        };
+        }
 
-        self.logout = function () {
+        function logout() {
             setAuthentication(null);
-        };
+        }
 
-        self.restore = function () {
+        function restore() {
             if (sessionStorage) {
                 var authData = sessionStorage.getItem("auth.data");
                 if (authData) {
@@ -54,51 +76,42 @@ angular.module('imaster').service('AuthService', [
                 }
             }
             return false;
-        };
+        }
 
-        self.isAuthenticated = function () {
+        function isAuthenticated() {
             return !!self.authentication;
-        };
+        }
 
-        self.getUserName = function () {
+        function getUserName() {
             return !!self.authentication ? self.authentication.username : "empty";
-        };
+        }
 
-        self.getAuthentication = function () {
+        function getAuthentication() {
             return angular.copy(self.authentication);
-        };
+        }
 
         function hasRole(role) {
-            return self.isAuthenticated() &&
-                !!self.authentication.roles &&
+            return isAuthenticated() && !!self.authentication.roles &&
                 !!self.authentication.roles.length &&
                 self.authentication.roles.indexOf(role) !== -1;
         }
 
-        self.addMethods = function (vm) {
-            vm.isAdmin = function () {
-                return hasRole('admin');
+        function isRole(role) {
+            return function () {
+                return hasRole(role);
             };
-            vm.isStudent = function () {
-                return hasRole('student');
-            };
+        }
 
-            vm.isTeacher = function () {
-                return hasRole('teacher');
-            };
+        function isLogging() {
+            return self.isLogging;
+        }
 
-            vm.isLogging = function () {
-                return self.isLogging;
-            };
+        function startLogging() {
+            self.isLogging = true;
+        }
 
-            vm.isLoggedUser = function () {
-                return self.isAuthenticated();
-            };
-
-            vm.getUserName = function () {
-                var auth = self.getAuthentication();
-                return auth ? auth.username : null;
-            };
+        function endLogging() {
+            self.isLogging = false;
         }
     }
 ]);

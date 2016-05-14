@@ -8,9 +8,15 @@ angular.module('imaster').controller('NavController', [
     function (AuthService, $state) {
         'use strict';
         var vm = this;
-        AuthService.addMethods(vm);
+
         vm.logout = function () {
             AuthService.logout();
             $state.go('login');
         };
+
+        init();
+
+        function init() {
+            AuthService.exportMethodsTo(vm);
+        }
     }]);
