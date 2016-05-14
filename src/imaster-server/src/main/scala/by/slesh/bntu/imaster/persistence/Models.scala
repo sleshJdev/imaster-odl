@@ -1,5 +1,7 @@
 package by.slesh.bntu.imaster.persistence
 
+import java.sql.Date
+
 import slick.driver.H2Driver.api._
 import slick.lifted.ProvenShape
 
@@ -25,7 +27,7 @@ object Models {
                      firstName: String,
                      lastName: String,
                      patronymic: Option[String],
-                     age: Int)
+                     birthday: Date)
 
   class UserRow(tag: Tag) extends Table[User](tag, "user") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
@@ -54,13 +56,14 @@ object Models {
     def role = foreignKey("fk_role", roleId, roleTable)(_.id)
   }
 
+  //TODO: resolve mapping sql.Date to util.Date
   class StudentRow(tag: Tag) extends Table[Student](tag, "student"){
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def firstName = column[String]("firstName", O.Length(60, varying = true))
     def lastName = column[String]("lastName", O.Length(60, varying = true))
     def patronymic = column[Option[String]]("patronymic", O.Length(60, varying = true))
-    def age = column[Int]("age")
-    override def * : ProvenShape[Student] = (id.?, firstName, lastName, patronymic, age) <> (Student.tupled, Student.unapply)
+    def birthday = column[Date]("birthday")
+    override def * : ProvenShape[Student] = (id.?, firstName, lastName, patronymic, birthday) <> (Student.tupled, Student.unapply)
   }
 
   class UserTable extends TableQuery(new UserRow(_))

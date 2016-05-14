@@ -5,7 +5,7 @@ import org.scalatest._
   * @author yauheni.putsykovich
   */
 class DatabaseConnectorTests extends FlatSpec with BeforeAndAfter {
-  "The Database connection" should "establish" in {
+  "The Database connection" should "establish connection" in {
     DatabaseConnector.initialize()
   }
 

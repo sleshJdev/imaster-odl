@@ -1,7 +1,10 @@
 package by.slesh.bntu.imaster.persistence
 
+import java.sql.Date
+
 import by.slesh.bntu.imaster.persistence.Models._
 import com.typesafe.config.ConfigFactory
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import slick.driver.H2Driver.api._
 
@@ -67,11 +70,11 @@ object DatabaseConnector {
         (3, 4)
       ),
       studentTable ++= Seq(
-        Student(Some(1), "vasya", "vasya", Some("vasya"), 21),
-        Student(Some(2), "kolya", "kolya", Some("kolya"), 22),
-        Student(Some(3), "petya", "petya", Some("petya"), 23),
-        Student(Some(4), "vitalya", "vitalya", Some("vitalya"), 24),
-        Student(Some(5), "igor", "igor", Some("igor"), 25)
+        Student(Some(1), "vasya", "vasya", Some("vasya"), new Date(DateTime.now().getMillis)),
+        Student(Some(2), "kolya", "kolya", Some("kolya"), new Date(DateTime.now().getMillis)),
+        Student(Some(3), "petya", "petya", Some("petya"), new Date(DateTime.now().getMillis)),
+        Student(Some(4), "vitalya", "vitalya", Some("vitalya"), new Date(DateTime.now().getMillis)),
+        Student(Some(5), "igor", "igor", Some("igor"), new Date(DateTime.now().getMillis))
       )
     )
     Await.result(db.run(query), 60 second)

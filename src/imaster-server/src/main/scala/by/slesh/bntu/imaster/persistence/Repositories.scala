@@ -15,7 +15,7 @@ import scala.language.higherKinds
 object Repositories {
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
-  trait Repository[E, ID]{
+  trait Repository[E, ID] {
     def getAll: Future[Seq[E]]
 
     def getById(id: ID): Future[Option[E]]
@@ -57,4 +57,5 @@ object Repositories {
 
     def add(student: Student): Future[Int] = db.run(studentTable insertOrUpdate student).map(_.toInt)
   }
+
 }

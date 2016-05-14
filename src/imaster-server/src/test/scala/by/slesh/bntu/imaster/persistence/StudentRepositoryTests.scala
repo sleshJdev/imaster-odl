@@ -1,10 +1,12 @@
 package by.slesh.bntu.imaster.persistence
 
+import java.lang.System.currentTimeMillis
+import java.sql.Date
+
 import by.slesh.bntu.imaster.persistence.Models.Student
 import by.slesh.bntu.imaster.persistence.Repositories.StudentRepository
-import org.scalatest._
-import scala.util.Success
-import scala.util.Failure
+
+import scala.util.{Failure, Success}
 
 /**
   * @author slesh
@@ -22,7 +24,7 @@ class StudentRepositoryTests extends TestConfig {
   }
 
   "addStudent method" should "insert Student into table" in {
-    val student = Student(None, "test", "test", Some("test"), 0)
+    val student = Student(None, "test", "test", Some("test"), new Date(currentTimeMillis()))
     repository.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)

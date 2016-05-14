@@ -1,7 +1,7 @@
 package by.slesh.bntu.imaster.web
 
 import by.slesh.bntu.imaster.security.AuthenticationSupport
-import by.slesh.bntu.imaster.web.json.StringToInt
+import by.slesh.bntu.imaster.web.json.{DateToString, StringToInt}
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
 import org.scalatra.{FutureSupport, ScalatraServlet}
@@ -17,7 +17,7 @@ abstract class AbstractController
 
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
-  protected implicit lazy val jsonFormats: Formats = DefaultFormats + StringToInt
+  protected implicit lazy val jsonFormats: Formats = DefaultFormats + StringToInt + DateToString
   override val logger = LoggerFactory.getLogger(getClass)
 
   before() {
