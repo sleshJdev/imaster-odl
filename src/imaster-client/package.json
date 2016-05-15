@@ -10,16 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/sleshJdev/i-magister.git"
   },
-  "keywords": [
-    "scala"
-  ],
-  "author": "sleshJdev",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sleshJdev/i-magister/issues"
   },
   "homepage": "https://github.com/sleshJdev/i-magister#readme",
   "devDependencies": {
+    "browser-sync": "^2.12.8",
     "browserify": "^13.0.0",
     "del": "^2.2.0",
     "gulp": "^3.9.1",

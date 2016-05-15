@@ -1,86 +1,51 @@
-var gulp = require("gulp");
+var gulp = require('gulp');
 
 var conf = require('./conf');
 var path = require('path');
 var sass = require('gulp-sass');
-var cleanCss = require('gulp-clean-css');
-var angularTemplatecache = require('gulp-angular-templatecache');
 var concat = require('gulp-concat');
 var browserify = require('gulp-browserify');
 var jshint = require('gulp-jshint');
 var sourcemaps = require('gulp-sourcemaps');
 var connect = require('gulp-connect');
 var proxyMiddleware = require('http-proxy-middleware');
+var browserSync = require('browser-sync');
 
-gulp.task('images', function () {
-   return gulp.src([path.join(conf.resources, 'images/**/*')])
-       .pipe(gulp.dest(path.join(conf.target, '/images')))
-});
-
-gulp.task('sass', function () {
-    return gulp.src([path.join(conf.app, '/**/*.scss'), path.join(conf.resources, '/**/*.scss')])
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(concat('index.css'))
-        .pipe(cleanCss())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(conf.target));
-});
-
-gulp.task('html', function () {
-    var cache = angularTemplatecache('templates.js', {
-        module: conf.module
-    });
-    return gulp.src(['!' + path.join(conf.app, 'index.html'), path.join(conf.app, '/**/*.html')])
-        .pipe(cache)
-        .pipe(gulp.dest(conf.temp));
-});
-
-gulp.task('lint', function () {
-    return gulp.src([path.join(conf.app, '/**/*.js')])
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
-});
-
-gulp.task('scripts', ['lint'], function () {
-    var browserifyTask = browserify({
-        shim: {
-            angular: {
-                path: path.join(conf.dependencies, 'angular/angular.js'),
-                exports: 'angular'
-            },
-            'angular-ui-router': {
-                path: path.join(conf.dependencies, 'angular-ui-router/release/angular-ui-router.js'),
-                exports: 'uiRouter',
-                depends: {
-                    angular: 'angular'
-                }
-            }
-        }
-    });
-
-    return gulp.src([path.join(conf.app, 'index.js'), path.join(conf.app, '/**/*.js')])
-        .pipe(sourcemaps.init())
-        .pipe(concat('index.js'))
-        .pipe(browserifyTask)
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest(conf.temp));
-});
+gulp.task('html', require('./gulp/html'));
+gulp.task('styles', require('./gulp/styles'));
+gulp.task('scripts', ['lint'], require('./gulp/scripts'));
+gulp.task('images', require('./gulp/images'));
 
 function copyScripts() {
-    gulp.src([path.join(conf.temp, '/*.js')])
-        .pipe(concat('index.js'))
-        .pipe(gulp.dest(conf.target));
+    return gulp.src([path.join(conf.temp, '/*.js')])
+        .pipe(concat('main.js'))
+        .pipe(gulp.dest(conf.target))
+        .pipe(browserSync.reload({stream: true}));
 }
 
-gulp.task('bundle-scripts', ['scripts'], function () {
-   copyScripts();
-});
+function watch() {
+    gulp.watch(conf.images, ['images']);
+    gulp.watch(conf.html, ['bundle-html']);
+    gulp.watch(conf.scripts, ['bundle-scripts']);
+    gulp.watch(conf.styles, ['styles']);
+}
 
-gulp.task('bundle-html', ['html'], function () {
-    gulp.src([path.join(conf.app, 'index.html')])
-        .pipe(gulp.dest(conf.target));
-    copyScripts();
+gulp.task('bundle-scripts', ['scripts'], copyScripts);
+gulp.task('bundle-html', ['html'], copyScripts);
+gulp.task('build', ['bundle-scripts', 'bundle-html', 'styles', 'images'], copyScripts);
+gulp.task('watch', ['build'], watch);
+gulp.task('default', ['serve']);
+
+gulp.task('serve', ['watch'], function () {
+    var proxy = new proxyMiddleware('/api', {target: 'http://localhost:8010'});
+    browserSync({
+        open: true,
+        port: 3000,
+        server: {
+            baseDir: conf.target,
+            middleware: [proxy]
+        }
+    });
 });
 
 gulp.task('server', function () {
@@ -93,13 +58,3 @@ gulp.task('server', function () {
         }
     })
 });
-
-gulp.task('watch', function () {
-    copyScripts();
-    gulp.watch(path.join(conf.resources, '/images/**/*'), ['images']);
-    gulp.watch(path.join(conf.app, '/**/*.html'), ['bundle-html']);
-    gulp.watch(path.join(conf.app, '/**/*.js'), ['bundle-scripts']);
-    gulp.watch([path.join(conf.app, '/**/*.scss'), path.join(conf.resources, '/**/*.scss')], ['sass']);
-});
-
-gulp.task('default', ['bundle-html', 'bundle-scripts', 'images', 'sass', 'watch']);
