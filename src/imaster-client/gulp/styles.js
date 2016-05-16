@@ -8,6 +8,7 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var cleanCss = require('gulp-clean-css');
 var sourcemaps = require('gulp-sourcemaps');
+var browserSync = require('browser-sync');
 
 module.exports = styles;
 
@@ -19,5 +20,6 @@ function styles() {
         .pipe(cleanCss())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(conf.target));
+
 }
 
