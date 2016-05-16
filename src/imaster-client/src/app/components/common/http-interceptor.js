@@ -27,7 +27,7 @@ angular.module('imaster').factory('httpInterceptor', [
                     if (AuthService.isAuthenticated()) {
                         AuthService.logout();
                     }
-                    $injector.get('$state').transitionTo('login');
+                    $injector.get('$state').go('login');
                     responseDefer.reject(config);
                     break;
                 default:
