@@ -5,8 +5,8 @@
 /* jshint undef: false */
 
 angular.module('imaster').factory('httpInterceptor', [
-    '$injector', '$q',
-    function ($injector, $q) {
+    '$injector', '$q', '$log',
+    function ($injector, $q, $log) {
         'use strict';
 
         return {
@@ -15,9 +15,14 @@ angular.module('imaster').factory('httpInterceptor', [
 
         function responseError(config) {
             var responseDefer = $q.defer();
+            $log.debug('error details ',
+                ', status: ', config.status,
+                ', status text: ', config.statusText,
+                ', data:', config.data, ', ');
             switch (config.status) {
                 case 401:
                 case 403:
+                case 500:
                     var AuthService = $injector.get('AuthService');
                     if (AuthService.isAuthenticated()) {
                         AuthService.logout();

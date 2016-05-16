@@ -10,7 +10,9 @@ angular.module('imaster').service('StudentService', [
 
         return {
             getAllStudents: getAllStudents,
-            addStudent: addStudent
+            getStudentById: getStudentById,
+            addStudent: addStudent,
+            updateStudent: updateStudent
         };
 
         function getAllStudents() {
@@ -19,6 +21,14 @@ angular.module('imaster').service('StudentService', [
 
         function addStudent(student) {
             return $http.post('/api/students', student);
+        }
+
+        function updateStudent(student) {
+            return $http.put('/api/students', student);
+        }
+
+        function getStudentById(id) {
+            return $http.get('/api/students/' + id);
         }
     }
 ]);

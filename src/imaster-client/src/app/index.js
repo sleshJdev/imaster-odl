@@ -18,8 +18,8 @@ angular.module('imaster', ['ui.router'])
                 })
                 .state('students', {
                     url: '/api/students',
-                    templateUrl: 'components/student/student.list.html',
-                    controller: 'StudentController',
+                    templateUrl: 'components/student/student-list.html',
+                    controller: 'StudentListController',
                     controllerAs: 'vm'
                 })
                 .state('student-add', {
@@ -27,6 +27,18 @@ angular.module('imaster', ['ui.router'])
                     templateUrl: 'components/student/student.html',
                     controller: 'StudentAddController',
                     controllerAs: 'vm'
+                })
+                .state('student-edit', {
+                    url: '/api/students/edit/:id',
+                    templateUrl: 'components/student/student.html',
+                    controller: 'StudentEditController',
+                    controllerAs: 'vm',
+                    params: {id: null},
+                    resolve: {
+                        id: ['$stateParams', function($stateParams) {
+                            return $stateParams.id;
+                        }]
+                    }
                 })
                 .state('login', {
                     url: '/api/login',

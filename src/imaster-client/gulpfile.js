@@ -39,8 +39,9 @@ gulp.task('default', ['serve']);
 gulp.task('serve', ['watch'], function () {
     var proxy = new proxyMiddleware('/api', {target: 'http://localhost:8010'});
     browserSync({
+        ws: false,
         open: true,
-        port: 3000,
+        port: 9000,
         server: {
             baseDir: conf.target,
             middleware: [proxy]

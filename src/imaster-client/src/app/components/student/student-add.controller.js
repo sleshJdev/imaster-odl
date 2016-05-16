@@ -9,8 +9,7 @@ angular.module('imaster').controller('StudentAddController', [
         'use strict';
 
         var vm = this;
-
-        vm.student = {};
+        vm.student = null;
 
         vm.save = function () {
             StudentService.addStudent(vm.student).then(function () {
