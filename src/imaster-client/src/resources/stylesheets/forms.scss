@@ -10,6 +10,8 @@
 
 .form__legend {
   display: block;
+  text-transform: uppercase;
+  text-decoration: none;
   padding-left: 2px;
   padding-right: 2px;
   border-bottom: 1px solid $color--black;
@@ -24,14 +26,21 @@
 
 .form__row {
   width: $width--12;
-  line-height: 1.3em;
+  line-height: 1.1em;
   margin-bottom: 15px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
-input.form__control,
-textarea.form__control,
+.form__row--inline {
+  .form__control {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+input:not([type="file"]).form__control,
 select.form__control {
+  border-bottom: 1px solid $color--green;
   &:focus {
     background-color: $color--primary;
     color: $color--white;
@@ -39,16 +48,18 @@ select.form__control {
   }
 }
 
-input.form__control,
 textarea.form__control {
-  border-bottom: 1px solid $color--green;
-}
-
-textarea.form__control {
+  border: 1px solid $color--green;
   height: 200px;
+  &:focus {
+    background-color: $color--primary;
+    color: $color--white;
+    border: 1px solid $color--white;
+  }
 }
 
 label.form__control {
+  font-weight: bold;
   text-align: left;
   vertical-align: middle;
 }

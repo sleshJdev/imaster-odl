@@ -2,8 +2,6 @@
  * @author slesh
  */
 
-/*jshint undef: false*/
-
 angular.module('imaster').controller('StudentEditController', [
     'StudentService', '$state', 'id', '$log',
     function (StudentService, $state, id, $log) {

@@ -2,7 +2,6 @@
  * @author yauheni.putsykovich
  */
 
-/* jshint undef: false */
 angular.module('imaster').service('AuthService', [
     '$http', '$q', '$log',
     function ($http, $q, $log) {

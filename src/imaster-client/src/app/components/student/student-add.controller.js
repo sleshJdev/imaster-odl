@@ -2,7 +2,6 @@
     * @author slesh
     */
 
-/* jshint undef: false */
 angular.module('imaster').controller('StudentAddController', [
     'StudentService', '$state',
     function (StudentService, $state) {

@@ -8,7 +8,7 @@ angular.module('imaster').directive("nav", [
         'use strict';
         return {
             restrict: 'E',
-            templateUrl: 'components/nav/nav.html',
+            templateUrl: 'app/components/nav/nav.html',
             replace: true,
             controller: 'NavController',
             controllerAs: 'vm'

@@ -12,6 +12,7 @@
             <li ng-show="vm.isAdmin()"><a href="#/api/teachers">Преподаватели</a></li>
             <li ng-show="vm.isAdmin()"><a href="#/api/users">Пользователи</a></li>
             <li ng-show="vm.isTeacher()"><a href="#/api/file/upload">Загрузить материал</a></li>
+            <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="essays">Рефераты</a></li>
         </ul>
     </div>
     <div class="nav__user">

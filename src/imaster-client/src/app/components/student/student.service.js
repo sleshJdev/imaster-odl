@@ -2,7 +2,6 @@
  * @author slesh
  */
 
-/*jshint undef: false*/
 angular.module('imaster').service('StudentService', [
     '$http',
     function ($http) {

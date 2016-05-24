@@ -2,11 +2,6 @@
  * @author yauheni.putsykovich
  */
 
-/* jshint undef: false */
-
-require('angular');
-require('angular-ui-router');
-
 angular.module('imaster', ['ui.router'])
     .config([
         '$stateProvider', '$urlRouterProvider', '$httpProvider',
@@ -18,19 +13,19 @@ angular.module('imaster', ['ui.router'])
                 })
                 .state('students', {
                     url: '/api/students',
-                    templateUrl: 'components/student/student-list.html',
+                    templateUrl: 'app/components/student/student-list.html',
                     controller: 'StudentListController',
                     controllerAs: 'vm'
                 })
                 .state('student-add', {
                     url: '/api/students/add',
-                    templateUrl: 'components/student/student.html',
+                    templateUrl: 'app/components/student/student.html',
                     controller: 'StudentAddController',
                     controllerAs: 'vm'
                 })
                 .state('student-edit', {
                     url: '/api/students/edit/:id',
-                    templateUrl: 'components/student/student.html',
+                    templateUrl: 'app/components/student/student.html',
                     controller: 'StudentEditController',
                     controllerAs: 'vm',
                     params: {id: null},
@@ -40,9 +35,15 @@ angular.module('imaster', ['ui.router'])
                         }]
                     }
                 })
+                .state('essays', {
+                    url: '/api/essays',
+                    templateUrl: 'app/components/essay/essay.html',
+                    controller: 'EssayController',
+                    controllerAs: 'vm'
+                })
                 .state('login', {
                     url: '/api/login',
-                    templateUrl: 'components/login/login.html',
+                    templateUrl: 'app/components/login/login.html',
                     controller: 'LoginController',
                     controllerAs: 'vm'
                 });

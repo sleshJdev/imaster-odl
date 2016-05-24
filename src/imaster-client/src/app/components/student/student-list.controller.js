@@ -2,7 +2,6 @@
  * @author yauheni.putsykovich
  */
 
-/* jshint undef: false */
 angular.module('imaster').controller('StudentListController', [
     'StudentService',
     function (StudentService) {

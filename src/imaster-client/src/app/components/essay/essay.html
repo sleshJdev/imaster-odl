@@ -1,0 +1,21 @@
+<div class="essay">
+    <form class="form--default">
+        <h3 class="form__legend">Реферат</h3>
+        <div class="form__row">
+            <label for="label-essay-title" class="form__control">Тема:</label>
+            <input id="label-essay-title" form="label-essay-title" class="form__control" ng-model="vm.essay.title">
+        </div>
+            <div class="form__row form__row--inline">
+                <label for="label-essay-file" class="form__control">Файл:</label>
+                <input id="label-essay-file" type="file" nv-file-select="" uploader="vm.uploader" />
+            </div>
+        <div class="form__row">
+            <label for="label-essay-comment" class="form__control">Комментарий:</label>
+            <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.comment"></textarea>
+        </div>
+        <div class="form__row">
+            <button ng-click="vm.save()" class="block--right button--success">Сохранить</button>
+            <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>
+        </div>
+    </form>
+</div>

@@ -3,12 +3,10 @@
 .table {
   border-collapse: collapse;
   width: $width--12;
-  caption {
+  caption, thead th{
+    text-transform: uppercase;
+    text-decoration: none;
     color: $color--primary;
-  }
-  thead {
-    color: $color--primary;
-    font-size: 1.1em;
   }
   tbody tr {
     margin: 0;

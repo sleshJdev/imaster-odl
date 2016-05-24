@@ -2,8 +2,6 @@
  * @author slesh
  */
 
-/* jshint undef: false */
-
 angular.module('imaster').factory('httpInterceptor', [
     '$injector', '$q', '$log',
     function ($injector, $q, $log) {

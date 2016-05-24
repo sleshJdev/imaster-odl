@@ -2,7 +2,6 @@
  * @author yauheni.putsykovich
  */
 
-/* jshint undef: false */
 angular.module('imaster').controller('LoginController', [
     'AuthService', '$state', '$log',
     function (AuthService, $state, $log) {
