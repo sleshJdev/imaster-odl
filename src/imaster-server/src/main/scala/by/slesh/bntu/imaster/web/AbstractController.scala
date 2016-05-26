@@ -6,6 +6,7 @@ import by.slesh.bntu.imaster.security.AuthenticationSupport
 import by.slesh.bntu.imaster.web.json.{DateToString, StringToInt}
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra.json._
+import org.scalatra.servlet.{FileUploadSupport, MultipartConfig}
 import org.scalatra.{FutureSupport, ScalatraServlet}
 import org.slf4j.LoggerFactory
 
@@ -15,12 +16,16 @@ abstract class AbstractController
   extends ScalatraServlet
     with AuthenticationSupport
     with JacksonJsonSupport
-    with FutureSupport {
+    with FutureSupport
+    with FileUploadSupport {
+
+  override val logger = LoggerFactory.getLogger(getClass)
 
   protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats + StringToInt + DateToString
-  override val logger = LoggerFactory.getLogger(getClass)
+
+  configureMultipartHandling(MultipartConfig(maxFileSize = Some(3*1024*1024)))
 
   before() {
     if (requireLogin){

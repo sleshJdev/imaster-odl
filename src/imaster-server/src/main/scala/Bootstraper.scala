@@ -1,7 +1,7 @@
 import javax.servlet.ServletContext
 
 import by.slesh.bntu.imaster.persistence.DatabaseConnector
-import by.slesh.bntu.imaster.web.controller.{StudentController, AppController}
+import by.slesh.bntu.imaster.web.controller.{EssayController, StudentController, AppController}
 import org.scalatra._
 import org.slf4j.LoggerFactory
 
@@ -13,6 +13,7 @@ class Bootstraper extends LifeCycle {
     DatabaseConnector.initialize()
     context.mount(new AppController, "/api/*")
     context.mount(new StudentController, "/api/students/*")
+    context.mount(new EssayController, "/api/essays/*")
     LOGGER.info("initialize context ... done!")
   }
 
