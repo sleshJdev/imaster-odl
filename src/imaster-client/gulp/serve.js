@@ -4,33 +4,33 @@
 
 var conf = require('./conf');
 var path = require('path');
-var del = require('del');
+var clean = require('gulp-clean');
 var gulp = require('gulp');
 var util = require('gulp-util');
 var cleanCss = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
+var minify = require('gulp-minify');
 var inject = require('gulp-inject');
 var concat = require('gulp-concat');
+var filter = require('gulp-filter');
+var htmlmin = require('gulp-htmlmin');
 var angularFileSort = require('gulp-angular-filesort');
 var angularTemplateCache = require('gulp-angular-templatecache');
 var mainBowerFiles = require('gulp-main-bower-files');
-var browserSync = require('browser-sync').create();
 var sourcemaps = require('gulp-sourcemaps');
+var ngAnnotate = require('gulp-ng-annotate');
+var browserSync = require('browser-sync').create();
 
-var paths = {
-    styles: [path.join(conf.resources, '/**/*.scss'), path.join(conf.app, '/**/*.scss')],
-    scripts: path.join(conf.app, '/**/*.js'),
-    templates: path.join(conf.app, '/**/*.html'),
-    images: path.join(conf.resources, '/**/*[.png, .gif]')
+var filterNotMinified = function () {
+    return filter(['**/*min.js'], {restore: false});
 };
 
 var grabStyles = function () {
-    return gulp.src(paths.styles)
+    return gulp.src(conf.styles)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('main.css'))
+        .pipe(concat('style-min.css'))
         .pipe(cleanCss())
         .pipe(sourcemaps.write({includeContent: true}))
         .pipe(gulp.dest(conf.target))
@@ -38,26 +38,26 @@ var grabStyles = function () {
 };
 
 var grabScripts = function () {
-    return gulp.src(paths.scripts)
-        .pipe(angularFileSort())
+    return gulp.src(conf.scripts)
         .pipe(sourcemaps.init())
-        .pipe(concat('script.js'))
-        .pipe(uglify())
         .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(angularFileSort())
+        .pipe(ngAnnotate(conf.ngAnnotateOptions))
+        .pipe(concat('script.js'))
+        //.pipe(minify())
+        //.pipe(filterNotMinified())
         .pipe(sourcemaps.write({includeContent: true}))
         .pipe(gulp.dest(conf.target))
         .pipe(browserSync.stream({match: '**/*.js'}));
 };
 
 var grabTemplates = function () {
-    var templateCacheOptions = {
-        module: conf.module,
-        standAlone: false,
-        base: path.resolve(conf.src)
-    };
-
-    return gulp.src(paths.templates)
-        .pipe(angularTemplateCache('templates.js', templateCacheOptions))
+    return gulp.src(conf.templates)
+        .pipe(htmlmin(conf.htmlminOptions))
+        .pipe(angularTemplateCache(conf.templateCacheOptions.file, conf.templateCacheOptions.options))
+        .pipe(minify())
+        .pipe(filterNotMinified())
         .pipe(gulp.dest(conf.target))
         .pipe(browserSync.stream({match: '**/*.js'}));
 };
@@ -69,20 +69,23 @@ var vendor = function () {
         .pipe(gulp.dest(conf.target));
 };
 
-gulp.task('clean', function () { del(conf.target); });
 gulp.task('grab-styles', grabStyles);
 gulp.task('grab-scripts', grabScripts);
 gulp.task('grab-templates', grabTemplates);
+gulp.task('clean', function () {
+    //gulp.src(conf.target, {read: false})
+    //    .pipe(clean());
+});
 
-gulp.task('build', function () {
+gulp.task('build', ['clean'], function () {
     gulp.src(conf.favicon).pipe(gulp.dest(conf.target));
-    gulp.src(paths.images).pipe(gulp.dest(conf.target));
+    gulp.src(conf.images).pipe(gulp.dest(conf.target));
     return gulp.src(conf.index)
         .pipe(gulp.dest(conf.target))
-        .pipe(inject(vendor(), {name: 'vendor', relative: true}))
-        .pipe(inject(grabStyles(), {name: 'styles', relative: true}))
-        .pipe(inject(grabScripts(), {name: 'scripts', relative: true}))
-        .pipe(inject(grabTemplates(), {name: 'templates', relative: true}))
+        .pipe(inject(vendor(), {name: 'vendor', removeTags: true, relative: true}))
+        .pipe(inject(grabStyles(), {name: 'styles', removeTags: true, relative: true}))
+        .pipe(inject(grabScripts(), {name: 'scripts', removeTags: true, relative: true}))
+        .pipe(inject(grabTemplates(), {name: 'templates', removeTags: true, relative: true}))
         .pipe(gulp.dest(conf.target));
 });
 
@@ -97,9 +100,7 @@ gulp.task('serve', ['build'], function () {
             middleware: [proxy]
         }
     });
-    gulp.watch(paths.styles, ['grab-styles']).on('change', util.log);
-    gulp.watch(paths.scripts, ['grab-scripts']).on('change', util.log);
-    gulp.watch(paths.templates, ['grab-templates']).on('change', util.log);
+    gulp.watch(conf.styles, ['grab-styles']).on('change', util.log);
+    gulp.watch(conf.scripts, ['grab-scripts']).on('change', util.log);
+    gulp.watch(conf.templates, ['grab-templates']).on('change', util.log);
 });
-
-
