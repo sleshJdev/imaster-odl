@@ -2,25 +2,27 @@
  * @author slesh
  */
 
-angular.module('imaster').controller('StudentEditController', [
-    'StudentService', '$state', 'id', '$log',
-    function (StudentService, $state, id, $log) {
-        'use strict';
-        $log.debug('edit student, id: ', id);
+angular
+    .module('imaster')
+    .controller('StudentEditController', StudentEditController);
 
-        var vm = this;
-        vm.student = null;
-        
-        vm.save = function () {
-            StudentService.updateStudent(vm.student).then(function () {
-                $state.go('students');
-            });
-        };
+/** @ngInject */
+function StudentEditController(studentService, $state, id, $log) {
+    'use strict';
+    $log.debug('edit student, id: ', id);
 
-        (function () {
-            StudentService.getStudentById(id).then(function (response) {
-                vm.student = response.data;
-            });
-        })();
-    }
-]);
+    var vm = this;
+    vm.student = null;
+
+    vm.save = function () {
+        studentService.updateStudent(vm.student).then(function () {
+            $state.go('students');
+        });
+    };
+
+    (function () {
+        studentService.getStudentById(id).then(function (response) {
+            vm.student = response.data;
+        });
+    })();
+}

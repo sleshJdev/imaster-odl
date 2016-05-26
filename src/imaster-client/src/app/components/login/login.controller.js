@@ -2,28 +2,31 @@
  * @author yauheni.putsykovich
  */
 
-angular.module('imaster').controller('LoginController', [
-    'AuthService', '$state', '$log',
-    function (AuthService, $state, $log) {
-        'use strict';
-        var vm = this;
+angular
+    .module('imaster')
+    .controller('LoginController', LoginController);
 
-        vm.login = function () {
-            AuthService.login(vm.username, vm.password).then(function () {
-                $log.log("login successfully");
-                $state.go("students");
-                AuthService.endLogging();
-            });
-        };
+/** @ngInject */
+function LoginController(authService, $state, $log) {
+    'use strict';
+    var vm = this;
 
-        vm.cancel = function () {
-            AuthService.endLogging();
-            $state.go('/');
-        };
+    vm.login = function () {
+        authService.login(vm.username, vm.password).then(function () {
+            $log.log("login successfully");
+            $state.go("students");
+            authService.endLogging();
+        });
+    };
 
-        init();
+    vm.cancel = function () {
+        authService.endLogging();
+        $state.go('/');
+    };
 
-        function init() {
-            AuthService.startLogging();
-        }
-    }]);
+    init();
+
+    function init() {
+        authService.startLogging();
+    }
+}

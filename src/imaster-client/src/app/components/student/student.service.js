@@ -2,32 +2,34 @@
  * @author slesh
  */
 
-angular.module('imaster').service('StudentService', [
-    '$http',
-    function ($http) {
-        'use strict';
+angular
+    .module('imaster')
+    .service('studentService', studentService);
 
-        return {
-            getAllStudents: getAllStudents,
-            getStudentById: getStudentById,
-            addStudent: addStudent,
-            updateStudent: updateStudent
-        };
+/** @ngInject */
+function studentService($http) {
+    'use strict';
 
-        function getAllStudents() {
-            return $http.get('/api/students');
-        }
+    return {
+        getAllStudents: getAllStudents,
+        getStudentById: getStudentById,
+        addStudent: addStudent,
+        updateStudent: updateStudent
+    };
 
-        function addStudent(student) {
-            return $http.post('/api/students', student);
-        }
-
-        function updateStudent(student) {
-            return $http.put('/api/students', student);
-        }
-
-        function getStudentById(id) {
-            return $http.get('/api/students/' + id);
-        }
+    function getAllStudents() {
+        return $http.get('/api/students');
     }
-]);
+
+    function addStudent(student) {
+        return $http.post('/api/students', student);
+    }
+
+    function updateStudent(student) {
+        return $http.put('/api/students', student);
+    }
+
+    function getStudentById(id) {
+        return $http.get('/api/students/' + id);
+    }
+}

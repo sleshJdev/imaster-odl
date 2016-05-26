@@ -3,20 +3,23 @@
  */
 
 /* jshint undef: false */
-angular.module('imaster').controller('NavController', [
-    'AuthService', '$state',
-    function (AuthService, $state) {
-        'use strict';
-        var vm = this;
+angular
+    .module('imaster')
+    .controller('NavController', NavController);
 
-        vm.logout = function () {
-            AuthService.logout();
-            $state.go('login');
-        };
+/** @ngInject */
+function NavController(authService, $state) {
+    'use strict';
+    var vm = this;
 
-        init();
+    vm.logout = function () {
+        authService.logout();
+        $state.go('login');
+    };
 
-        function init() {
-            AuthService.exportMethodsTo(vm);
-        }
-    }]);
+    init();
+
+    function init() {
+        authService.exportMethodsTo(vm);
+    }
+}

@@ -2,17 +2,19 @@
  * @author yauheni.putsykovich
  */
 
-angular.module('imaster').controller('StudentListController', [
-    'StudentService',
-    function (StudentService) {
-        'use strict';
+angular
+    .module('imaster')
+    .controller('StudentListController', StudentListController);
 
-        var vm = this;
+/** @ngInject */
+function StudentListController(studentService) {
+    'use strict';
 
-        (function () {
-            StudentService.getAllStudents().then(function (response) {
-                vm.studentList = response.data;
-            });
-        })();
-    }
-]);
+    var vm = this;
+
+    (function () {
+        studentService.getAllStudents().then(function (response) {
+            vm.studentList = response.data;
+        });
+    })();
+}
