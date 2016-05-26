@@ -2,18 +2,24 @@
  * @author slesh
  */
 
-angular.module('imaster').service('EssayService', [
-    'FileUploader', '$log',
-    function (FileUploader, $log) {
-        'use strict';
+angular
+    .module('imaster')
+    .service('essayService', essayService);
 
-        $log.info('uploader', uploader);
-        
-        return {
-            addEssay: addEssay
-        };
+/** @ngInject */
+function essayService(uploader) {
+    'use strict';
 
-        function addEssay(essay) {
-        }
+    var self = {};
+
+    self.uploader = uploader.create('/api/essays');
+
+    return {
+        addEssay: addEssay,
+        uploader: self.uploader
+    };
+
+    function addEssay(essay) {
+        self.uploader.save(essay);
     }
-]);
+}
