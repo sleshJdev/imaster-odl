@@ -1,7 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.DatabaseConnector
-import by.slesh.bntu.imaster.persistence.Models.Role
+import by.slesh.bntu.imaster.persistence.{Role, DatabaseConnector}
 import org.json4s.JsonDSL._
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
@@ -16,7 +15,7 @@ class AppControllerTests extends ScalatraSuite with FlatSpecLike {
   implicit val formats = DefaultFormats
 
   override protected def beforeAll(): Unit = {
-    DatabaseConnector.initialize()
+    DatabaseConnector.connect()
     super.beforeAll()
   }
 

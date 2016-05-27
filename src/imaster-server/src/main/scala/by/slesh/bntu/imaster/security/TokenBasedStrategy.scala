@@ -3,7 +3,7 @@ package by.slesh.bntu.imaster.security
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
-import by.slesh.bntu.imaster.persistence.Repositories._
+import by.slesh.bntu.imaster.persistence.User
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.ScentryStrategy
 import org.slf4j.LoggerFactory
@@ -13,15 +13,14 @@ import scala.concurrent.duration.{Duration, DurationInt}
 import scala.language.postfixOps
 
 /**
- * @author slesh
- */
+  * @author slesh
+  */
 class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: HttpServletRequest, response: HttpServletResponse)
   extends ScentryStrategy[UserDetails] {
 
-  private val TOKEN_AUTH_NAME = "X-Auth"
+  val TOKEN_AUTH_NAME = "X-Auth"
 
   private val logger = LoggerFactory.getLogger(getClass)
-  private val userRepository = new UserRepository
 
   var tokenLifeTime = Duration(10L, TimeUnit.MINUTES).toMillis
 
@@ -37,7 +36,13 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     val tokenJson = request.getHeader(TOKEN_AUTH_NAME)
     logger.info("authenticate with token: {}", tokenJson)
     TokenService.parseToken(tokenJson) match {
-      case Some(claims) => validateToken(tokenJson, claims)
+      case Some(claims) => try {
+        validateToken(tokenJson, claims)
+      } catch {
+        case ex: InvalidTokenException =>
+          unauthenticated()
+          None
+      }
       case None => None
     }
   }
@@ -65,14 +70,14 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
 
     logger.info("loading user from database...")
     val id = providedClaims.get(ClaimsKeys.ID).get.toInt
-    val user = Await.result(userRepository.getById(id), 10 second) match {
+    val user = Await.result(User.getById(id), 10 second) match {
       case Some(x) => x.user
       case None =>
         logger.info("invalid user information")
         throw new InvalidTokenException("invalid user information")
     }
 
-    val userDetails = Some(UserDetails(user.username, user.password))
+    val userDetails = Some(UserDetails(user.id.get, user.username, user.password))
     logger.info("user details: {}", userDetails)
     userDetails
   }

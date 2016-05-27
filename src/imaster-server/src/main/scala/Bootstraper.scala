@@ -10,7 +10,7 @@ class Bootstraper extends LifeCycle {
 
   override def init(context: ServletContext) {
     LOGGER.info("initialize context ... ")
-    DatabaseConnector.initialize()
+    DatabaseConnector.connect()
     context.mount(new AppController, "/api/*")
     context.mount(new StudentController, "/api/students/*")
     context.mount(new EssayController, "/api/essays/*")

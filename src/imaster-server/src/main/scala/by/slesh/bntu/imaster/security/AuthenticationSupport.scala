@@ -2,7 +2,7 @@ package by.slesh.bntu.imaster.security
 
 import javax.servlet.http.HttpServletRequest
 
-import by.slesh.bntu.imaster.persistence.Repositories._
+import by.slesh.bntu.imaster.persistence.{User, UserExtended}
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.slf4j.LoggerFactory
@@ -18,7 +18,7 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
 
   val logger = LoggerFactory.getLogger(getClass)
   val tokenBasedStrategy = new TokenBasedStrategy(self)
-  val userRepository = new UserRepository
+  val userRepository = User
 
   override protected def scentryConfig: ScentryConfiguration = new ScentryConfig {
     override val login: String = "/login"
@@ -26,6 +26,14 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
 
   protected def requireLogin(implicit request: HttpServletRequest) = {
     !Option(request.getPathInfo).getOrElse("").contains(scentryConfig.login)
+  }
+
+  protected def userDetails(implicit request: HttpServletRequest): UserDetails = {
+    val token = request.getHeader(tokenBasedStrategy.TOKEN_AUTH_NAME)
+    TokenService.parseToken(token) match {
+      case Some(claims) => fromSession.lift(claims(ClaimsKeys.NAME)).get
+      case _ => throw new UserNotFoundException("token %s not found" format tokenBasedStrategy.TOKEN_AUTH_NAME)
+    }
   }
 
   /**
@@ -53,10 +61,10 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   override protected def fromSession: PartialFunction[String, UserDetails] = {
     case username: String =>
       Await.result(userRepository.getUserByName(username), 60 second) match {
-        case Some(x) =>
-          logger.info("from session {} -> {}", username, x, "")
-          UserDetails(x.user.username, x.user.password)
-        case None => throw new NullPointerException("user with name %s not found" format username)
+        case Some(UserExtended(user, roles)) =>
+          logger.info("from session {} -> user: {}, roles: {}", username, user, roles)
+          UserDetails(user.id.get, user.username, user.password)
+        case None => throw new UserNotFoundException("user with name %s not found" format username)
       }
   }
 

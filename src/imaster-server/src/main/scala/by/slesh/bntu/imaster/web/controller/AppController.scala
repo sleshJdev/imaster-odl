@@ -2,8 +2,7 @@ package by.slesh.bntu.imaster.web.controller
 
 import javax.servlet.http.HttpServletResponse
 
-import by.slesh.bntu.imaster.persistence.Models._
-import by.slesh.bntu.imaster.persistence.Repositories._
+import by.slesh.bntu.imaster.persistence.User
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
 import by.slesh.bntu.imaster.web.model.{Account, AuthData}
@@ -15,7 +14,7 @@ import scala.language.postfixOps
 
 class AppController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
-  val repository = new UserRepository
+  val repository = User
 
   get("/?") {
     logger.info("open home page")

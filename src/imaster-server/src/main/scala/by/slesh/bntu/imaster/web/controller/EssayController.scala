@@ -1,9 +1,15 @@
 package by.slesh.bntu.imaster.web.controller
 
+import java.nio.file.Paths
+
+import by.slesh.bntu.imaster.persistence.{Essay, StudentEssay}
 import by.slesh.bntu.imaster.web.AbstractController
-import org.scalatra.{BadRequest, Ok}
+import org.joda.time.LocalDateTime
+import org.json4s.JsonDSL._
 import org.scalatra.servlet.FileUploadSupport
 import org.slf4j.LoggerFactory
+
+import scala.concurrent.Future
 
 /**
   * @author slesh
@@ -13,20 +19,14 @@ class EssayController extends AbstractController with FileUploadSupport {
   override val logger = LoggerFactory.getLogger(getClass)
 
   post("/?") {
-    logger.info("partials: " + fileParams.size)
-    fileParams.get("file") match {
-      case Some(file) =>
-        logger.info("file name: " + file.getName)
-      case None =>
-        BadRequest("Hey! You forgot to select a file.")
-    }
-    val json = params("data")
-    logger.info(json)
-    fileParams.get("data") match {
-      case Some(data) =>
-        logger.info("data: " + data)
-      case None =>
-        BadRequest("data is empty")
+    val essay = (parse(params("data")) merge parse("""{"fileId": ""}""")).extract[Essay]
+    val fileItem = fileParams("file")
+    essay.fileId = LocalDateTime.now + "_" + fileItem.getName
+    fileItem.write(Paths.get("/home/slesh/trash/", essay.fileId).toFile)
+    Essay.add(essay) map { essayId =>
+      val userId = userDetails.id
+      StudentEssay.add(userId, essayId)
+      Future(("userId" -> userId) ~ ("essayId" -> essayId))
     }
   }
 }

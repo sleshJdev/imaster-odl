@@ -1,20 +1,19 @@
 package by.slesh.bntu.imaster.persistence
 
-import by.slesh.bntu.imaster.persistence.Models._
+import slick.driver.H2Driver.api._
 
 import scala.collection.mutable
-import slick.driver.H2Driver.api._
 
 /**
   * @author slesh
   */
 object Extensions {
-  implicit class UserExtensions[C[_]](query: Query[UserRow, User, C]) {
-    def joinRoles = query
-      .join(userRoleTable).on(_.id === _.userId)
-      .join(roleTable).on(_._2.roleId === _.id)
-  }
 
+  implicit class UserExtensions[C[_]](query: Query[Users, User, C]) {
+    def joinRoles = query
+      .join(UserRole.models).on(_.id === _.userId)
+      .join(Role.models).on(_._2.roleId === _.id)
+  }
 
   implicit class UserExtendedExtension(list: Seq[((User, (Int, Int)), Role)]) {
     def toExtendedUsers = {
