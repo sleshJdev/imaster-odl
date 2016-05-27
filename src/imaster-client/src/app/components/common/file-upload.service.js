@@ -7,33 +7,45 @@ angular
     .service('uploader', uploader);
 
 /** @ngInject */
-function uploader(FileUploader, authService, $log) {
+function uploader(FileUploader, authService, httpInterceptor, $q, $log) {
     'use strict';
 
     return {
         create: create
     };
 
+    function createOnSuccessListener(defer) {
+        return function (item, response, status, headers) {
+            $log.debug('status: ', status, ', response: ', response);
+            defer.resolve(response);
+        }
+    }
+
+    function createOnErrorListener(defer) {
+        return function (item, response, status, headers) {
+            $log.debug('status: ', status, ', response: ', response);
+            defer.reject(response);
+        }
+    }
+
     function create(url) {
-        var uploader = new FileUploader({
-            url: url,
-            withCredentials: true
-        });
-        uploader.onBeforeUploadItem = function (item) {
-            $log.info('onBeforeUploadItem', item);
-            item.headers = {'X-Auth': authService.getToken()};
-            item.removeAfterUpload = true;
+        var uploadDefer = null;
+        var uploader = new FileUploader({url: url});
+        uploader.removeAfterUpload = true;
+        uploader.onErrorItem = function (item, response, status, headers) {
+            httpInterceptor.responseError({data: item, status: status, statusText: response});
+            uploadDefer.reject(response);
         };
-        uploader.onSuccessItem = function (fileItem, response, status, headers) {
-            $log.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        uploader.onErrorItem = function (fileItem, response, status, headers) {
-            $log.info('onErrorItem', fileItem, response, status, headers);
+        uploader.onSuccessItem = function (item, response, status, headers) {
+            uploadDefer.resolve(response);
         };
         uploader.save = function (data) {
+            uploadDefer = $q.defer();
             var item = uploader.queue[0];
-            item.formData.push({data: angular.toJson(data)});
+            item.headers = {'X-Auth': authService.getToken()};
+            item.formData = [{data: angular.toJson(data)}];
             item.upload();
+            return uploadDefer.promise;
         };
 
         return uploader;

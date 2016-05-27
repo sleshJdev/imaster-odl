@@ -5,13 +5,22 @@
             <label for="label-essay-title" class="form__control">Тема:</label>
             <input id="label-essay-title" form="label-essay-title" class="form__control" ng-model="vm.essay.title">
         </div>
-            <div class="form__row form__row--inline">
-                <label for="label-essay-file" class="form__control">Реферат:</label>
-                <input id="label-essay-file" type="file" nv-file-select uploader="vm.uploader" />
-            </div>
+        <div class="form__row form__row--inline">
+            <label for="label-essay-status" class="form__control">Статус:</label>
+            <select id="label-essay-status" name="status" ng-model="vm.essay.status">
+                <option selected>Новый</option>
+                <option selected>На проверке</option>
+                <option selected>Требует исправлений</option>
+                <option selected>Сдан</option>
+            </select>
+        </div>
+        <div class="form__row form__row--inline">
+            <label for="label-essay-file" class="form__control">Реферат:</label>
+            <input id="label-essay-file" type="file" nv-file-select uploader="vm.uploader"/>
+        </div>
         <div class="form__row">
             <label for="label-essay-comment" class="form__control">Комментарий:</label>
-            <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.comment"></textarea>
+            <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.description"></textarea>
         </div>
         <div class="form__row">
             <button ng-click="vm.save()" class="block--right button--success">Сохранить</button>

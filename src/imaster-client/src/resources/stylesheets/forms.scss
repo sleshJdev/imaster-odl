@@ -38,8 +38,7 @@
   }
 }
 
-input:not([type="file"]).form__control,
-select.form__control {
+input:not([type="file"]).form__control {
   border-bottom: 1px solid $color--green;
   &:focus {
     background-color: $color--primary;

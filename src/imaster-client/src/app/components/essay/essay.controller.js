@@ -7,7 +7,7 @@ angular
     .controller('EssayController', EssayController);
 
 /** @ngInject */
-function EssayController(essayService) {
+function EssayController(essayService, $state, $log) {
     'use strict';
 
     var vm = this;
@@ -15,6 +15,9 @@ function EssayController(essayService) {
     vm.uploader = essayService.uploader;
 
     vm.save = function () {
-        essayService.addEssay(vm.essay);
+        essayService.addEssay(vm.essay).then(function (response) {
+            $log.debug("response: ", response);
+            $state.go('students');
+        });
     };
 }

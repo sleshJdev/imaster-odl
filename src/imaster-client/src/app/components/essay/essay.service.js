@@ -20,6 +20,6 @@ function essayService(uploader) {
     };
 
     function addEssay(essay) {
-        self.uploader.save(essay);
+        return self.uploader.save(essay);
     }
 }
