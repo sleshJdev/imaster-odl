@@ -29,8 +29,11 @@ class Students(tag: Tag) extends Table[Student](tag, "student") {
 
   def birthday = column[Date]("birthday")
 
-  override def * : ProvenShape[Student] =
-    (id.?, firstName, lastName, patronymic, birthday) <>((Student.apply _).tupled, Student.unapply)
+  def userId = column[Int]("user_id")
+
+  def user = foreignKey("fk_student__user_id__user_id", userId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
+
+  override def * : ProvenShape[Student] = (id.?, firstName, lastName, patronymic, birthday) <>((Student.apply _).tupled, Student.unapply)
 }
 
 object Student extends Repositorie {
@@ -42,5 +45,8 @@ object Student extends Repositorie {
 
   def getAll: Future[Seq[Student]] = db.run(models.result)
 
-  def add(student: Student): Future[Int] = db.run(models insertOrUpdate student).map(_.toInt)
+  def add(student: Student) = {
+    var query = (models returning models.map(_.id)) += student
+    db.run(query).map(_.toInt)
+  }
 }
