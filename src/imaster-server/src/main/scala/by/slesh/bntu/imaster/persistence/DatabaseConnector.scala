@@ -35,22 +35,17 @@ object DatabaseConnector {
     logger.info("connection to database ... done")
   }
 
-  def release(): Future[Unit] = {
+  def release() = {
     logger.info("release database resources ...")
-    var shutdownFuture: Option[Future[Unit]] = None
     instance match {
       case Some(x) =>
         logger.info("waiting for database shutdown ...")
-        shutdownFuture = Option(x.shutdown)
+        x.close()
         instance = None
         logger.info("database shutdown ...  done")
       case _ => ()
     }
     logger.info("release database resources ... done")
-    shutdownFuture match {
-      case Some(x) => x
-      case _ => throw new SQLException("release database error")
-    }
   }
 
   val schemaDatabase = User.models.schema ++

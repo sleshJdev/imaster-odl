@@ -16,11 +16,11 @@ class UserRepositoryTests extends TestConfig {
   }
 
   it should "returns user by existing id" in {
-    val userId = 1
+    val userId = 1//student
     User getById userId onComplete {
-      case Success(Some(UserExtended(user, roles))) =>
+      case Success(Some(user)) =>
         assertResult(userId)(user.id.get)
-        roles should not be empty
+        user.roles.get should have length 2
       case Failure(ex) => fail(ex)
       case _ => fail("user with id %d not found" format userId)
     }
@@ -29,7 +29,7 @@ class UserRepositoryTests extends TestConfig {
   it should "returns valid user by username" in {
     val username = "student"
     User getUserByName username onComplete {
-      case Success(Some(x)) => assertResult(username)(x.user.username)
+      case Success(Some(user)) => assertResult(username)(user.username)
       case Failure(ex) => fail(ex)
       case _ => fail("user with name %s not found" format username)
     }

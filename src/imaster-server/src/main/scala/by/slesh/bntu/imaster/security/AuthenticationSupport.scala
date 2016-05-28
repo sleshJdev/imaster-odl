@@ -2,7 +2,7 @@ package by.slesh.bntu.imaster.security
 
 import javax.servlet.http.HttpServletRequest
 
-import by.slesh.bntu.imaster.persistence.{User, UserExtended}
+import by.slesh.bntu.imaster.persistence.User
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.slf4j.LoggerFactory
@@ -61,8 +61,8 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   override protected def fromSession: PartialFunction[String, UserDetails] = {
     case username: String =>
       Await.result(userRepository.getUserByName(username), 60 second) match {
-        case Some(UserExtended(user, roles)) =>
-          logger.info("from session {} -> user: {}, roles: {}", username, user, roles)
+        case Some(user) =>
+          logger.info("from session {} -> user: {}", username, user, "")
           UserDetails(user.id.get, user.username, user.password)
         case None => throw new UserNotFoundException("user with name %s not found" format username)
       }

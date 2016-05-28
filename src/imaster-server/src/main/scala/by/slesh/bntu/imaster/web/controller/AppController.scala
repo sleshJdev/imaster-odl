@@ -23,12 +23,12 @@ class AppController extends AbstractController {
   post("/login") {
     val account = parsedBody.extract[Account]
     logger.info("{} is login...", account)
-    repository.getUserByName(account.username) map { userExtended =>
-      logger.info("found account: {}", userExtended)
-      val token = userExtended match {
+    repository.getUserByName(account.username) map { user =>
+      logger.info("found account: {}", user)
+      val token = user match {
         case Some(x) =>
-          if (x.user.password == account.password) {
-            val token = TokenService.createToken(getClaimsForUser(x.user))
+          if (x.password == account.password) {
+            val token = TokenService.createToken(getClaimsForUser(x))
             logger.info("created authentication token: {}", token)
             Some(token)
           } else None
@@ -38,8 +38,8 @@ class AppController extends AbstractController {
         if (token.isEmpty) {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
         } else {
-          userExtended match {
-            case Some(x) => AuthData(token.orNull, x.user.username, x.roles.map(_.name))
+          user match {
+            case Some(u) => AuthData(token.orNull, u.username, u.roles.getOrElse(List.empty).map(_.name))
             case None => None
           }
         }
@@ -48,7 +48,7 @@ class AppController extends AbstractController {
   }
 
   def getClaimsForUser(user: User) = user match {
-    case User(Some(id), username, _, _, _, _) =>
+    case User(Some(id), username, _, _, _, _, _) =>
       Map(
         ClaimsKeys.ID -> id.toString,
         ClaimsKeys.NAME -> username,

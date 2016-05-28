@@ -30,8 +30,8 @@ class DatabaseConnectorTests extends FlatSpec with BeforeAndAfter {
   }
 
   it should "release all connection" in {
-    runAsyncAsPlain(release())
+    release()
   }
 
-  override protected def after(fun: => Any): Unit = runAsyncAsPlain(release())
+  override protected def after(fun: => Any): Unit = release()
 }
