@@ -32,9 +32,9 @@
 
 .form__row--inline {
   text-align: left;
-  label.form__control {
-    margin-right: 3em;
-    display: inline;
+  white-space: nowrap;
+  .form__control{
+    width: 50%;
   }
 }
 
@@ -48,8 +48,8 @@ input:not([type="file"]).form__control {
 }
 
 textarea.form__control {
+  height: 20em;
   border: 1px solid $color--green;
-  height: 200px;
   &:focus {
     background-color: $color--primary;
     color: $color--white;
