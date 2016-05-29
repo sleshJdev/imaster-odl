@@ -1,15 +1,13 @@
 <div class="essay">
     <form class="form--default">
         <h3 class="form__legend">Реферат</h3>
-        <div class="form__row">
-            <label for="label-essay-title" class="form__control">Тема:</label>
+        <div class="form__row--inline">
+            <label for="label-essay-title" class="form__control  form__row--inline">Тема:</label>
             <input id="label-essay-title" form="label-essay-title" class="form__control" ng-model="vm.essay.title">
         </div>
-        <div class="form__row form__row--inline">
-            <div>
-                <label for="label-essay-file" class="form__control">Реферат:</label>
-                <input id="label-essay-file" type="file" nv-file-select uploader="vm.uploader"/>
-            </div>
+        <div class="form__row--inline">
+            <label for="label-essay-file" class="form__control">Реферат:</label>
+            <input id="label-essay-file" type="file" class="form__control" nv-file-select uploader="vm.uploader"/>
         </div>
         <div class="form__row--inline">
             <label for="label-essay-status" class="form__control">Статус:</label>
@@ -20,7 +18,7 @@
                 <option>Сдан</option>
             </select>
         </div>
-        <div class="form__row">
+        <div class="form__row--inline">
             <label for="label-essay-comment" class="form__control">Комментарий:</label>
             <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.description"></textarea>
         </div>

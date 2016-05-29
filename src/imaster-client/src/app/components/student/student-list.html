@@ -1,9 +1,9 @@
 <div class="block--center">
     <table class="table">
         <caption>
-            <h3 class="block--left text--left">Список студентов</h3>
+            <h3 class="form__legend">Список студентов</h3>
             <ul class="list--group block--right">
-                <li><a ui-sref="student-add" class="icon--add" title="Добавить"></a></li>
+                <li><a ui-sref="students.add" class="icon--add" title="Добавить"></a></li>
                 <li><a ng-click="vm.remove()" class="icon--remove" title="Удалить"></a></li>
             </ul>
         </caption>
@@ -26,7 +26,7 @@
                 <td>{{student.lastName}}</td>
                 <td>{{student.patronymic}}</td>
                 <td>{{student.birthday}}</td>
-                <td><span ui-sref="student-edit({id: {{student.id}}})" class="icon--edit" title="Изменить"></span></td>
+                <td><span ui-sref="students.edit({id: {{student.id}}})" class="icon--edit" title="Изменить"></span></td>
             </tr>
         </tbody>
     </table>

@@ -8,16 +8,16 @@
     <div ng-hide="vm.isLogging()" class="nav__menu">
         <ul>
             <li><a ui-sref="/">Главгая</a></li>
-            <li ng-show="vm.isAdmin() || vm.isTeacher()"><a ui-sref="students">Студенты</a></li>
-            <li ng-show="vm.isAdmin()"><a href="#/api/teachers">Преподаватели</a></li>
-            <li ng-show="vm.isAdmin()"><a href="#/api/users">Пользователи</a></li>
-            <li ng-show="vm.isTeacher()"><a href="#/api/file/upload">Загрузить материал</a></li>
-            <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="essays">Рефераты</a></li>
+            <li ng-show="vm.isAdmin() || vm.isTeacher()"><a ui-sref="students.list">Студенты</a></li>
+            <li ng-show="vm.isAdmin()"><a ui-sref="teachers">Преподаватели</a></li>
+            <li ng-show="vm.isAdmin()"><a ui-sref="users">Пользователи</a></li>
+            <li ng-show="vm.isTeacher()"><a ui-sref="upload">Загрузить материал</a></li>
+            <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="essays.list">Создать реферат</a></li>
         </ul>
     </div>
     <div class="nav__user">
-        <span ng-show="vm.isAuthenticated()">Здравствуйте, <a href="#/api/users/private">{{vm.getUserName()}}!</a></span>
+        <span ng-show="vm.isAuthenticated()">Здравствуйте, <a ui-sref="users.private">{{vm.getUserName()}}!</a></span>
         <a class="button" ng-click="vm.logout()" ng-show="vm.isAuthenticated()">Выйти</a>
-        <a class="button" ng-hide="vm.isAuthenticated() || vm.isLogging()" href="#/api/login">Войти</a>
+        <a class="button" ng-hide="vm.isAuthenticated() || vm.isLogging()" ui-sref="login">Войти</a>
     </div>
 </header>

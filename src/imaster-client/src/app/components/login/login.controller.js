@@ -14,7 +14,7 @@ function LoginController(authService, $state, $log) {
     vm.login = function () {
         authService.login(vm.username, vm.password).then(function () {
             $log.log("login successfully");
-            $state.go("students");
+            $state.go("students.list");
             authService.endLogging();
         });
     };

@@ -18,23 +18,44 @@
 }
 
 .form__control {
+  white-space: nowrap;
   padding: 8px 5px;
-  margin: 5px;
-  width: $width--12;
+  display: inline-block;
+  vertical-align: middle;
+  label {
+    font-weight: bold;
+  }
+  :not(label).form__control {
+    font-size: 5em;
+  }
 }
 
-.form__row {
-  width: $width--12;
+@mixin row {
   line-height: 1.1em;
   margin-bottom: 15px;
   margin-top: 10px;
 }
 
+.form__row {
+  @include row;
+  .form__control {
+    text-align: left;
+    width: $width--12;
+  }
+}
+
 .form__row--inline {
-  text-align: left;
-  white-space: nowrap;
-  .form__control{
-    width: 50%;
+  @include row;
+  label.form__control {
+    text-align: left;
+    width: $width--4;
+  }
+  :not(label).form__control,
+  input:not([type="file"]).form__control {
+    width: $width--8;
+  }
+  input:not([type="file"]).form__control {
+    text-align: center;
   }
 }
 
@@ -55,13 +76,6 @@ textarea.form__control {
     color: $color--white;
     border: 1px solid $color--white;
   }
-}
-
-label.form__control {
-  display: inline-block;
-  font-weight: bold;
-  text-align: left;
-  vertical-align: middle;
 }
 
 .form--login {
