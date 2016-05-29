@@ -15,7 +15,7 @@ case class User(id: Option[Int],
                 firstName: String,
                 lastName: String,
                 patronymic: Option[String],
-                var roles: Option[List[Role]] = Option(List.empty))
+                var roles: List[Role] = List.empty)
 
 class Users(tag: Tag) extends Table[User](tag, "user") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
@@ -44,7 +44,7 @@ class Users(tag: Tag) extends Table[User](tag, "user") {
       Option((id, username, password, firstName, lastName, patronymic))
   }
 
-  override def * = (id.?, username, password, firstName, lastName, patronymic) <>(toUser, fromUser)
+  override def * = (id.?, username, password, firstName, lastName, patronymic) <> (toUser, fromUser)
 }
 
 object User extends Repositorie with UserExtensions {
@@ -72,7 +72,7 @@ trait UserExtensions {
         case ((u, _), r) =>
           val id = u.id.get
           val user = if(map.isDefinedAt(id)) map(id) else { map += id -> u; u }
-          user.roles = Some(r :: user.roles.get)
+          user.roles = r :: user.roles
         case _ => throw new IllegalArgumentException("bad data format")
       }
       map.values.toList

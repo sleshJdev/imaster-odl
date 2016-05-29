@@ -20,7 +20,7 @@ class UserRepositoryTests extends TestConfig {
     User getById userId onComplete {
       case Success(Some(user)) =>
         assertResult(userId)(user.id.get)
-        user.roles.get should have length 2
+        user.roles should have length 2
       case Failure(ex) => fail(ex)
       case _ => fail("user with id %d not found" format userId)
     }

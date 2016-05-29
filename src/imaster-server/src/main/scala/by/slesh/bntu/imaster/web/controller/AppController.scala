@@ -39,7 +39,7 @@ class AppController extends AbstractController {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
         } else {
           user match {
-            case Some(u) => AuthData(token.orNull, u.username, u.roles.getOrElse(List.empty).map(_.name))
+            case Some(u) => AuthData(token.orNull, u.username, u.roles.map(_.name))
             case None => None
           }
         }
