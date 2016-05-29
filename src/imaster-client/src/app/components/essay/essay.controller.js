@@ -17,7 +17,14 @@ function EssayController(essayService, $state, $log) {
     vm.save = function () {
         essayService.addEssay(vm.essay).then(function (response) {
             $log.debug("response: ", response);
-            $state.go('students');
+            $state.go('students.list');
         });
     };
+
+    (function () {
+        essayService.getTeachers().then(function (response) {
+            vm.teachers = response.data;
+            vm.essay.teacher = vm.teachers[0];
+        })
+    })();
 }
