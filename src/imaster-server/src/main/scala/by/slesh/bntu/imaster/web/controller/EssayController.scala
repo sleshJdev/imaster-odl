@@ -18,7 +18,13 @@ class EssayController extends AbstractController with FileUploadSupport {
 
   override val logger = LoggerFactory.getLogger(getClass)
 
+  get("/?") {
+    logger.debug("getting all essays")
+    Essay.getAll
+  }
+
   post("/?") {
+    logger.debug("creating a new essay")
     val essay = (parse(params("data")) merge parse("""{"fileId": ""}""")).extract[Essay]
     val fileItem = fileParams("file")
     essay.fileId = LocalDateTime.now + "_" + fileItem.getName

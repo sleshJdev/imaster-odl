@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.persistence
 
-import by.slesh.bntu.imaster.persistence.DatabaseConnector._
+import by.slesh.bntu.imaster.persistence.DatabaseSource._
 import slick.driver.H2Driver.api._
 
 import scala.concurrent.Future

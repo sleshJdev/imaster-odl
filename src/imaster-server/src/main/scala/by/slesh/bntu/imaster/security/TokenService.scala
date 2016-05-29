@@ -1,7 +1,6 @@
 package by.slesh.bntu.imaster.security
 
 import authentikat.jwt._
-import org.slf4j.LoggerFactory
 
 /**
   * @author yauheni.putsykovich

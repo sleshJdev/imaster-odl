@@ -7,7 +7,7 @@ angular
     .service('essayService', essayService);
 
 /** @ngInject */
-function essayService(uploader, $http) {
+function essayService(uploader, $http, $q) {
     'use strict';
 
     var self = {};
@@ -15,16 +15,45 @@ function essayService(uploader, $http) {
     self.uploader = uploader.create('/api/essays');
 
     return {
+        init: init,
         addEssay: addEssay,
+        getAllEssays: getAllEssays,
+        updateEssay: updateEssay,
         getTeachers: getTeachers,
         uploader: self.uploader
     };
+
+    function init(scope) {
+        return $q.all([
+            getTeachers().then(function (response) {
+                scope.teachers = response.data;
+                scope.teachers.forEach(function (teacher) {
+                    teacher.fullName = teacher.firstName + ' ' + teacher.lastName + ' ' + teacher.patronymic;
+                });
+            }),
+            getStatuses().then(function (response) {
+                scope.statuses = response.data;
+            })
+        ]);
+    }
 
     function addEssay(essay) {
         return self.uploader.save(essay);
     }
 
+    function getAllEssays(){
+        return $http.get('/api/essays');
+    }
+
+    function updateEssay(){
+        return $http.put('/api/essays');
+    }
+
     function getTeachers(){
         return $http.get('/api/teachers');
+    }
+
+    function getStatuses(){
+        return $http.get('/api/statuses');
     }
 }

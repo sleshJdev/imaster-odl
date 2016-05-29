@@ -17,3 +17,9 @@
   color: $color--white;
   background-color: $color--warning;
 }
+
+.button--primary {
+  @extend .button;
+  color: $color--white;
+  background-color: $color--blue;
+}

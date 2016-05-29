@@ -19,6 +19,17 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'LoginController',
             controllerAs: 'vm'
         })
+        .state('documents', {
+            abstract: true,
+            url: '/documents',
+            template: '<ui-view/>'
+        })
+        .state('documents.list',{
+            url: '/',
+            templateUrl: 'app/components/document/document-list.html',
+            controller: 'DocumentListController',
+            controllerAs: 'vm'
+        })
         .state('students', {
             abstract: true,
             url: '/students',
@@ -55,11 +66,29 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
         })
         .state('essays.list', {
             url: '/',
-            templateUrl: 'app/components/essay/essay.html',
-            controller: 'EssayController',
+            templateUrl: 'app/components/essay/essay-list.html',
+            controller: 'EssayListController',
             controllerAs: 'vm'
         })
-        ;
+        .state('essays.add', {
+            url: '/add',
+            templateUrl: 'app/components/essay/essay.html',
+            controller: 'EssayAddController',
+            controllerAs: 'vm'
+        })
+        .state('essays.edit', {
+            url: '/add',
+            templateUrl: 'app/components/essay/essay.html',
+            controller: 'EssayAddController',
+            controllerAs: 'vm',
+            params: {id: null},
+            resolve: {
+                id: ['$stateParams', function ($stateParams) {
+                    return $stateParams.id;
+                }]
+            }
+        })
+    ;
     $urlRouterProvider.otherwise('/');
     $httpProvider.interceptors.push('httpInterceptor');
 }

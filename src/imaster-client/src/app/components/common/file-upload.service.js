@@ -7,36 +7,22 @@ angular
     .service('uploader', uploader);
 
 /** @ngInject */
-function uploader(FileUploader, authService, httpInterceptor, $q, $log) {
+function uploader(FileUploader, authService, httpInterceptor, $q) {
     'use strict';
 
     return {
         create: create
     };
 
-    function createOnSuccessListener(defer) {
-        return function (item, response, status, headers) {
-            $log.debug('status: ', status, ', response: ', response);
-            defer.resolve(response);
-        }
-    }
-
-    function createOnErrorListener(defer) {
-        return function (item, response, status, headers) {
-            $log.debug('status: ', status, ', response: ', response);
-            defer.reject(response);
-        }
-    }
-
     function create(url) {
         var uploadDefer = null;
         var uploader = new FileUploader({url: url});
         uploader.removeAfterUpload = true;
-        uploader.onErrorItem = function (item, response, status, headers) {
+        uploader.onErrorItem = function (item, response, status) {
             httpInterceptor.responseError({data: item, status: status, statusText: response});
             uploadDefer.reject(response);
         };
-        uploader.onSuccessItem = function (item, response, status, headers) {
+        uploader.onSuccessItem = function (item, response) {
             uploadDefer.resolve(response);
         };
         uploader.save = function (data) {

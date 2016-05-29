@@ -1,5 +1,9 @@
 <form class="form--default">
     <h3 class="form__legend text--left">Учащийся</h3>
+    <div class="form__row">
+        <button class="block--right button button--primary" ui-sref="essays.edit">Просмотреть реферат</button>
+    </div>
+    <div style="clear: both"></div>
     <div class="form__row--inline">
         <label for="label-firstName" class="form__control">Имя</label>
         <input id="label-firstName" class="form__control" name="firstName" ng-model="vm.student.firstName">
@@ -14,8 +18,16 @@
     </div>
     <div class="form__row--inline">
         <label for="label-birthday" class="form__control">Год рождения</label>
-        <input id="label-birthday" class="form__control" name="age" ng-model="vm.student.birthday">
+        <input id="label-birthday" class="form__control" name="birthday" ng-model="vm.student.birthday">
     </div>
-    <button class="block--right button button--success" ng-click="vm.cancel()">Отмена</button>
-    <button class="block--right button button--warning" ng-click="vm.save()">Сохранить</button>
+    <div class="form__row--inline">
+        <label for="label-group" class="form__control">Группа</label>
+        <input id="label-group" class="form__control" name="group" ng-model="vm.student.group.title">
+    </div>
+    <div class="form__row--inline">
+        <label for="label-personal-car-id" class="form__control">Уникальный идентификатор</label>
+        <input id="label-personal-car-id" class="form__control" ng-model="vm.student.personalCardId">
+    </div>
+    <button class="block--right button button--warning" ng-click="vm.cancel()">Отмена</button>
+    <button class="block--right button button--success" ng-click="vm.save()">Сохранить</button>
 </form>

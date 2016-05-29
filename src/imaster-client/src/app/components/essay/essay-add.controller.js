@@ -4,10 +4,10 @@
 
 angular
     .module('imaster')
-    .controller('EssayController', EssayController);
+    .controller('EssayAddController', EssayAddController);
 
 /** @ngInject */
-function EssayController(essayService, $state, $log) {
+function EssayAddController(essayService, $state, $log) {
     'use strict';
 
     var vm = this;
@@ -17,14 +17,14 @@ function EssayController(essayService, $state, $log) {
     vm.save = function () {
         essayService.addEssay(vm.essay).then(function (response) {
             $log.debug("response: ", response);
-            $state.go('students.list');
+            $state.go('documents.list');
         });
     };
 
     (function () {
-        essayService.getTeachers().then(function (response) {
-            vm.teachers = response.data;
+        essayService.init(vm).then(function () {
             vm.essay.teacher = vm.teachers[0];
-        })
+            vm.essay.status = vm.statuses[0];
+        });
     })();
 }

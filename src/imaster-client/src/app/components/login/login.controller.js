@@ -14,7 +14,13 @@ function LoginController(authService, $state, $log) {
     vm.login = function () {
         authService.login(vm.username, vm.password).then(function () {
             $log.log("login successfully");
-            $state.go("students.list");
+            if (authService.isStudent()) {
+                $log.debug("student");
+                $state.go("documents.list");
+            } else {
+                $log.debug("teacher");
+                $state.go("students.list");
+            }
             authService.endLogging();
         });
     };
@@ -24,9 +30,7 @@ function LoginController(authService, $state, $log) {
         $state.go('/');
     };
 
-    init();
-
-    function init() {
+    (function () {
         authService.startLogging();
-    }
+    })();
 }

@@ -1,4 +1,4 @@
-import by.slesh.bntu.imaster.persistence.DatabaseConnector._
+import by.slesh.bntu.imaster.persistence.DatabaseSource._
 import org.scalatest._
 
 import scala.concurrent.Await.ready

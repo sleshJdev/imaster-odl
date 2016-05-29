@@ -1,6 +1,5 @@
 $font-stack: Helvetica, sans-serif;
 
-
 $color--black: #001f3f;
 $color--blue: #0074d9;
 $color--aqua: #7fdbff;
@@ -61,7 +60,6 @@ a {
   text-decoration: none;
 }
 
-
 .list--group {
   padding: 0;
   margin: 0;
@@ -73,6 +71,7 @@ a {
 }
 
 .icon {
+  cursor: pointer;
   display: inline-block;
   width: 32px;
   height: 32px;
@@ -83,14 +82,24 @@ a {
   background: url("../images/add.png");
 }
 
-.icon--edit{
+.icon--edit {
   @extend .icon;
   background: url("../images/edit.png");
 }
 
-.icon--remove{
+.icon--remove {
   @extend .icon;
   background: url("../images/remove.png");
+}
+
+.icon--file-add {
+  @extend .icon;
+  background: url("../images/file-add.png");
+}
+
+.icon--file-remove {
+  @extend .icon;
+  background: url("../images/file-remove.png");
 }
 
 .block--center {

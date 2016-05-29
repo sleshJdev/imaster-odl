@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.persistence
 
-import by.slesh.bntu.imaster.persistence.DatabaseConnector._
+import by.slesh.bntu.imaster.persistence.DatabaseSource._
 import slick.driver.H2Driver.api._
 import scala.concurrent.Future
 
@@ -19,31 +19,21 @@ case class User(id: Option[Int],
 
 class Users(tag: Tag) extends Table[User](tag, "user") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-
   def username = column[String]("username", O.Length(30, varying = true))
-
   def password = column[String]("password", O.Length(30, varying = true))
-
   def firstName = column[String]("firstName", O.Length(60, varying = true))
-
   def lastName = column[String]("lastName", O.Length(60, varying = true))
-
   def patronymic = column[Option[String]]("patronymic", O.Length(60, varying = true))
-
   def usernameIndex = index("idx_username", username, unique = true)
-
   type Data = (Option[Int], String, String, String, String, Option[String])
-
   def toUser: Data => User = {
     case (id, username, password, firstName, lastName, patronymic) =>
       User(id, username, password, firstName, lastName, patronymic)
   }
-
   def fromUser: PartialFunction[User, Option[Data]] = {
     case User(id, username, password, firstName, lastName, patronymic, _) =>
       Option((id, username, password, firstName, lastName, patronymic))
   }
-
   override def * = (id.?, username, password, firstName, lastName, patronymic) <> (toUser, fromUser)
 }
 

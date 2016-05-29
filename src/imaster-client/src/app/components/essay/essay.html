@@ -11,17 +11,15 @@
         </div>
         <div class="form__row--inline">
             <label for="label-essay-status" class="form__control">Статус:</label>
-            <select id="label-essay-status" class="form__control" name="status" ng-model="vm.essay.status">
-                <option ng-selected="true">Новый</option>
-                <option>На проверке</option>
-                <option>Требует исправлений</option>
-                <option>Сдан</option>
+            <select id="label-essay-status" class="form__control" name="status"
+                    ng-options = "s as s.title  for s in vm.statuses track by s.id"
+                    ng-model="vm.essay.status">
             </select>
         </div>
         <div class="form__row--inline">
             <label for="label-essay-teacher" class="form__control">Проверяющий:</label>
             <select id="label-essay-teacher" class="form__control" name="teacher"
-                    ng-options = "t as t.firstName for t in vm.teachers track by t.id"
+                    ng-options = "t as t.fullName  for t in vm.teachers track by t.id"
                     ng-model="vm.essay.teacher">
             </select>
         </div>

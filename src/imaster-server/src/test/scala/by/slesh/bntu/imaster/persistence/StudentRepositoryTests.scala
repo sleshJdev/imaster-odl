@@ -13,6 +13,7 @@ class StudentRepositoryTests extends TestConfig {
     Student.getAll onComplete {
       case Success(list) => list should not be empty
       case Failure(ex) => fail(ex)
+      case _ => fail()
     }
   }
 
@@ -26,10 +27,11 @@ class StudentRepositoryTests extends TestConfig {
   }
 
   it should "insert student and returns his id " in {
-    val student = Student(None, "test", "test", Some("test"), new Date(currentTimeMillis()))
+    val student = Student(None, "test", "test", Some("test"), new Date(currentTimeMillis()), personalCardId = "test")
     Student.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)
+      case _ => fail()
     }
   }
 }

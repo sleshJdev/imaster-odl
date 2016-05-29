@@ -1,7 +1,7 @@
 <div class="block--center">
     <table class="table">
         <caption>
-            <h3 class="form__legend">Список студентов</h3>
+            <h3 class="form__legend">Список магистрантов</h3>
             <ul class="list--group block--right">
                 <li><a ui-sref="students.add" class="icon--add" title="Добавить"></a></li>
                 <li><a ng-click="vm.remove()" class="icon--remove" title="Удалить"></a></li>
@@ -15,6 +15,7 @@
                 <th>Фамилия</th>
                 <th>Отчество</th>
                 <th>Год рождения</th>
+                <th>Группа</th>
                 <th></th>
             </tr>
         </thead>
@@ -26,6 +27,7 @@
                 <td>{{student.lastName}}</td>
                 <td>{{student.patronymic}}</td>
                 <td>{{student.birthday}}</td>
+                <td>{{student.group.title}}</td>
                 <td><span ui-sref="students.edit({id: {{student.id}}})" class="icon--edit" title="Изменить"></span></td>
             </tr>
         </tbody>

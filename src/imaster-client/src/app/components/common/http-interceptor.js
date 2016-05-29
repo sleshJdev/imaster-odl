@@ -23,7 +23,7 @@ function httpInterceptor($injector, $q, $log) {
         switch (config.status) {
             case 401:
             case 403:
-                var authService = $injector.get('AuthService');
+                var authService = $injector.get('authService');
                 if (authService.isAuthenticated()) {
                     authService.logout();
                 }
