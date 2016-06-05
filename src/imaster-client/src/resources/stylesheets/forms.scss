@@ -50,16 +50,21 @@
     text-align: left;
     width: $width--4;
   }
-  :not(label).form__control,
-  input:not([type="file"]).form__control {
+  :not(label).form__control {
     width: $width--8;
-  }
-  input:not([type="file"]).form__control {
-    text-align: center;
   }
 }
 
-input:not([type="file"]).form__control {
+input[type="button"].form__control,
+button.form__control {
+  cursor: pointer;
+  color: $color--white;
+  background-color: $color--blue;
+}
+
+input[type="text"].form__control,
+input[type="password"].form__control{
+  text-align: center;
   border-bottom: 1px solid $color--green;
   &:focus {
     background-color: $color--primary;
