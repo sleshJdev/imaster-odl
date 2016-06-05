@@ -17,6 +17,7 @@ function essayService(uploader, $http, $q) {
     return {
         init: init,
         addEssay: addEssay,
+        getEssayById: getEssayById,
         getAllEssays: getAllEssays,
         updateEssay: updateEssay,
         getTeachers: getTeachers,
@@ -41,19 +42,23 @@ function essayService(uploader, $http, $q) {
         return self.uploader.save(essay);
     }
 
-    function getAllEssays(){
+    function getAllEssays() {
         return $http.get('/api/essays');
     }
 
-    function updateEssay(){
+    function getEssayById(id) {
+        return $http.get('/api/essays/' + id);
+    }
+
+    function updateEssay() {
         return $http.put('/api/essays');
     }
 
-    function getTeachers(){
+    function getTeachers() {
         return $http.get('/api/teachers');
     }
 
-    function getStatuses(){
+    function getStatuses() {
         return $http.get('/api/statuses');
     }
 }
