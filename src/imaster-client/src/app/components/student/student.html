@@ -1,32 +1,36 @@
 <form class="form--default">
-    <h3 class="form__legend text--left">Учащийся</h3>
+    <h3 class="form__legend">Магистрант</h3>
     <div class="form__row">
-        <button class="block--right button button--primary" ui-sref="essays.edit">Просмотреть реферат</button>
+        <button class="block--right button button--primary" ui-sref="essays.edit({id: vm.student.essay.id})">Реферат...</button>
     </div>
     <div style="clear: both"></div>
     <div class="form__row--inline">
         <label for="label-firstName" class="form__control">Имя</label>
-        <input id="label-firstName" class="form__control" name="firstName" ng-model="vm.student.firstName">
+        <input id="label-firstName" type="text" class="form__control" name="firstName" ng-model="vm.student.firstName">
     </div>
     <div class="form__row--inline">
         <label for="label-lastName" class="form__control">Фамилия</label>
-        <input id="label-lastName" class="form__control" name="lastName" ng-model="vm.student.lastName">
+        <input id="label-lastName" type="text" class="form__control" name="lastName" ng-model="vm.student.lastName">
     </div>
     <div class="form__row--inline">
         <label for="label-patronymic" class="form__control">Отчество</label>
-        <input id="label-patronymic" class="form__control" name="lastName" ng-model="vm.student.patronymic">
+        <input id="label-patronymic" type="text" class="form__control" name="lastName" ng-model="vm.student.patronymic">
+    </div>
+    <div class="form__row--inline">
+        <label for="label-email" class="form__control">Электронная почта</label>
+        <input id="label-email" type="text" class="form__control" name="email" ng-model="vm.student.email">
     </div>
     <div class="form__row--inline">
         <label for="label-birthday" class="form__control">Год рождения</label>
-        <input id="label-birthday" class="form__control" name="birthday" ng-model="vm.student.birthday">
+        <input id="label-birthday" type="text" class="form__control" name="birthday" ng-model="vm.student.birthday">
     </div>
     <div class="form__row--inline">
         <label for="label-group" class="form__control">Группа</label>
-        <input id="label-group" class="form__control" name="group" ng-model="vm.student.group.title">
+        <input id="label-group" type="text" class="form__control" name="group" ng-model="vm.student.group.title">
     </div>
     <div class="form__row--inline">
         <label for="label-personal-car-id" class="form__control">Уникальный идентификатор</label>
-        <input id="label-personal-car-id" class="form__control" ng-model="vm.student.personalCardId">
+        <input id="label-personal-car-id" type="text" class="form__control" ng-model="vm.student.personalCardId">
     </div>
     <button class="block--right button button--warning" ng-click="vm.cancel()">Отмена</button>
     <button class="block--right button button--success" ng-click="vm.save()">Сохранить</button>
