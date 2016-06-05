@@ -28,7 +28,7 @@
                 <td>{{document.loadedDate}}</td>
                 <td>{{document.teacher.firstName + ' ' + document.teacher.lastName + ' ' + document.teacher.patronymic}}</td>
                 <td>{{document.subject.title}}</td>
-                <td><span ui-sref="documents.edit({id: {{document.id}}})" class="icon--file-dowload" title="Изменить"></span></td>
+                <td><span ui-sref="documents.edit({id: document.id})" class="icon--file-dowload" title="Изменить"></span></td>
             </tr>
         </tbody>
     </table>
