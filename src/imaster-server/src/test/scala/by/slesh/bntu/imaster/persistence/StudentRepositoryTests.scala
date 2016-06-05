@@ -27,7 +27,7 @@ class StudentRepositoryTests extends TestConfig {
   }
 
   it should "insert student and returns his id " in {
-    val student = Student(None, "test", "test", Some("test"), new Date(currentTimeMillis()), personalCardId = "test")
+    val student = Student(None, "test", "test", Some("test"), "test@gmai.com", new Date(currentTimeMillis()), personalCardId = "test")
     Student.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)

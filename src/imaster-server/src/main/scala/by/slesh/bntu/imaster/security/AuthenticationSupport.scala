@@ -50,6 +50,9 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
    * Register auth strategies with Scentry. Any controller with this trait mixed in will attempt to
    * progressively use all registered strategies to log the user in, falling back if necessary.
    */
+
+
+
   override protected def registerAuthStrategies = {
     scentry.register(tokenBasedStrategy.name, app => tokenBasedStrategy)
   }

@@ -14,7 +14,6 @@ import scala.language.postfixOps
 
 class AppController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
-  val repository = User
 
   get("/?") {
     logger.info("open home page")
@@ -23,7 +22,7 @@ class AppController extends AbstractController {
   post("/login") {
     val account = parsedBody.extract[Account]
     logger.info("{} is login...", account)
-    repository.getUserByName(account.username) map { user =>
+    User.getUserByName(account.username) map { user =>
       logger.info("found account: {}", user)
       val token = user match {
         case Some(x) =>
@@ -48,7 +47,7 @@ class AppController extends AbstractController {
   }
 
   def getClaimsForUser(user: User) = user match {
-    case User(Some(id), username, _, _, _, _, _) =>
+    case User(Some(id), username, _, _) =>
       Map(
         ClaimsKeys.ID -> id.toString,
         ClaimsKeys.NAME -> username,

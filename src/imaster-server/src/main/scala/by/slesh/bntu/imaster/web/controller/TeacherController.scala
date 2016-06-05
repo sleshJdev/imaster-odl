@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.User
+import by.slesh.bntu.imaster.persistence.{Teacher, User}
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
 
@@ -11,8 +11,7 @@ class TeacherController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
 
   get("/?") {
-    User.getAll map {
-      _.filter(_.roles.exists(_.name == "teacher"))
-    }
+    logger.debug("getting all teachers")
+    Teacher.getAll
   }
 }

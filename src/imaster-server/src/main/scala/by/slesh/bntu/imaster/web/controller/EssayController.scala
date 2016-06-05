@@ -23,6 +23,12 @@ class EssayController extends AbstractController with FileUploadSupport {
     Essay.getAll
   }
 
+  get("/:id") {
+    val id = params("id").toInt
+    logger.debug("getting essay by id {}", id)
+    Essay.getById(id)
+  }
+
   post("/?") {
     logger.debug("creating a new essay")
     val essay = (parse(params("data")) merge parse("""{"fileId": ""}""")).extract[Essay]

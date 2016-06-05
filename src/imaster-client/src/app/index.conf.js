@@ -24,10 +24,16 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
             url: '/documents',
             template: '<ui-view/>'
         })
-        .state('documents.list',{
-            url: '/',
+        .state('documents.list', {
+            url: '/list',
             templateUrl: 'app/components/document/document-list.html',
             controller: 'DocumentListController',
+            controllerAs: 'vm'
+        })
+        .state('documents.add', {
+            url: '/add',
+            templateUrl: 'app/components/document/document.html',
+            controller: 'DocumentAddController',
             controllerAs: 'vm'
         })
         .state('students', {
@@ -77,9 +83,9 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
             controllerAs: 'vm'
         })
         .state('essays.edit', {
-            url: '/add',
+            url: '/edit/:id',
             templateUrl: 'app/components/essay/essay.html',
-            controller: 'EssayAddController',
+            controller: 'EditEditController',
             controllerAs: 'vm',
             params: {id: null},
             resolve: {

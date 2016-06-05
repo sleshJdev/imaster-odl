@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 class StudentController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  get("/?") {
+  get("/") {
     logger.info("get all students")
     Student.getAll
   }

@@ -32,7 +32,9 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     isOk
   }
 
-  override def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[UserDetails] = {
+  override def authenticate()
+             (implicit request: HttpServletRequest,
+                       response: HttpServletResponse): Option[UserDetails] = {
     val tokenJson = request.getHeader(TOKEN_AUTH_NAME)
     logger.info("authenticate with token: {}", tokenJson)
     TokenService.parseToken(tokenJson) match {
@@ -47,7 +49,9 @@ class TokenBasedStrategy(protected val app: ScalatraBase)(implicit request: Http
     }
   }
 
-  override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse): Unit = {
+  override def unauthenticated()
+    (implicit request: HttpServletRequest,
+              response: HttpServletResponse): Unit = {
     logger.info("unauthenticated")
     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED)
     response.setHeader(TOKEN_AUTH_NAME, null)

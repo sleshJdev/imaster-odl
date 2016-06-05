@@ -15,6 +15,7 @@ case class Student(var id: Option[Int],
                    var firstName: String,
                    var lastName: String,
                    var patronymic: Option[String] = None,
+                   var email: String,
                    var birthday: Date,
                    var userId: Option[Int] = None,
                    var groupId: Option[Int] = None,
@@ -29,6 +30,7 @@ class Students(tag: Tag) extends Table[Student](tag, "student") {
   def firstName = column[String]("firstName", O.Length(60, varying = true))
   def lastName = column[String]("lastName", O.Length(60, varying = true))
   def patronymic = column[Option[String]]("patronymic", O.Length(60, varying = true))
+  def email = column[String]("email", O.Length(60, varying = true))
   def birthday = column[Date]("birthday")
   def userId = column[Int]("user_id")
   def groupId = column[Int]("group_id")
@@ -37,19 +39,18 @@ class Students(tag: Tag) extends Table[Student](tag, "student") {
   def user = foreignKey("fk_student__user_id__user_id", userId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
   def group = foreignKey("fk_student__group_id__group_id", groupId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
   def essay = foreignKey("fk_student__essay_id__essay_id", essayId, Essay.models)(_.id)
-
-  type Data = (Option[Int], String, String, Option[String], Date, Option[Int], Option[Int], Option[Int], String)
-
+  type Data = (Option[Int], String, String, Option[String], String, Date, Option[Int], Option[Int], Option[Int], String)
   def toStudent: Data => Student = {
-    case (id, firstName, lastName, patronymic, birthday, userId, groupId, essayId, personalCardId) =>
-      Student(id, firstName, lastName, patronymic, birthday, userId, groupId, essayId, personalCardId)
+    case (id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId) =>
+      Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId)
   }
   def fromStudent: PartialFunction[Student, Option[Data]] = {
-    case Student(id, firstName, lastName, patronymic, birthday, userId, groupId, essayId, personalCardId, _, _, _) =>
-      Option((id, firstName, lastName, patronymic, birthday, userId, groupId, essayId, personalCardId))
+    case Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId, _, _, _) =>
+      Option((id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId))
   }
-
-  override def * = (id.?, firstName, lastName, patronymic, birthday, userId.?, groupId.?, essayId.?, personalCardId) <> (toStudent, fromStudent)
+  override def * =
+    (id.?, firstName, lastName, patronymic, email, birthday, userId.?, groupId.?, essayId.?, personalCardId) <>
+      (toStudent, fromStudent)
 }
 
 object Student extends Repositorie with StudentExtensions {

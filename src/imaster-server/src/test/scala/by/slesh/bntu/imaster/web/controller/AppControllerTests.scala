@@ -38,6 +38,7 @@ class AppControllerTests extends ScalatraSuite with FlatSpecLike {
       status should equal(404)
     }
   }
+
   it should "for POST '/api/login' returns auth data for valid username/password" in {
     val username = "student"
     post("/api/login", pretty(("username" -> username) ~ ("password" -> "studentp"))) {
