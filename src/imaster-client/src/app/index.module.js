@@ -2,5 +2,5 @@
  * @author yauheni.putsykovich
  */
 
-angular
-    .module('imaster', ['angularFileUpload', 'ui.router']);
+        angular
+            .module('imaster', ['angularFileUpload', 'ui.router']);

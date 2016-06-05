@@ -11,7 +11,7 @@
             <li ng-show="vm.isAdmin()"><a ui-sref="teachers">Преподаватели</a></li>
             <li ng-show="vm.isAdmin()"><a ui-sref="users">Пользователи</a></li>
             <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="documents.list">Справочная литерату</a></li>
-            <li ng-show="vm.isStudent()"><a ui-sref="essays.add">Создать реферат</a></li>
+            <li ng-show="vm.isStudent()"><a ui-sref="essays.add">Реферат</a></li>
             <li ng-show="vm.isTeacher()"><a ui-sref="essays.list">Список рефератов</a></li>
         </ul>
     </div>
