@@ -28,6 +28,11 @@ class Roles(tag: Tag) extends Table[Role](tag, "role") {
 object Role extends Repositorie {
   val models = TableQuery(new Roles(_))
 
+  val USER = "user"
+  val STUDENT = "student"
+  val TEACHER = "teacher"
+  val ADMIN = "admin"
+
   def getById(id: Int): Future[Option[Role]] = {
     db.run(models.filter(_.id === id).result.headOption)
   }

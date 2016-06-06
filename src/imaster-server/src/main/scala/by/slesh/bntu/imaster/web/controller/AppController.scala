@@ -2,6 +2,7 @@ package by.slesh.bntu.imaster.web.controller
 
 import javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
 
+import by.slesh.bntu.imaster.persistence.Role.{STUDENT, TEACHER}
 import by.slesh.bntu.imaster.persistence.{Student, Teacher, User}
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
@@ -24,25 +25,26 @@ class AppController extends AbstractController {
     logger.info("{} is login...", account)
     User.getUserByName(account.username) map { user =>
       logger.info("found account: {}", user)
-      getAuthData(user.get, account, getToken(user, account.password))
+      getAuthData(user.get, account, getToken(user, account.password)) map { a =>
+        a.getOrElse {response.setStatus(SC_UNAUTHORIZED); None}
+      }
     }
   }
 
   def resolveRole(userId: Int, loginAs: String) = {
     loginAs match {
-      case "teacher" => Teacher.getByUserId(userId)
-      case "student" => Student.getByUserId(userId)
+      case TEACHER => Teacher.getByUserId(userId)
+      case STUDENT => Student.getByUserId(userId)
       case _ => Future(None)
     }
   }
 
   def getAuthData(user: User, account: Account, token: Option[String]): Future[Option[AuthData]] = {
     import org.json4s.jackson.Serialization.write
-    if (token.isEmpty) Future {
-      response.setStatus(SC_UNAUTHORIZED)
-      None
-    } else resolveRole(user.id.get, account.loginAs) map { info =>
-      Some(AuthData(token.orNull, user.username, user.roles.map(_.name), Option(write(info.orNull))))
+    if (token.isEmpty) Future(None)
+    else resolveRole(user.id.get, account.loginAs) map {
+      case Some(x) => Some(AuthData(token.orNull, user.username, user.roles.map(_.name), Option(write(x))))
+      case _ => None
     }
   }
 
@@ -63,6 +65,6 @@ class AppController extends AbstractController {
         ClaimsKeys.NAME -> username,
         ClaimsKeys.CREATED_TIME -> System.currentTimeMillis().toString
       )
-    case _ => halt(401, "user %s not found" format user)
+    case _ => halt(SC_UNAUTHORIZED, "user %s not found" format user.username)
   }
 }
