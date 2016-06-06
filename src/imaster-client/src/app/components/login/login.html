@@ -11,9 +11,10 @@
     <div class="form__row--inline">
         <label for="label-login-as" class="form__control">Войти как:</label>
         <select id="label-login-as" class="form__control" ng-model="vm.userInfo.loginAs"
-            ng-options="r.name as r.name for r in vm.roles track by r.id">
+            ng-options="r.name as r.name for r in vm.roles">
         </select>
     </div>
+    {{vm.userInfo}}
     <div class="form__row">
         <button ng-click="vm.login()" class="block--right button--success">Войти</button>
         <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>

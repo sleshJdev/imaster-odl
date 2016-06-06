@@ -37,7 +37,7 @@
             authService.startLogging();
             roleService.getAllRoles().then(function (response) {
                 vm.roles = response.data;
-                vm.userInfo.loginAs.name = vm.roles[0];
+                vm.userInfo.loginAs = vm.roles[0].name;
             });
         })();
     }
