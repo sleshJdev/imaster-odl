@@ -1,21 +1,16 @@
 package by.slesh.bntu.imaster.web.controller
 
-import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
 
-import by.slesh.bntu.imaster.persistence.{Student, Teacher, Role, User}
+import by.slesh.bntu.imaster.persistence.{Student, Teacher, User}
 import by.slesh.bntu.imaster.security.{ClaimsKeys, TokenService}
 import by.slesh.bntu.imaster.web.AbstractController
 import by.slesh.bntu.imaster.web.model.{Account, AuthData}
 import org.json4s._
-import org.json4s.JsonDSL._
-import org.json4s.jackson.JsonMethods._
-import org.json4s.jackson.Serialization._
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.Future
 import scala.language.postfixOps
-import scala.util.Success
 
 class AppController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
