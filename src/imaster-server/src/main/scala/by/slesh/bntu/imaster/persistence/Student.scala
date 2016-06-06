@@ -19,11 +19,10 @@ case class Student(var id: Option[Int],
                    var birthday: Date,
                    var userId: Option[Int] = None,
                    var groupId: Option[Int] = None,
-                   var essayId: Option[Int] = None,
                    var personalCardId: String,
                    var user: Option[User] = None,
                    var group: Option[Group] = None,
-                   var essay: Option[Essay] = None)
+                   var essays: List[Essay] = List.empty)
 
 class Students(tag: Tag) extends Table[Student](tag, "student") {
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
@@ -34,22 +33,21 @@ class Students(tag: Tag) extends Table[Student](tag, "student") {
   def birthday = column[Date]("birthday")
   def userId = column[Int]("user_id")
   def groupId = column[Int]("group_id")
-  def essayId = column[Int]("essay_id")
   def personalCardId = column[String]("personal_card_id")
   def user = foreignKey("fk_student__user_id__user_id", userId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
   def group = foreignKey("fk_student__group_id__group_id", groupId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
-  def essay = foreignKey("fk_student__essay_id__essay_id", essayId, Essay.models)(_.id)
-  type Data = (Option[Int], String, String, Option[String], String, Date, Option[Int], Option[Int], Option[Int], String)
+
+  type Data = (Option[Int], String, String, Option[String], String, Date, Option[Int], Option[Int], String)
   def toStudent: Data => Student = {
-    case (id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId) =>
-      Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId)
+    case (id, firstName, lastName, patronymic, email, birthday, userId, groupId, personalCardId) =>
+      Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, personalCardId)
   }
   def fromStudent: PartialFunction[Student, Option[Data]] = {
-    case Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId, _, _, _) =>
-      Option((id, firstName, lastName, patronymic, email, birthday, userId, groupId, essayId, personalCardId))
+    case Student(id, firstName, lastName, patronymic, email, birthday, userId, groupId, personalCardId, _, _, _) =>
+      Option((id, firstName, lastName, patronymic, email, birthday, userId, groupId, personalCardId))
   }
   override def * =
-    (id.?, firstName, lastName, patronymic, email, birthday, userId.?, groupId.?, essayId.?, personalCardId) <>
+    (id.?, firstName, lastName, patronymic, email, birthday, userId.?, groupId.?, personalCardId) <>
       (toStudent, fromStudent)
 }
 
@@ -75,14 +73,17 @@ object Student extends Repositorie with StudentExtensions {
 
 trait StudentExtensions {
 
-  implicit class ToStudent[C[_]](list: Seq[((Student, Option[Essay]), Option[Group])]) {
+  implicit class ToStudent[C[_]](list: Seq[((((Student, Option[StudentEssay]), Option[Essay]), Option[Status]), Option[Group])]) {
     def toStudent = {
       var map: Map[Int, Student] = Map.empty
       list foreach {
-        case ((s, e), g) =>
+        case ((((s, _), e), t), g) =>
           val id = s.id.get
           val student = if (map.isDefinedAt(id)) map(id) else { map += id -> s; s}
-          student.essay = e
+          if(e.isDefined && !student.essays.exists(_.id == e.orNull)) {
+            e.get.status = t
+            student.essays = e.get :: student.essays
+          }
           student.group = g
         case _ => throw new IllegalArgumentException("bad data format")
       }
@@ -92,8 +93,10 @@ trait StudentExtensions {
 
   implicit class JoinEssay[C[_]](query: Query[Students, Student, C]) {
     def joinEssay = query
-      .joinLeft(Essay.models).on(_.essayId === _.id)
-      .joinLeft(Group.models).on(_._1.groupId === _.id)
+        .joinLeft(StudentEssay.models).on(_.id === _.studentId)
+        .joinLeft(Essay.models).on(_._2.map(_.essayId) === _.id)
+        .joinLeft(Status.models).on(_._2.map(_.statusId) === _.id)
+        .joinLeft(Group.models).on(_._1._1._1.groupId === _.id)
   }
 
 }

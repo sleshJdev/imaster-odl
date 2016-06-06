@@ -141,13 +141,13 @@ object DatabaseSource {
       Essay(Some(7), "Всемирная сеть Интернет: доступы к сети и основные каналы связи", "file-id-7", statusId =  1)
     ),
     Student.models ++= Seq(
-      Student(Some(1), "Андреев", "Александр", Some("Александрович"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), userId = Some(1), groupId = Some(1), essayId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(2), "Аседова", "Елизавета", Some("Виталиевна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime), userId = Some(2), groupId = Some(1), essayId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(3), "Валинуров", "Денис", Some("Юрьевич"), "den@gmail.com", new Date(formatter.parse("1993-01-03").getTime), userId = Some(3), groupId = Some(1), essayId = Some(3), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(4), "Гаранян", "Ованес", Some("Суренович"), "ovanes@gmail.com", new Date(formatter.parse("1993-07-21").getTime), userId = Some(4), groupId = Some(2), essayId = Some(4), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(5), "Горинова", "Юлия", Some("Юрьевна"), "julia@gmail.com", new Date(formatter.parse("1993-05-09").getTime), userId = Some(5), groupId = Some(2), essayId = Some(5), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(6), "Ермохин", "Макар", Some("Андреевич"), "makar@gmail.com", new Date(formatter.parse("1993-05-01").getTime), userId = Some(6), groupId = Some(2), essayId = Some(6), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(7), "Иванов", "Павел", Some("Александрович"), "pavel@gmail.com", new Date(formatter.parse("1993-08-27").getTime), userId = Some(7), groupId = Some(2), essayId = Some(7), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b")
+      Student(Some(1), "Андреев", "Александр", Some("Александрович"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), userId = Some(1), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(2), "Аседова", "Елизавета", Some("Виталиевна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime), userId = Some(2), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(3), "Валинуров", "Денис", Some("Юрьевич"), "den@gmail.com", new Date(formatter.parse("1993-01-03").getTime), userId = Some(3), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(4), "Гаранян", "Ованес", Some("Суренович"), "ovanes@gmail.com", new Date(formatter.parse("1993-07-21").getTime), userId = Some(4), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(5), "Горинова", "Юлия", Some("Юрьевна"), "julia@gmail.com", new Date(formatter.parse("1993-05-09").getTime), userId = Some(5), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(6), "Ермохин", "Макар", Some("Андреевич"), "makar@gmail.com", new Date(formatter.parse("1993-05-01").getTime), userId = Some(6), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(7), "Иванов", "Павел", Some("Александрович"), "pavel@gmail.com", new Date(formatter.parse("1993-08-27").getTime), userId = Some(7), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b")
     ),
     StudentEssay.models ++= Seq(
       StudentEssay(Some(1), 1, 1),
