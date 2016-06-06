@@ -20,12 +20,16 @@ trait AuthenticationSupport extends ScalatraBase with ScentrySupport[UserDetails
   val tokenBasedStrategy = new TokenBasedStrategy(self)
   val userRepository = User
 
-  override protected def scentryConfig: ScentryConfiguration = new ScentryConfig {
-    override val login: String = "/login"
-  }.asInstanceOf[ScentryConfiguration]
+  class Config extends ScentryConfig{
+    val public = "/public"
+  }
+  val conf = new Config
+
+  override protected def scentryConfig: ScentryConfiguration = conf.asInstanceOf[ScentryConfiguration]
 
   protected def requireLogin(implicit request: HttpServletRequest) = {
-    !Option(request.getPathInfo).getOrElse("").contains(scentryConfig.login)
+    val path = Option(request.getPathInfo).getOrElse("")
+    !(path.contains(conf.login) || path.contains(conf.public))
   }
 
   protected def userDetails(implicit request: HttpServletRequest): UserDetails = {

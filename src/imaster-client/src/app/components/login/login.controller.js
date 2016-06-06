@@ -7,12 +7,18 @@
         .controller('LoginController', LoginController);
 
     /** @ngInject */
-    function LoginController(authService, $state) {
+    function LoginController(authService, roleService, $state) {
         'use strict';
         var vm = this;
 
+        vm.userInfo = {
+            username: null,
+            password: null,
+            loginAs: null
+        };
+
         vm.login = function () {
-            authService.login(vm.username, vm.password).then(function () {
+            authService.login(vm.userInfo).then(function () {
                 if (authService.isStudent()) {
                     $state.go("documents.list");
                 } else {
@@ -29,5 +35,9 @@
 
         (function () {
             authService.startLogging();
+            roleService.getAllRoles().then(function (response) {
+                vm.roles = response.data;
+                vm.userInfo.loginAs.name = vm.roles[0];
+            });
         })();
     }

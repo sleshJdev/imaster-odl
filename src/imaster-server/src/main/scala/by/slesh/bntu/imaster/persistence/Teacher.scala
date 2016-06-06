@@ -52,6 +52,7 @@ class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
 object Teacher extends Repositorie with TeacherExtensions {
   val models = TableQuery(new Teachers(_))
 
+  def getByUserId(userId: Int) = db.run(models.filter(_.userId === userId).result.headOption)
   def getAll = db.run(models.joinEssayAndGroup.result).map(_.toTeacher)
 }
 

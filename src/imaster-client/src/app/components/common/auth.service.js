@@ -55,17 +55,15 @@ function authService($http, $q, $log) {
         }
     }
 
-    function login(username, password) {
-        return $http.post('/api/login', {
-            username: username,
-            password: password
-        }).then(function (response) {
-            setAuthentication(response.data);
-            return response;
-        }, function (error) {
-            setAuthentication(null);
-            return $q.reject(error);
-        });
+    function login(data) {
+        return $http.post('/api/login', data)
+            .then(function (response) {
+                setAuthentication(response.data);
+                return response;
+            }, function (error) {
+                setAuthentication(null);
+                return $q.reject(error);
+            });
     }
 
     function logout() {

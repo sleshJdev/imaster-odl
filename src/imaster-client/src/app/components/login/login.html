@@ -2,11 +2,17 @@
     <h3 class="form__legend">Вход</h3>
     <div class="form__row--inline">
         <label for="label-login" class="form__control">Имя</label>
-        <input id="label-login" type="text" class="form__control" name="password" ng-model="vm.username">
+        <input id="label-login" type="text" class="form__control" ng-model="vm.userInfo.username">
     </div>
     <div class="form__row--inline">
         <label for="label-password" class="form__control">Пароль</label>
-        <input id="label-password" type="password" class="form__control" name="password" ng-model="vm.password">
+        <input id="label-password" type="password" class="form__control" ng-model="vm.userInfo.password">
+    </div>
+    <div class="form__row--inline">
+        <label for="label-login-as" class="form__control">Войти как:</label>
+        <select id="label-login-as" class="form__control" ng-model="vm.userInfo.loginAs"
+            ng-options="r.name as r.name for r in vm.roles track by r.id">
+        </select>
     </div>
     <div class="form__row">
         <button ng-click="vm.login()" class="block--right button--success">Войти</button>

@@ -56,6 +56,8 @@ class Students(tag: Tag) extends Table[Student](tag, "student") {
 object Student extends Repositorie with StudentExtensions {
   val models = TableQuery(new Students(_))
 
+  def getByUserId(userId: Int) = db.run(models.filter(_.userId === userId).result.headOption)
+
   def getById(id: Int): Future[Option[Student]] = {
     db.run(models.filter(_.id === id).joinEssay.result).map(_.toStudent.headOption)
   }
