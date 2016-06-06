@@ -60,8 +60,7 @@ object DatabaseSource {
     Student.models.schema ++
     Essay.models.schema ++
     Teacher.models.schema ++
-    StudentEssay.models.schema ++
-    TeacherEssay.models.schema ++
+    UserEssay.models.schema ++
     TeacherGroup.models.schema
 
   val fillQuery = DBIO.seq(
@@ -149,31 +148,22 @@ object DatabaseSource {
       Student(Some(6), "Ермохин", "Макар", Some("Андреевич"), "makar@gmail.com", new Date(formatter.parse("1993-05-01").getTime), userId = Some(6), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
       Student(Some(7), "Иванов", "Павел", Some("Александрович"), "pavel@gmail.com", new Date(formatter.parse("1993-08-27").getTime), userId = Some(7), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b")
     ),
-    StudentEssay.models ++= Seq(
-      StudentEssay(Some(1), 1, 1),
-      StudentEssay(Some(2), 2, 2),
-      StudentEssay(Some(3), 3, 3),
-      StudentEssay(Some(4), 4, 4),
-      StudentEssay(Some(5), 5, 5),
-      StudentEssay(Some(6), 6, 6),
-      StudentEssay(Some(7), 7, 7)
+    UserEssay.models ++= Seq(
+      UserEssay(1, 1),
+      UserEssay(2, 2),
+      UserEssay(3, 3),
+      UserEssay(4, 4),
+      UserEssay(5, 5),
+      UserEssay(6, 6),
+      UserEssay(7, 7)
     ),
     Teacher.models ++= Seq(
       Teacher(Some(1), "Вяльцев", "Валентин", Some("Николаевич"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), userId = Some(1)),
       Teacher(Some(2), "Ковалева", "Ирина", Some("Львовна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime), userId = Some(2))
     ),
-    TeacherEssay.models ++= Seq(
-      TeacherEssay(1, 1, 1),
-      TeacherEssay(2, 1, 2),
-      TeacherEssay(3, 1, 3),
-      TeacherEssay(4, 1, 4),
-      TeacherEssay(5, 1, 5),
-      TeacherEssay(6, 1, 6),
-      TeacherEssay(7, 2, 7)
-    ),
     TeacherGroup.models ++= Seq(
-      TeacherGroup(1, 1, 1),
-      TeacherGroup(2, 2, 2)
+      TeacherGroup(1, 1),
+      TeacherGroup(2, 2)
     )
   )
 

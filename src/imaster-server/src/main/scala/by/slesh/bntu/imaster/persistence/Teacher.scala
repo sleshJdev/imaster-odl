@@ -22,15 +22,14 @@ case class Teacher(var id: Option[Int],
                    var essays: List[Essay] = List.empty)
 
 class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
-  def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+  def id = column[Int]("id", O.PrimaryKey)
   def firstName = column[String]("firstName", O.Length(60, varying = true))
   def lastName = column[String]("lastName", O.Length(60, varying = true))
   def patronymic = column[Option[String]]("patronymic", O.Length(60, varying = true))
   def email = column[String]("email", O.Length(60, varying = true))
   def birthday = column[Date]("birthday")
 
-  def userId = column[Int]("user_id")
-  def user = foreignKey("fk_teacher__user_id__user_id", userId, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
+  def user = foreignKey("fk_teacher__user_id__user_id", id, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
 
   type Data = (Option[Int], String, String, Option[String], String, Date, Option[Int])
 
@@ -45,21 +44,21 @@ class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
   }
 
   override def * =
-    (id.?, firstName, lastName, patronymic, email, birthday, userId.?) <>
+    (id.?, firstName, lastName, patronymic, email, birthday, id.?) <>
       (toTeacher, fromTeacher)
 }
 
 object Teacher extends Repositorie with TeacherExtensions {
   val models = TableQuery(new Teachers(_))
 
-  def getByUserId(userId: Int) = db.run(models.filter(_.userId === userId).result.headOption)
+  def getByUserId(userId: Int) = db.run(models.filter(_.id === userId).result.headOption)
   def getAll = db.run(models.joinEssayAndGroup.result).map(_.toTeacher)
 }
 
 
 trait TeacherExtensions {
 
-  implicit class ToTeacher[C[_]](list: Seq[((((Teacher, TeacherEssay), Essay), TeacherGroup), Group)]) {
+  implicit class ToTeacher[C[_]](list: Seq[((((Teacher, UserEssay), Essay), TeacherGroup), Group)]) {
     def toTeacher = {
       var map: Map[Int, Teacher] = Map.empty
       list foreach {
@@ -76,7 +75,7 @@ trait TeacherExtensions {
 
   implicit class JoinEssayAndGroup[C[_]](query: Query[Teachers, Teacher, C]) {
     def joinEssayAndGroup = query
-        .join(TeacherEssay.models).on(_.id === _.teacherId)
+        .join(UserEssay.models).on(_.id === _.userId)
           .join(Essay.models).on(_._2.essayId === _.id)
         .join(TeacherGroup.models).on(_._1._1.id === _.teacherId)
           .join(Group.models).on(_._1._1._1.id === _.id)

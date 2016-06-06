@@ -7,7 +7,6 @@ import slick.driver.H2Driver.api._
   */
 class UserRoles(tag: Tag) extends Table[(Int, Int)](tag, "user_role") {
   def userId = column[Int]("userId")
-
   def roleId = column[Int]("roleId")
 
   def user = foreignKey("fk__user_role__user_id__user_id", userId, User.models)(_.id)

@@ -73,7 +73,7 @@ object Student extends Repositorie with StudentExtensions {
 
 trait StudentExtensions {
 
-  implicit class ToStudent[C[_]](list: Seq[((((Student, Option[StudentEssay]), Option[Essay]), Option[Status]), Option[Group])]) {
+  implicit class ToStudent[C[_]](list: Seq[((((Student, Option[UserEssay]), Option[Essay]), Option[Status]), Option[Group])]) {
     def toStudent = {
       var map: Map[Int, Student] = Map.empty
       list foreach {
@@ -93,7 +93,7 @@ trait StudentExtensions {
 
   implicit class JoinEssay[C[_]](query: Query[Students, Student, C]) {
     def joinEssay = query
-        .joinLeft(StudentEssay.models).on(_.id === _.studentId)
+        .joinLeft(UserEssay.models).on(_.id === _.userId)
         .joinLeft(Essay.models).on(_._2.map(_.essayId) === _.id)
         .joinLeft(Status.models).on(_._2.map(_.statusId) === _.id)
         .joinLeft(Group.models).on(_._1._1._1.groupId === _.id)
