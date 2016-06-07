@@ -16,7 +16,6 @@ case class Teacher(var id: Option[Int],
                    var patronymic: Option[String] = None,
                    var email: String,
                    var birthday: Date,
-                   var userId: Option[Int] = None,
                    var user: Option[User] = None,
                    var groups: List[Group] = List.empty,
                    var essays: List[Essay] = List.empty)
@@ -31,20 +30,20 @@ class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
 
   def user = foreignKey("fk_teacher__user_id__user_id", id, User.models)(_.id, onDelete = ForeignKeyAction.Cascade)
 
-  type Data = (Option[Int], String, String, Option[String], String, Date, Option[Int])
+  type Data = (Option[Int], String, String, Option[String], String, Date)
 
   def toTeacher: Data => Teacher = {
-    case (id, firstName, lastName, patronymic, email, birthday, userId) =>
-      Teacher(id, firstName, lastName, patronymic, email, birthday, userId)
+    case (id, firstName, lastName, patronymic, email, birthday) =>
+      Teacher(id, firstName, lastName, patronymic, email, birthday)
   }
 
   def fromTeacher: PartialFunction[Teacher, Option[Data]] = {
-    case Teacher(id, firstName, lastName, patronymic, email, birthday, userId, _, _, _) =>
-      Option((id, firstName, lastName, patronymic, email, birthday, userId))
+    case Teacher(id, firstName, lastName, patronymic, email, birthday, _, _, _) =>
+      Option((id, firstName, lastName, patronymic, email, birthday))
   }
 
   override def * =
-    (id.?, firstName, lastName, patronymic, email, birthday, id.?) <>
+    (id.?, firstName, lastName, patronymic, email, birthday) <>
       (toTeacher, fromTeacher)
 }
 
@@ -53,6 +52,7 @@ object Teacher extends Repositorie with TeacherExtensions {
 
   def getByUserId(userId: Int) = db.run(models.filter(_.id === userId).result.headOption)
   def getAll = db.run(models.joinEssayAndGroup.result).map(_.toTeacher)
+  def getAllPublicTeachers = db.run(models.result)
 }
 
 

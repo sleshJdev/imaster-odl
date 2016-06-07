@@ -37,7 +37,7 @@ object Role extends Repositorie {
     db.run(models.filter(_.id === id).result.headOption)
   }
 
-  def getAll: Future[Seq[Role]] = {
+  def getAllRoles: Future[Seq[Role]] = {
     db.run(models.result)
   }
 

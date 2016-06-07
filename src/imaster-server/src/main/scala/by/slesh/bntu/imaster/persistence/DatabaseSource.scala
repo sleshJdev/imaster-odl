@@ -140,13 +140,13 @@ object DatabaseSource {
       Essay(Some(7), "Всемирная сеть Интернет: доступы к сети и основные каналы связи", "file-id-7", statusId =  1)
     ),
     Student.models ++= Seq(
-      Student(Some(1), "Андреев", "Александр", Some("Александрович"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), userId = Some(1), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(2), "Аседова", "Елизавета", Some("Виталиевна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime), userId = Some(2), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(3), "Валинуров", "Денис", Some("Юрьевич"), "den@gmail.com", new Date(formatter.parse("1993-01-03").getTime), userId = Some(3), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(4), "Гаранян", "Ованес", Some("Суренович"), "ovanes@gmail.com", new Date(formatter.parse("1993-07-21").getTime), userId = Some(4), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(5), "Горинова", "Юлия", Some("Юрьевна"), "julia@gmail.com", new Date(formatter.parse("1993-05-09").getTime), userId = Some(5), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(6), "Ермохин", "Макар", Some("Андреевич"), "makar@gmail.com", new Date(formatter.parse("1993-05-01").getTime), userId = Some(6), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
-      Student(Some(7), "Иванов", "Павел", Some("Александрович"), "pavel@gmail.com", new Date(formatter.parse("1993-08-27").getTime), userId = Some(7), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b")
+      Student(Some(1), "Андреев", "Александр", Some("Александрович"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(2), "Аседова", "Елизавета", Some("Виталиевна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime),  groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(3), "Валинуров", "Денис", Some("Юрьевич"), "den@gmail.com", new Date(formatter.parse("1993-01-03").getTime), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(4), "Гаранян", "Ованес", Some("Суренович"), "ovanes@gmail.com", new Date(formatter.parse("1993-07-21").getTime), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(5), "Горинова", "Юлия", Some("Юрьевна"), "julia@gmail.com", new Date(formatter.parse("1993-05-09").getTime), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(6), "Ермохин", "Макар", Some("Андреевич"), "makar@gmail.com", new Date(formatter.parse("1993-05-01").getTime), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),
+      Student(Some(7), "Иванов", "Павел", Some("Александрович"), "pavel@gmail.com", new Date(formatter.parse("1993-08-27").getTime), groupId = Some(2), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b")
     ),
     UserEssay.models ++= Seq(
       UserEssay(1, 1),
@@ -158,12 +158,16 @@ object DatabaseSource {
       UserEssay(7, 7)
     ),
     Teacher.models ++= Seq(
-      Teacher(Some(1), "Вяльцев", "Валентин", Some("Николаевич"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), userId = Some(1)),
-      Teacher(Some(2), "Ковалева", "Ирина", Some("Львовна"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime), userId = Some(2))
+      Teacher(Some(8), "Ковалева1", "Ирина1", Some("Львовна1"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime)),
+      Teacher(Some(9), "Ковалева2", "Ирина2", Some("Львовна2"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime)),
+      Teacher(Some(10), "Ковалева3", "Ирина3", Some("Львовна3"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime)),
+      Teacher(Some(11), "Ковалева4", "Ирина4", Some("Львовна4"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime)),
+      Teacher(Some(12), "Ковалева5", "Ирина5", Some("Львовна5"), "elisaveta@gmail.com", new Date(formatter.parse("1993-03-01").getTime)),
+      Teacher(Some(13), "Полозков", "Юрий", Some("Владимирович"), "admin@gmail.com", new Date(formatter.parse("1993-03-01").getTime))
     ),
     TeacherGroup.models ++= Seq(
-      TeacherGroup(1, 1),
-      TeacherGroup(2, 2)
+      TeacherGroup(8, 1),
+      TeacherGroup(9, 2)
     )
   )
 

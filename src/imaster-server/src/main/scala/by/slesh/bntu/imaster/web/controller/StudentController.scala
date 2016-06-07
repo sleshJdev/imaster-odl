@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.{UserEssay, UserEssay$, Student}
+import by.slesh.bntu.imaster.persistence.{UserEssay, Student}
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
 
@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory
 class StudentController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  get("/") {
-    logger.info("get all students")
-    Student.getAll
-  }
+  get("/")(Student.getAllPublicStudents)
 
   get("/:id") {
     val id = params("id").toInt

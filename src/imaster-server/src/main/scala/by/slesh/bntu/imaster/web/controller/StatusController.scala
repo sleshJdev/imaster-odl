@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.Status
+import by.slesh.bntu.imaster.persistence.Status.getAll
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
 
@@ -10,8 +10,5 @@ import org.slf4j.LoggerFactory
 class StatusController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  get("/?") {
-    logger.debug("gettig all statuses")
-    Status.getAll
-  }
+  get("/public/?")(getAll)
 }

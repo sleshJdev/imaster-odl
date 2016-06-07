@@ -37,8 +37,8 @@ abstract class AbstractController
   }
 
   private def requestToString = {
-    var message: String = "%s url=%s, uri=%s, path=%s"
-      .format(request.getMethod, request.getRequestURL, request.getRequestURI, request.getPathInfo)
+    var message: String = "%s url=%s, context=%s, uri=%s, path=%s"
+      .format(request.getMethod, request.getRequestURL, request.getContextPath, request.getRequestURI, request.getPathInfo)
     val names = JavaConversions.enumerationAsScalaIterator(request.getParameterNames)
     if (names.nonEmpty) {
       message += ", parameters="

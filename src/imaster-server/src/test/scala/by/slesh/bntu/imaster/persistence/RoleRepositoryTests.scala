@@ -7,7 +7,7 @@ import scala.util.{Failure, Success}
   */
 class RoleRepositoryTests extends TestConfig {
   "A RoleRepository" should "returns not empty role list" in {
-    Role.getAll onComplete {
+    Role.getAllRoles onComplete {
       case Success(x) => x should not be empty
       case Failure(ex) => fail(ex)
     }
