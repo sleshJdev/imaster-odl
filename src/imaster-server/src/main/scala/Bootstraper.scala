@@ -11,13 +11,13 @@ class Bootstraper extends LifeCycle {
   override def init(context: ServletContext) {
     LOGGER.info("initialize context ... ")
     DatabaseSource.connect()
-    context.mount(new AppController, "/api/*")
-    context.mount(new StudentController, "/api/students/*")
-    context.mount(new EssayController, "/api/essays/*")
-    context.mount(new TeacherController, "/api/teachers/*")
-    context.mount(new DocumentController, "/api/documents/*")
-    context.mount(new StatusController, "/api/statuses/*")
-    context.mount(new RolesController, "/api/roles/*")
+    context.mount(new AppController, "/*")
+    context.mount(new StudentController, "/students/*")
+    context.mount(new EssayController, "/essays/*")
+    context.mount(new TeacherController, "/teachers/*")
+    context.mount(new DocumentController, "/documents/*")
+    context.mount(new StatusController, "/statuses/*")
+    context.mount(new RolesController, "/roles/*")
     LOGGER.info("initialize context ... done!")
   }
 
