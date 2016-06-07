@@ -17,6 +17,10 @@ function studentService($http) {
         updateStudent: updateStudent
     };
 
+    function getAllPublicStudents() {
+        return $http.get('/api/students/public')
+    }
+
     function getAllStudents() {
         return $http.get('/api/students');
     }

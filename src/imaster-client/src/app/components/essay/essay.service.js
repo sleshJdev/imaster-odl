@@ -26,16 +26,12 @@ function essayService(uploader, $http, $q) {
 
     function init(scope) {
         return $q.all([
-            getTeachers().then(function (response) {
-                scope.teachers = response.data;
-                scope.teachers.forEach(function (teacher) {
-                    teacher.fullName = teacher.firstName + ' ' + teacher.lastName + ' ' + teacher.patronymic;
-                });
-            }),
-            getStatuses().then(function (response) {
-                scope.statuses = response.data;
-            })
-        ]);
+            getTeachers(),
+            getStatuses()
+        ]).then(function (responses) {
+            scope.teachers = responses[0].data;
+            scope.statuses = response[1].data;
+        });
     }
 
     function addEssay(essay) {

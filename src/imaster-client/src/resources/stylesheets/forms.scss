@@ -30,6 +30,12 @@
   }
 }
 
+select[disabled="disabled"].form__control,
+input[disabled="disabled"].form__control,
+button[disabled="disabled"].form__control{
+  color: black;
+}
+
 @mixin row {
   line-height: 1.1em;
   margin-bottom: 15px;

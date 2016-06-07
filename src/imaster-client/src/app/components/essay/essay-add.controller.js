@@ -7,7 +7,7 @@ angular
     .controller('EssayAddController', EssayAddController);
 
 /** @ngInject */
-function EssayAddController(essayService, $state, $log) {
+function EssayAddController(essayService, essayCommon, authService, $state, $log) {
     'use strict';
 
     var vm = this;
@@ -22,9 +22,13 @@ function EssayAddController(essayService, $state, $log) {
     };
 
     (function () {
-        essayService.init(vm).then(function () {
+        essayCommon.initContext(vm).then(function () {
             vm.essay.teacher = vm.teachers[0];
             vm.essay.status = vm.statuses[0];
         });
+
+        vm.access = {
+            status: authService.isTeacher()
+        }
     })();
 }

@@ -10,9 +10,6 @@ angular
 function config($stateProvider, $urlRouterProvider, $httpProvider) {
     'use strict';
     $stateProvider
-        .state('/', {
-            url: '/'
-        })
         .state('login', {
             url: '/login',
             templateUrl: 'app/components/login/login.html',
@@ -95,6 +92,6 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
             }
         })
     ;
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/login');
     $httpProvider.interceptors.push('httpInterceptor');
 }

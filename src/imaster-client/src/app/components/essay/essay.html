@@ -11,7 +11,7 @@
         </div>
         <div class="form__row--inline">
             <label for="label-essay-status" class="form__control">Статус:</label>
-            <select id="label-essay-status" class="form__control" name="status"
+            <select id="label-essay-status" class="form__control" ng-disabled="!vm.access.status"
                     ng-options = "s as s.title  for s in vm.statuses track by s.id"
                     ng-model="vm.essay.status">
             </select>
@@ -19,7 +19,7 @@
         <div class="form__row--inline">
             <label for="label-essay-teacher" class="form__control">Проверяющий:</label>
             <select id="label-essay-teacher" class="form__control" name="teacher"
-                    ng-options = "t as t.fullName  for t in vm.teachers track by t.id"
+                    ng-options = "t as t | fullName  for t in vm.teachers track by t.id"
                     ng-model="vm.essay.teacher">
             </select>
         </div>
