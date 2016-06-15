@@ -90,8 +90,9 @@ function authService($http, $q, $log) {
     }
 
     function isAnonymous() {
-        return !self.authentication;
+        return !(self.authentication && self.authentication.token);
     }
+
 
     function getUserName() {
         return !!self.authentication ? self.authentication.username : "empty";

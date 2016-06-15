@@ -16,7 +16,7 @@
         </ul>
     </div>
     <div class="nav__user">
-        <span ng-show="vm.isAuthenticated()">Здравствуйте, <a ui-sref="users.private">{{vm.getUserName()}}!</a></span>
+        <span ng-show="vm.isAuthenticated()">Здравствуйте, <a ui-sref="users.private">{{vm.personalInfo | fullName}}!</a></span>
         <a class="button" ng-click="vm.logout()" ng-show="vm.isAuthenticated()">Выйти</a>
         <a class="button" ng-hide="vm.isAuthenticated() || vm.isLogging()" ui-sref="login">Войти</a>
     </div>

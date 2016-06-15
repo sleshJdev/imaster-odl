@@ -17,9 +17,11 @@ function NavController(authService, $state) {
         $state.go('login');
     };
 
-    init();
-
-    function init() {
+    (function () {
         authService.exportMethodsTo(vm);
-    }
+        var authData = authService.getAuthentication();
+        if(authData && authData.personalInfoJson) {
+            vm.personalInfo = authData.personalInfoJson;
+        }
+    })();
 }

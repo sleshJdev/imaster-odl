@@ -40,10 +40,9 @@ class AppController extends AbstractController {
   }
 
   def getAuthData(user: User, account: Account, token: Option[String]): Future[Option[AuthData]] = {
-    import org.json4s.jackson.Serialization.write
     if (token.isEmpty) Future(None)
     else resolveRole(user.id.get, account.loginAs) map {
-      case Some(x) => Some(AuthData(token.orNull, user.username, user.roles.map(_.name), Option(write(x))))
+      case Some(x) => Some(AuthData(token.orNull, user.username, user.roles.map(_.name), Option(x)))
       case _ => None
     }
   }

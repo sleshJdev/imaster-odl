@@ -13,4 +13,4 @@ import org.json4s.JObject
   case class AuthData(token: String,
                       username: String,
                       roles: List[String],
-                      personalInfoJson: Option[String])
+                      personalInfoJson: Option[Any])
