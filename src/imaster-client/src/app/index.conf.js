@@ -33,6 +33,18 @@ function config($stateProvider, $urlRouterProvider, $httpProvider) {
             controller: 'DocumentAddController',
             controllerAs: 'vm'
         })
+        .state('documents.edit', {
+            url: '/edit/:id',
+            templateUrl: 'app/components/document/document.html',
+            controller: 'DocumentEditController',
+            controllerAs: 'vm',
+            params: {id: null},
+            resolve: {
+                id: ['$stateParams', function ($stateParams) {
+                    return $stateParams.id;
+                }]
+            }
+        })
         .state('students', {
             abstract: true,
             url: '/students',

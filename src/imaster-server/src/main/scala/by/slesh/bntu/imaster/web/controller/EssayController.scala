@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.{UserEssay, Essay, UserEssay$}
+import by.slesh.bntu.imaster.persistence.{Essay, UserEssay}
 import by.slesh.bntu.imaster.util.FileService
 import by.slesh.bntu.imaster.web.AbstractController
 import org.json4s.JsonDSL._
@@ -38,5 +38,18 @@ class EssayController extends AbstractController with FileUploadSupport {
       UserEssay.add(userId, essayId)
       Future(("userId" -> userId) ~ ("essayId" -> essayId))
     }
+  }
+
+  put("/?"){
+    logger.debug("updating a essay")
+    val essay = parse(params("data")).extract[Essay]
+    val fileItem = fileParams("file")
+    fileItem.write(FileService.create(essay.fileId))
+    Essay.update(essay)
+  }
+
+  delete("/:id") {
+    val id = params("id").toInt
+    Essay.delete(id)
   }
 }

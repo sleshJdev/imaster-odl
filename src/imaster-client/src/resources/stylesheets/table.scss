@@ -10,7 +10,7 @@
   }
   tbody tr {
     margin: 0;
-    &:hover {
+    .hover:hover {
       cursor: pointer;
       background-color: darken($color--white, 5%);
     }

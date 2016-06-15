@@ -26,9 +26,10 @@
                 <td>{{document.title}}</td>
                 <td>{{document.description}}</td>
                 <td>{{document.loadedDate}}</td>
-                <td>{{document.teacher.firstName + ' ' + document.teacher.lastName + ' ' + document.teacher.patronymic}}</td>
+                <td>{{document.teacher.username}}</td>
                 <td>{{document.subject.title}}</td>
-                <td><span ui-sref="documents.edit({id: document.id})" class="icon--file-dowload" title="Изменить"></span></td>
+                <td class="icon--margin"><span ui-sref="documents.edit({id: document.id})" class="icon--edit" class="icon--margin" title="Изменить"></span></td>
+                <td><span ui-sref="documents.edit({id: document.id})" class="icon--file-dowload" class="icon--margin" title="Скачать"></span></td>
             </tr>
         </tbody>
     </table>

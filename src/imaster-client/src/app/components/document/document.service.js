@@ -13,7 +13,8 @@ function documentService($http) {
     return {
         getAllDocuments: getAllDocuments,
         getDocumentById: getDocumentById,
-        addDocument: addDocument
+        addDocument: addDocument,
+        getSubjects: getSubjects
     };
 
     function getAllDocuments() {
@@ -26,5 +27,9 @@ function documentService($http) {
 
     function getDocumentById(id) {
         return $http.get('/api/documents/' + id);
+    }
+
+    function getSubjects(){
+        return $http.get('/api/subjects');
     }
 }

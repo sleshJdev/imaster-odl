@@ -18,6 +18,7 @@ class Bootstraper extends LifeCycle {
     context.mount(new DocumentController, "/documents/*")
     context.mount(new StatusController, "/statuses/*")
     context.mount(new RolesController, "/roles/*")
+    context.mount(new SubjectsController, "/subjects/*")
     LOGGER.info("initialize context ... done!")
   }
 

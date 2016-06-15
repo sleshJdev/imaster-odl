@@ -11,9 +11,10 @@
         </div>
         <div class="form__row--inline">
             <label for="label-essay-status" class="form__control">Статус:</label>
-            <select id="label-essay-status" class="form__control" ng-disabled="!vm.access.status"
-                    ng-options = "s as s.title  for s in vm.statuses track by s.id"
-                    ng-model="vm.essay.status">
+            <select id="label-essay-status" class="form__control" name="status"
+                    ng-options = "s as s.title for s in vm.statuses track by s.id"
+                    ng-model="vm.essay.status"
+                    ng-disabled="vm.isStudent()">
             </select>
         </div>
         <div class="form__row--inline">
@@ -28,7 +29,7 @@
             <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.description"></textarea>
         </div>
         <div class="form__row">
-            <button ng-click="vm.save()" class="block--right button--success">Сохранить</button>
+            <button ng-click="vm.submit()" class="block--right button--success">{{vm.submitText}}</button>
             <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>
         </div>
     </form>

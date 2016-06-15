@@ -131,13 +131,13 @@ object DatabaseSource {
     ),
 
     Essay.models ++= Seq(
-      Essay(Some(1), "Информационный язык как средство представления информации", "file-id-1", statusId =  1),
-      Essay(Some(2), "Основные способы представления информации и команд в компьютере", "file-id-2", statusId =  2),
-      Essay(Some(3), "Современные мультимедийные технологии", "file-id-3", statusId =  3),
-      Essay(Some(4), "Кейс-технологии как основные средства разработки программных систем", "file-id-4", statusId =  4),
-      Essay(Some(5), "Современные технологии и их возможности5", "file-id-5", statusId =  5),
-      Essay(Some(6), "Сканирование и системы, обеспечивающие распознавание символов", "file-id-6", statusId =  6),
-      Essay(Some(7), "Всемирная сеть Интернет: доступы к сети и основные каналы связи", "file-id-7", statusId =  1)
+      Essay(Some(1), "Информационный язык как средство представления информации", "file-id-1", statusId =  Some(1)),
+      Essay(Some(2), "Основные способы представления информации и команд в компьютере", "file-id-2", statusId =  Some(2)),
+      Essay(Some(3), "Современные мультимедийные технологии", "file-id-3", statusId =  Some(3)),
+      Essay(Some(4), "Кейс-технологии как основные средства разработки программных систем", "file-id-4", statusId =  Some(4)),
+      Essay(Some(5), "Современные технологии и их возможности5", "file-id-5", statusId =  Some(5)),
+      Essay(Some(6), "Сканирование и системы, обеспечивающие распознавание символов", "file-id-6", statusId =  Some(6)),
+      Essay(Some(7), "Всемирная сеть Интернет: доступы к сети и основные каналы связи", "file-id-7", statusId =  Some(1))
     ),
     Student.models ++= Seq(
       Student(Some(1), "Андреев", "Александр", Some("Александрович"), "alexander@gmail.com",  new Date(formatter.parse("1993-01-01").getTime), groupId = Some(1), personalCardId = "e88bb9109c62fc1c69da5b17679514c9a051158b"),

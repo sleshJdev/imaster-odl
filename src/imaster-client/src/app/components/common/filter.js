@@ -1,5 +1,5 @@
 /**
- * Created by slesh on 6/8/16.
+ * @author slesh
  */
 
 (function () {
@@ -11,7 +11,10 @@
     /** @ngInject */
     function fullName() {
         return function (user) {
-            return user.firstName + ' ' + user.lastName + ' ' + user.patronymic;
+            if (user) {
+                return user.firstName + ' ' + user.lastName + ' ' + user.patronymic;
+            }
+            return "";
         }
     }
 })();

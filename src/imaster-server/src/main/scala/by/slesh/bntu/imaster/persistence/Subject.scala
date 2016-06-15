@@ -2,6 +2,7 @@ package by.slesh.bntu.imaster.persistence
 
 import slick.lifted.TableQuery
 import slick.driver.H2Driver.api._
+import DatabaseSource._
 
 /**
   * @author slesh
@@ -21,5 +22,5 @@ class Subjects(tag: Tag) extends Table[Subject](tag, "subject") {
 object Subject {
   val models = new TableQuery(new Subjects(_))
 
-
+  def getAllSubjects = db.run(models.result)
 }

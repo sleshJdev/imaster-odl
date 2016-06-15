@@ -10,5 +10,5 @@ import org.slf4j.LoggerFactory
 class StatusController extends AbstractController {
   override val logger = LoggerFactory.getLogger(getClass)
 
-  get("/public/?")(getAll)
+  get("/?")(getAll)
 }

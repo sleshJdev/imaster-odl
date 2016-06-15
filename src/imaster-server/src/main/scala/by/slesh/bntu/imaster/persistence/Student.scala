@@ -53,13 +53,9 @@ object Student extends Repositorie with StudentExtensions {
   val models = TableQuery(new Students(_))
 
   def getByUserId(userId: Int) = db.run(models.filter(_.id === userId).result.headOption)
-
   def getById(id: Int) = db.run(models.filter(_.id === id).joinEssay.result).map(_.toStudent.headOption)
-
   def getAllPublicStudents = db.run(models.result)
-
   def getAll = db.run(models.joinEssay.result).map(_.toStudent)
-
   def add(student: Student) = db.run((models returning models.map(_.id)) += student).map(_.toInt)
 }
 

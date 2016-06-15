@@ -4,8 +4,8 @@
       <pattern>*** \(%logger{30}\)%green(%X{debugId}) %msg%n</pattern>
     </encoder>
   </appender>
-  <logger name="scala.slick.jdbc.JdbcBackend.statement" level="DEBUG" />
-  <root level="debug">
+  <logger name="scala.slick.jdbc.JdbcBackend.statement" level="debug" />
+  <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

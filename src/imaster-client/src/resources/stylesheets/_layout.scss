@@ -107,6 +107,11 @@ a {
   background: url("../images/file-download.png");
 }
 
+.icon--file-edit {
+  @extend .icon;
+  background: url("../images/file-edit.png");
+}
+
 .block--center {
   margin: 0 auto;
 }

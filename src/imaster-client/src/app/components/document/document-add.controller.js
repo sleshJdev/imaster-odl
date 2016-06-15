@@ -7,15 +7,14 @@ angular
     .controller('DocumentAddController', DocumentAddController);
 
 /** @ngInject */
-function DocumentAddController(documentService, $state) {
+function DocumentAddController(documentCommonService) {
     'use strict';
 
     var vm = this;
+    vm.submitText = 'Добавить документ';
     vm.student = null;
 
-    vm.save = function () {
-        documentService.addDocument(vm.student).then(function () {
-            $state.go('documents');
-        });
-    };
+    (function () {
+        documentCommonService.initContext(vm);
+    })();
 }

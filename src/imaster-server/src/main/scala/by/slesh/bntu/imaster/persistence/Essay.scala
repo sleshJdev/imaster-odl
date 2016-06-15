@@ -12,7 +12,7 @@ case class Essay(var id: Option[Int],
                  var title: String,
                  var fileId: String,
                  var description: Option[String] = None,
-                 var statusId: Int,
+                 var statusId: Option[Int],
                  var status: Option[Status] = None)
 
 class Essays(tag: Tag) extends Table[Essay](tag, "essay") {
@@ -23,7 +23,7 @@ class Essays(tag: Tag) extends Table[Essay](tag, "essay") {
   def statusId = column[Int]("status_id")
   def status = foreignKey("fk_essay__status_id__status_id", statusId, Status.models)(_.id)
 
-  type Data = (Option[Int], String, String, Option[String], Int)
+  type Data = (Option[Int], String, String, Option[String], Option[Int])
 
   def toEssay: Data => Essay = {
     case (id, title, fileId, description, statusId) =>
@@ -31,25 +31,25 @@ class Essays(tag: Tag) extends Table[Essay](tag, "essay") {
   }
 
   def fromEssay: PartialFunction[Essay, Option[Data]] = {
-    case Essay(id, title, fileId, description, statusId, _) =>
-      Option((id, title, fileId, description, statusId))
+    case Essay(id, title, fileId, description, statusId, status) =>
+      Option((id, title, fileId, description, if(statusId.isDefined) statusId else status.get.id))
   }
 
-  override def * = (id.?, title, fileId, description, statusId) <> (toEssay, fromEssay)
+  override def * = (id.?, title, fileId, description, statusId.?) <> (toEssay, fromEssay)
 }
 
 object Essay extends Repositorie with EssayExtensions {
   val models = TableQuery(new Essays(_))
 
-  def getAll: Future[Seq[Essay]] = {
-    db.run(models.joinStatus.result).map(_.toEssay)
-  }
-  def getById(id: Int): Future[Option[Essay]] = {
-    db.run(models.filter(_.id === id).joinStatus.result).map(_.toEssay.headOption)
-  }
-  def add(essay: Essay): Future[Int] = {
-    var query = models returning models.map(_.id) += essay
-    db.run(query).map(_.toInt)
+  def update(essay: Essay) = db.run(models filter(_.id === essay.id) update essay)
+  def getAll: Future[Seq[Essay]] = db.run(models.joinStatus.result).map(_.toEssay)
+  def getById(id: Int) = db.run(models.filter(_.id === id).joinStatus.result).map(_.toEssay.headOption)
+  def add(essay: Essay) = db.run(models returning models.map(_.id) += essay).map(_.toInt)
+  def delete(id: Int) = {
+    db.run(DBIO.seq(
+      UserEssay.models.filter(_.essayId === id).delete,
+      models.filter(_.id === id).delete)
+    )
   }
 }
 
