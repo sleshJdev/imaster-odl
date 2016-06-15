@@ -11,6 +11,8 @@ var cleanCss = require('gulp-clean-css');
 var sass = require('gulp-sass');
 var jshint = require('gulp-jshint');
 var minify = require('gulp-minify');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
 var inject = require('gulp-inject');
 var concat = require('gulp-concat');
 var filter = require('gulp-filter');
@@ -22,18 +24,14 @@ var sourcemaps = require('gulp-sourcemaps');
 var ngAnnotate = require('gulp-ng-annotate');
 var browserSync = require('browser-sync').create();
 
-var filterNotMinified = function () {
-    return filter(['**/*min.js'], {restore: false});
-};
-
 var grabStyles = function () {
     return gulp.src(conf.styles)
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('style-min.css'))
+        .pipe(concat('style.min.css'))
         .pipe(cleanCss())
-        .pipe(sourcemaps.write({includeContent: true}))
-        .pipe(gulp.dest(conf.target))
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(gulp.dest(path.join(conf.target, 'app')))
         .pipe(browserSync.stream({match: '**/*.css'}));
 };
 
@@ -45,20 +43,22 @@ var grabScripts = function () {
         .pipe(angularFileSort())
         .pipe(ngAnnotate(conf.ngAnnotateOptions))
         .pipe(concat('script.js'))
-        //.pipe(minify())
-        //.pipe(filterNotMinified())
-        .pipe(sourcemaps.write({includeContent: true}))
-        .pipe(gulp.dest(conf.target))
+        .pipe(uglify({preserveComments: 'license'}))
+        .pipe(rename({extname: '.min.js'}))
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(gulp.dest(path.join(conf.target, 'app')))
         .pipe(browserSync.stream({match: '**/*.js'}));
 };
 
 var grabTemplates = function () {
     return gulp.src(conf.templates)
+        .pipe(sourcemaps.init())
         .pipe(htmlmin(conf.htmlminOptions))
         .pipe(angularTemplateCache(conf.templateCacheOptions.file, conf.templateCacheOptions.options))
-        .pipe(minify())
-        .pipe(filterNotMinified())
-        .pipe(gulp.dest(conf.target))
+        .pipe(uglify({preserveComments: 'license'}))
+        .pipe(rename({extname: '.min.js'}))
+        .pipe(sourcemaps.write('./maps'))
+        .pipe(gulp.dest(path.join(conf.target, 'app')))
         .pipe(browserSync.stream({match: '**/*.js'}));
 };
 
@@ -66,7 +66,7 @@ var vendor = function () {
     return gulp.src('./bower.json')
         .pipe(mainBowerFiles())
         .pipe(concat('vendor.js'))
-        .pipe(gulp.dest(conf.target));
+        .pipe(gulp.dest(path.join(conf.target, 'app')));
 };
 
 gulp.task('grab-styles', grabStyles);
