@@ -11,12 +11,12 @@ import scala.concurrent.Future
   * @author slesh
   */
 case class Document(var id: Option[Int],
-                    var title: String,
-                    var fileId: String,
+                    var title: Option[String],
+                    var fileId: Option[String],
                     var description: Option[String],
-                    var loadedDate: Date,
-                    var loadedBy: Int,
-                    var subjectId: Int,
+                    var loadedDate: Option[Date],
+                    var loadedBy: Option[Int],
+                    var subjectId: Option[Int],
                     var teacher: Option[User] = None,
                     var subject: Option[Subject] = None)
 
@@ -35,11 +35,11 @@ class Documents(tag: Tag) extends Table[Document](tag, "document"){
   type Data = (Option[Int], String, String, Option[String], Date, Int, Int)
   def toDocument: Data => Document = {
     case (id, title, fileId, description, loadedDate, loadedById, subjectId) =>
-      Document(id, title, fileId, description, loadedDate, loadedById, subjectId)
+      Document(id, Option(title), Option(fileId), description, Option(loadedDate), Option(loadedById), Option(subjectId))
   }
   def fromDocument: PartialFunction[Document, Option[Data]] = {
-    case Document(id, title, fileId, description, loadedDate, loadedById, subjectId, _, _) =>
-      Option((id, title, fileId, description, loadedDate, loadedById, subjectId))
+    case Document(id, title, fileId, description, loadedDate, loadedById, subjectId, teacher, subject) =>
+      Option((id, title.get, fileId.get, description, loadedDate.get, loadedById.getOrElse(teacher.get.id.get), subjectId.getOrElse(subject.get.id.get)))
   }
   override def * = (id.?, title, fileId, description, loadedDate, loadedById, subjectId) <> (toDocument, fromDocument)
 }

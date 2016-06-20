@@ -17,11 +17,14 @@ function NavController(authService, $state) {
         $state.go('login');
     };
 
+    vm.getPersonalInfo = function () {
+        var authData = authService.getAuthentication();
+        if (authData && authData.personalInfoJson) {
+            return authData.personalInfoJson;
+        }
+    };
+
     (function () {
         authService.exportMethodsTo(vm);
-        var authData = authService.getAuthentication();
-        if(authData && authData.personalInfoJson) {
-            vm.personalInfo = authData.personalInfoJson;
-        }
     })();
 }

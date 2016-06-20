@@ -85,9 +85,9 @@ object DatabaseSource {
       Status(Some(6), "НЕДЕЙСТВИТЕЛЕН", None)
     ),
     Document.models ++= Seq(
-      Document(Some(1), "Методическое пособие по высшей математике", "file_1", Some("Методическое пособие по высшей математике"), new Date(formatter.parse("2016-05-22").getTime), 8, 6, None),
-      Document(Some(2), "Физика", "file_2", Some("Физика для 2-3 курсов"), new Date(formatter.parse("2016-04-22").getTime), 8, 3, None),
-      Document(Some(3), "Автоматизация проектирование", "file_2", Some("Автоматизация проектирование"), new Date(formatter.parse("2016-03-22").getTime), 8, 4, None)
+      Document(Some(1), Some("Методическое пособие по высшей математике"), Some("file_1"), Some("Методическое пособие по высшей математике"), Some(new Date(formatter.parse("2016-05-22").getTime)), Some(8), Some(6), None),
+      Document(Some(2), Some("Физика"), Some("file_2"), Some("Физика для 2-3 курсов"), Some(new Date(formatter.parse("2016-04-22").getTime)), Some(8), Some(3), None),
+      Document(Some(3), Some("Автоматизация проектирование"), Some("file_2"), Some("Автоматизация проектирование"), Some(new Date(formatter.parse("2016-03-22").getTime)), Some(8), Some(4), None)
     ),
     User.models ++= Seq(
       User(Some(1), "student1", "studentp"),

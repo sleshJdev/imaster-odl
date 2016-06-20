@@ -1,9 +1,12 @@
 package by.slesh.bntu.imaster.web.controller
 
+import java.util.Date
+
 import by.slesh.bntu.imaster.persistence.{UserEssay, Essay, Document}
 import by.slesh.bntu.imaster.util.FileService
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
+import org.json4s.JsonDSL._
 
 import scala.concurrent.Future
 
@@ -22,14 +25,12 @@ class DocumentController extends AbstractController{
 
   post("/?"){
     logger.debug("creating a new document")
-    val document = (parsedBody merge parse("""{"fileId": ""}""")).extract[Document]
+    val document = parse(params("data")).extract[Document]
     val fileItem = fileParams("file")
-    document.fileId = fileItem.getName + "_" + fileItem.getName.hashCode
-    fileItem.write(FileService.create(document.fileId))
-//    Document.add(document) map { documentId =>
-//      val userId = userDetails.id
-//      TeacherD.add(userId, documentId)
-//      Future(("userId" -> userId) ~ ("essayId" -> documentId))
-//    }
+    document.loadedDate = Some(new java.sql.Date(System.currentTimeMillis()))
+    document.fileId = Option(fileItem.getName + "_" + fileItem.getName.hashCode)
+    document.loadedBy = Some(userDetails.id)
+    fileItem.write(FileService.create(document.fileId.get))
+    Document.add(document)
   }
 }

@@ -7,14 +7,20 @@ angular
     .service('documentService', documentService);
 
 /** @ngInject */
-function documentService($http) {
+function documentService($http, uploader) {
     'use strict';
+
+    var self = {};
+
+    self.uploader = uploader.create('/api/documents');
 
     return {
         getAllDocuments: getAllDocuments,
         getDocumentById: getDocumentById,
         addDocument: addDocument,
-        getSubjects: getSubjects
+        updateDocument: updateDocument,
+        getSubjects: getSubjects,
+        uploader: self.uploader
     };
 
     function getAllDocuments() {
@@ -22,14 +28,18 @@ function documentService($http) {
     }
 
     function addDocument(document) {
-        return $http.post('/api/documents', document);
+        return self.uploader.save(document);
+    }
+
+    function updateDocument(document) {
+        return self.uploader.update(document);
     }
 
     function getDocumentById(id) {
         return $http.get('/api/documents/' + id);
     }
 
-    function getSubjects(){
-        return $http.get('/api/subjects');
+    function getSubjects() {
+        return $http.get('/api/subjects', {cache: true});
     }
 }

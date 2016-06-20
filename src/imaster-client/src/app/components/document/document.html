@@ -16,16 +16,16 @@
                 ng-model="vm.document.subject">
             </select>
         </div>
-        <div class="form__row--inline">
+        <div ng-hide="vm.isAdd" class="form__row--inline">
             <label for="label-document-file-new" class="form__control">Документ:</label>
-            <input id="label-document-file-new" type="button" class="form__control" value="Скачать"/>
+            <input id="label-document-file-new" type="button" class="form__control" ng-click="vm.download()" value="Скачать"/>
         </div>
         <div class="form__row--inline">
-            <label for="label-document-file" class="form__control">Новый документ:</label>
-            <input id="label-document-file" type="file" class="form__control"/>
+            <label for="label-document-file" class="form__control">{{vm.documentText}}:</label>
+            <input id="label-document-file" type="file" class="form__control" nv-file-select uploader="vm.uploader"/>
         </div>
         <div class="form__row">
-            <button ng-click="vm.save()" class="block--right button--success">{{vm.submitText}}</button>
+            <button ng-click="vm.submit(vm.document)" class="block--right button--success">{{vm.submitText}}</button>
             <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>
         </div>
     </form>

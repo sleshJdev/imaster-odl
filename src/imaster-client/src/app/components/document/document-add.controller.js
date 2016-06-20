@@ -11,10 +11,14 @@ function DocumentAddController(documentCommonService) {
     'use strict';
 
     var vm = this;
+    vm.isAdd = true;
+    vm.documentText = 'Документ';
     vm.submitText = 'Добавить документ';
-    vm.student = null;
+    vm.document = {};
 
     (function () {
-        documentCommonService.initContext(vm);
+        documentCommonService.initContext(vm).then(function () {
+            vm.document.subject = vm.subjects[0];
+        });
     })();
 }
