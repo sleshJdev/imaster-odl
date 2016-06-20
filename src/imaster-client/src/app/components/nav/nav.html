@@ -11,8 +11,9 @@
             <li ng-show="vm.isAdmin()"><a ui-sref="teachers">Преподаватели</a></li>
             <li ng-show="vm.isAdmin()"><a ui-sref="users">Пользователи</a></li>
             <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="documents.list">Справочная литерату</a></li>
-            <!--<li ng-show="vm.isStudent()"><a ui-sref="essays.add">Реферат</a></li>-->
-            <li ng-show="vm.isStudent()"><a ui-sref="essays.list">Список работ</a></li>
+            <li ng-show="vm.isTeacher() || vm.isStudent()"><a ui-sref="essays.list">
+                {{vm.isTeacher() ? 'Список рефератов': 'Список работ'}}
+            </a></li>
         </ul>
     </div>
     <div class="nav__user">
