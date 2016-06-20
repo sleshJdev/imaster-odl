@@ -1,0 +1,36 @@
+<div class="essay">
+    <form class="form--default">
+        <h3 class="form__legend">Реферат</h3>
+        <div class="form__row--inline">
+            <label for="label-essay-title" class="form__control">Тема:</label>
+            <input id="label-essay-title" type="text" class="form__control" ng-model="vm.essay.title">
+        </div>
+        <div class="form__row--inline">
+            <label for="label-essay-file" class="form__control">Реферат:</label>
+            <input id="label-essay-file" type="file" class="form__control" nv-file-select uploader="vm.uploader"/>
+        </div>
+        <div class="form__row--inline">
+            <label for="label-essay-status" class="form__control">Статус:</label>
+            <select id="label-essay-status" class="form__control" name="status"
+                    ng-options = "s as s.title for s in vm.statuses track by s.id"
+                    ng-model="vm.essay.status"
+                    ng-disabled="vm.isStudent()">
+            </select>
+        </div>
+        <div class="form__row--inline">
+            <label for="label-essay-teacher" class="form__control">Проверяющий:</label>
+            <select id="label-essay-teacher" class="form__control" name="teacher"
+                    ng-options = "t as t | fullName  for t in vm.teachers track by t.id"
+                    ng-model="vm.essay.teacher">
+            </select>
+        </div>
+        <div class="form__row--inline">
+            <label for="label-essay-comment" class="form__control">Комментарий:</label>
+            <textarea id="label-essay-comment" class="form__control" ng-model="vm.essay.description"></textarea>
+        </div>
+        <div class="form__row">
+            <button ng-click="vm.submit()" class="block--right button--success">{{vm.submitText}}</button>
+            <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>
+        </div>
+    </form>
+</div>

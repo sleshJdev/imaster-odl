@@ -15,14 +15,12 @@ object JettyLauncher {
     logger.info("starting server on port: {}", port)
     val server = new Server(port)
     val context = new WebAppContext()
-    context setContextPath "/"
+    context setContextPath "/api"
     context.setResourceBase("src/main/webapp")
     context.setInitParameter(ScalatraListener.LifeCycleKey, "Bootstraper")
     context.addEventListener(new ScalatraListener)
-    context.addServlet(classOf[DefaultServlet], "/")
-
+    context.addServlet(classOf[DefaultServlet], "/api")
     server.setHandler(context)
-
     server.start()
     server.join()
   }

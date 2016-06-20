@@ -1,0 +1,133 @@
+$font-stack: Helvetica, sans-serif;
+
+$color--black: #001f3f;
+$color--blue: #0074d9;
+$color--aqua: #7fdbff;
+$color--olive: #3d9970;
+//$color--green: #2ecc40;
+$color--green: #2c802c;
+$color--lime: #01ff70;
+$color--yellow: #ff851b;
+$color--orange: #ffdc00;
+$color--red: #ff4136;
+$color--marron: #85144b;
+$color--fuchsia: #f012be;
+$color--purple: #b10dc9;
+$color--gray: #aaaaaa;
+$color--silver: #dddddd;
+$color--orange: #ff851b;
+$color--white: #ffffff;
+
+$color--primary: #a39d49;
+$color--info: $color--blue;
+$color--success: $color--green;
+$color--warning: $color--yellow;
+$color--error: $color--red;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  border: none;
+}
+
+@function f-width($columns, $total: 12) {
+  @return ($columns / $total) * 100%
+}
+
+$width--1: f-width(1);
+$width--2: f-width(2);
+$width--3: f-width(3);
+$width--4: f-width(4);
+$width--5: f-width(5);
+$width--6: f-width(6);
+$width--7: f-width(7);
+$width--8: f-width(8);
+$width--9: f-width(9);
+$width--10: f-width(10);
+$width--11: f-width(11);
+$width--12: f-width(12);
+
+body {
+  font: 100% $font-stack;
+  color: #435363;
+  background-color: #ffffff;
+}
+
+a {
+  display: inline-block;
+  color: #a39d49;
+  padding: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.list--group {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+}
+
+.icon {
+  cursor: pointer;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+.icon--add {
+  @extend .icon;
+  background: url("../images/add.png");
+}
+
+.icon--edit {
+  @extend .icon;
+  background: url("../images/edit.png");
+}
+
+.icon--remove {
+  @extend .icon;
+  background: url("../images/remove.png");
+}
+
+.icon--file-add {
+  @extend .icon;
+  background: url("../images/file-add.png");
+}
+
+.icon--file-remove {
+  @extend .icon;
+  background: url("../images/file-remove.png");
+}
+
+.icon--file-dowload {
+  @extend .icon;
+  background: url("../images/file-download.png");
+}
+
+.icon--file-edit {
+  @extend .icon;
+  background: url("../images/file-edit.png");
+}
+
+.block--center {
+  margin: 0 auto;
+}
+
+.block--left {
+  float: left;
+}
+
+.block--right {
+  float: right;
+}
+
+.content {
+  width: $width--10;
+  min-height: 600px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 15px auto;
+}

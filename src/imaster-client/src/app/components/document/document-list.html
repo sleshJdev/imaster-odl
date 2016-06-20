@@ -1,0 +1,36 @@
+<div class="block--center">
+    <table class="table">
+        <caption>
+            <h3 class="form__legend">Справочная литература</h3>
+            <ul class="list--group block--right">
+                <li><a ui-sref="documents.add" class="icon--file-add" title="Добавить"></a></li>
+                <li><a ng-click="vm.remove()" class="icon--file-remove" title="Удалить"></a></li>
+            </ul>
+        </caption>
+        <thead>
+            <tr>
+                <th class="table__column--numbering">#</th>
+                <th class="table__column--checking"></th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Добавлен</th>
+                <th>Добавил</th>
+                <th>Тематика</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="document in vm.documentList">
+                <td>{{$index + 1}}</td>
+                <td><input type="checkbox" ng-model="document.checked"></td>
+                <td>{{document.title}}</td>
+                <td>{{document.description}}</td>
+                <td>{{document.loadedDate}}</td>
+                <td>{{document.teacher.username}}</td>
+                <td>{{document.subject.title}}</td>
+                <td class="icon--margin"><span ui-sref="documents.edit({id: document.id})" class="icon--edit" class="icon--margin" title="Изменить"></span></td>
+                <td><span ui-sref="documents.edit({id: document.id})" class="icon--file-dowload" class="icon--margin" title="Скачать"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

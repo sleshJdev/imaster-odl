@@ -1,41 +1,38 @@
 package by.slesh.bntu.imaster.persistence
 
-import by.slesh.bntu.imaster.persistence.Models.UserExtended
-import by.slesh.bntu.imaster.persistence.Repositories._
-import org.scalatest._
-import scala.util.Success
-import scala.util.Failure
+import scala.util.{Failure, Success}
 
 /**
   * @author yauheni.putsykovich
   */
 class UserRepositoryTests extends TestConfig {
-  val repository = new UserRepository
+  "A UserRepository" should "returns all users with appropriated roles" in {
+    User.getAll onComplete {
+      case Success(list) =>
+        list should not be empty
+        forAll(list) { user => user.roles should not be empty }
+      case Failure(ex) => fail(ex)
+    }
+  }
 
-  "getUserById method" should "returns User instance by existing id" in {
-    val userId = 1
-    repository getById userId onComplete {
-      case Success(Some(UserExtended(user, roles))) =>
+  it should "returns user by existing id" in {
+    val userId = 1//student
+    User getById userId onComplete {
+      case Success(Some(user)) =>
         assertResult(userId)(user.id.get)
-        roles should not be empty
+        user.roles should have length 2
       case Failure(ex) => fail(ex)
       case _ => fail("user with id %d not found" format userId)
     }
   }
 
-  "getUserByName method" should "returns valid User instance by username" in {
+  it should "returns valid user by username" in {
     val username = "student"
-    repository getUserByName username onComplete {
-      case Success(Some(x)) => assertResult(username)(x.username)
+    User getUserByName username onComplete {
+      case Success(Some(user)) => assertResult(username)(user.username)
       case Failure(ex) => fail(ex)
       case _ => fail("user with name %s not found" format username)
     }
   }
 
-  "getAll method" should "returns all users with appropriated roles" in {
-    repository.getAll onComplete {
-      case Success(list) => list should not be empty
-      case Failure(ex) => fail(ex)
-    }
-  }
 }

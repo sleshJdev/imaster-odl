@@ -1,31 +1,37 @@
 package by.slesh.bntu.imaster.persistence
 
-import by.slesh.bntu.imaster.persistence.Models.Student
-import by.slesh.bntu.imaster.persistence.Repositories.StudentRepository
-import org.scalatest._
-import scala.util.Success
-import scala.util.Failure
+import java.lang.System.currentTimeMillis
+import java.sql.Date
+
+import scala.util.{Failure, Success}
 
 /**
   * @author slesh
   */
 class StudentRepositoryTests extends TestConfig {
-  val repository = new StudentRepository
+  "A StudentRepository " should "returns not empty student list" in {
+    Student.getAll onComplete {
+      case Success(list) => list should not be empty
+      case Failure(ex) => fail(ex)
+      case _ => fail()
+    }
+  }
 
-  "getStudentById method" should "returns valid Student instance with given id" in {
+  it should "returns valid student with given id" in {
     val studentId = 1
-    repository.getById(studentId) onComplete {
+    Student.getById(studentId) onComplete {
       case Success(Some(student)) => student.id.get shouldEqual studentId
       case Failure(ex) => fail(ex)
       case _ => fail()
     }
   }
 
-  "addStudent method" should "insert Student into table" in {
-    val student = Student(None, "test", "test", Some("test"), 0)
-    repository.add(student) onComplete {
+  it should "insert student and returns his id " in {
+    val student = Student(None, "test", "test", Some("test"), "test@gmai.com", new Date(currentTimeMillis()), personalCardId = "test")
+    Student.add(student) onComplete {
       case Success(id) => id should be > 0
       case Failure(ex) => fail(ex)
+      case _ => fail()
     }
   }
 }

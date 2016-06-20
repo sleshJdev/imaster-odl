@@ -1,29 +1,37 @@
-import by.slesh.bntu.imaster.persistence.DatabaseConnector
+import by.slesh.bntu.imaster.persistence.DatabaseSource._
 import org.scalatest._
+
+import scala.concurrent.Await.ready
+import scala.concurrent.Awaitable
+import scala.concurrent.duration.DurationInt
 
 /**
   * @author yauheni.putsykovich
   */
 class DatabaseConnectorTests extends FlatSpec with BeforeAndAfter {
-  "The Database connection" should "establish" in {
-    DatabaseConnector.initialize()
+  protected implicit def executor = scala.concurrent.ExecutionContext.Implicits.global
+
+  def runAsyncAsPlain(await: Awaitable[Any]) = ready(await, 60 second)
+
+  "The Database connection" should "establish connection" in {
+    connect()
   }
 
   it should "dropped database schema" in {
-    DatabaseConnector.dropSchema()
+    runAsyncAsPlain(dropSchema())
   }
 
   it should "create database schema" in {
-    DatabaseConnector.createSchema()
+    runAsyncAsPlain(createSchema())
   }
 
   it should "inser data to table" in {
-    DatabaseConnector.fillData()
+    runAsyncAsPlain(fillData())
   }
 
   it should "release all connection" in {
-    DatabaseConnector.release()
+    release()
   }
 
-  override protected def after(fun: => Any): Unit = DatabaseConnector.release()
+  override protected def after(fun: => Any): Unit = release()
 }

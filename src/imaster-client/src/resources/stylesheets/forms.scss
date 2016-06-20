@@ -1,0 +1,104 @@
+@import "layout";
+
+.form {
+  padding: 25px;
+  border: 1px solid $color--primary;
+  button {
+    margin-top: 2em;
+  }
+}
+
+.form__legend {
+  display: block;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-bottom: 1px solid $color--black;
+}
+
+.form__control {
+  white-space: nowrap;
+  padding: 8px 5px;
+  display: inline-block;
+  vertical-align: middle;
+  label {
+    font-weight: bold;
+  }
+  :not(label).form__control {
+    font-size: 5em;
+  }
+}
+
+select[disabled="disabled"].form__control,
+input[disabled="disabled"].form__control,
+button[disabled="disabled"].form__control{
+  color: black;
+}
+
+@mixin row {
+  line-height: 1.1em;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.form__row {
+  @include row;
+  .form__control {
+    text-align: left;
+    width: $width--12;
+  }
+}
+
+.form__row--inline {
+  @include row;
+  label.form__control {
+    text-align: left;
+    width: $width--4;
+  }
+  :not(label).form__control {
+    width: $width--8;
+  }
+}
+
+input[type="button"].form__control,
+button.form__control {
+  cursor: pointer;
+  color: $color--white;
+  background-color: $color--blue;
+}
+
+input[type="text"].form__control,
+input[type="password"].form__control{
+  text-align: center;
+  border-bottom: 1px solid $color--green;
+  &:focus {
+    background-color: $color--primary;
+    color: $color--white;
+    border-bottom: 1px solid $color--white;
+  }
+}
+
+textarea.form__control {
+  height: 20em;
+  border: 1px solid $color--green;
+  &:focus {
+    background-color: $color--primary;
+    color: $color--white;
+    border: 1px solid $color--white;
+  }
+}
+
+.form--login {
+  @extend .form;
+  display: inline-block;
+  margin: 20px auto;
+  width: $width--4;
+}
+
+.form--default {
+  @extend .form;
+  margin: 0 auto;
+  display: inline-block;
+  width: $width--7;
+}

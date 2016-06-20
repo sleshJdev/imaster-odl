@@ -1,7 +1,7 @@
 import javax.servlet.ServletContext
 
-import by.slesh.bntu.imaster.persistence.DatabaseConnector
-import by.slesh.bntu.imaster.web.controller.{StudentController, AppController}
+import by.slesh.bntu.imaster.persistence.DatabaseSource
+import by.slesh.bntu.imaster.web.controller._
 import org.scalatra._
 import org.slf4j.LoggerFactory
 
@@ -10,15 +10,21 @@ class Bootstraper extends LifeCycle {
 
   override def init(context: ServletContext) {
     LOGGER.info("initialize context ... ")
-    DatabaseConnector.initialize()
-    context.mount(new AppController, "/api/*")
-    context.mount(new StudentController, "/api/students/*")
+    DatabaseSource.connect()
+    context.mount(new AppController, "/*")
+    context.mount(new StudentController, "/students/*")
+    context.mount(new EssayController, "/essays/*")
+    context.mount(new TeacherController, "/teachers/*")
+    context.mount(new DocumentController, "/documents/*")
+    context.mount(new StatusController, "/statuses/*")
+    context.mount(new RolesController, "/roles/*")
+    context.mount(new SubjectsController, "/subjects/*")
     LOGGER.info("initialize context ... done!")
   }
 
   override def destroy(context: ServletContext) {
     LOGGER.info("destroy context ... ")
-    DatabaseConnector.release()
+    DatabaseSource.release()
     super.destroy(context)
     LOGGER.info("destroy context ... done")
   }

@@ -1,0 +1,29 @@
+@import "layout";
+
+.table {
+  border-collapse: collapse;
+  width: $width--12;
+  caption, thead th{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $color--primary;
+  }
+  tbody tr {
+    margin: 0;
+    .hover:hover {
+      cursor: pointer;
+      background-color: darken($color--white, 5%);
+    }
+    td {
+      padding: 0;
+    }
+  }
+}
+
+.table__column--numbering {
+  width: 25px;
+}
+
+.table__column--checking {
+  width: 25px;
+}

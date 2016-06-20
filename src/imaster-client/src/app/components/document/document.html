@@ -1,0 +1,32 @@
+<div class="document">
+    <form class="form--default">
+        <h3 class="form__legend">Загрузка справочного материала</h3>
+        <div class="form__row--inline">
+            <label for="label-document-title" class="form__control">Название:</label>
+            <input id="label-document-title" type="text" class="form__control" ng-model="vm.document.title">
+        </div>
+        <div class="form__row--inline">
+            <label for="label-document-description" class="form__control">Описание:</label>
+            <input id="label-document-description" type="text" class="form__control" ng-model="vm.document.description">
+        </div>
+        <div class="form__row--inline">
+            <label for="label-document-subject" class="form__control">Тематика:</label>
+            <select id="label-document-subject" class="form__control" name="tag"
+                ng-options="t as t.title for t in vm.subjects track by t.id"
+                ng-model="vm.document.subject">
+            </select>
+        </div>
+        <div class="form__row--inline">
+            <label for="label-document-file-new" class="form__control">Документ:</label>
+            <input id="label-document-file-new" type="button" class="form__control" value="Скачать"/>
+        </div>
+        <div class="form__row--inline">
+            <label for="label-document-file" class="form__control">Новый документ:</label>
+            <input id="label-document-file" type="file" class="form__control"/>
+        </div>
+        <div class="form__row">
+            <button ng-click="vm.save()" class="block--right button--success">{{vm.submitText}}</button>
+            <button ng-click="vm.cancel()" class="block--right button--warning">Назад</button>
+        </div>
+    </form>
+</div>

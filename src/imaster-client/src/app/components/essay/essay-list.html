@@ -1,0 +1,31 @@
+<div class="block--center">
+    <table class="table">
+        <caption>
+            <h3 class="form__legend">Список рефератов</h3>
+            <ul class="list--group block--right">
+                <li><a ui-sref="essays.add" class="icon--file-add" title="Добавить"></a></li>
+                <li><a ng-click="vm.remove()" class="icon--file-remove" title="Удалить"></a></li>
+            </ul>
+        </caption>
+        <thead>
+        <tr>
+            <th class="table__column--numbering">#</th>
+            <th class="table__column--checking"></th>
+            <th>Тема</th>
+            <th>Статус</th>
+            <th>Описание</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="essay in vm.essayList">
+            <td>{{$index + 1}}</td>
+            <td><input type="checkbox" ng-model="essay.checked"></td>
+            <td>{{essay.title}}</td>
+            <td>{{essay.status.title}}</td>
+            <td>{{essay.description}}</td>
+            <td><span ui-sref="essays.edit({id: essay.id})" class="icon--edit" title="Открыть"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
