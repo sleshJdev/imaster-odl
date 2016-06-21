@@ -19,6 +19,7 @@ function documentService($http, uploader) {
         getDocumentById: getDocumentById,
         addDocument: addDocument,
         updateDocument: updateDocument,
+        removeDocument: removeDocument,
         getSubjects: getSubjects,
         uploader: self.uploader
     };
@@ -37,6 +38,10 @@ function documentService($http, uploader) {
 
     function getDocumentById(id) {
         return $http.get('/api/documents/' + id);
+    }
+
+    function removeDocument(id) {
+        return $http.delete('/api/documents/' + id);
     }
 
     function getSubjects() {

@@ -53,8 +53,12 @@ object Document extends Repositorie with DocumentExtensions {
   def getById(id: Int): Future[Option[Document]] = {
     db.run(models.filter(_.id === id).joinSubject.result).map(_.toDocument.headOption)
   }
-  def add(essay: Document): Future[Int] = {
-    db.run(models insertOrUpdate essay).map(_.toInt)
+  def add(document: Document): Future[Int] = {
+    db.run(models insertOrUpdate document).map(_.toInt)
+  }
+
+  def remove(id: Int) = {
+    db.run(models.filter(_.id === id).delete)
   }
 }
 

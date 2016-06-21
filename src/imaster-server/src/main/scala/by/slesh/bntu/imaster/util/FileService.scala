@@ -14,7 +14,7 @@ object FileService {
   }
 
   def create(fileId: String) = {
-    val file = Paths.get("/home/slesh/trash/", fileId).toFile
+    val file = Paths.get("/home/slesh/trash/imaster", fileId).toFile
     if(file.exists()) file.delete()
     file.createNewFile()
     file

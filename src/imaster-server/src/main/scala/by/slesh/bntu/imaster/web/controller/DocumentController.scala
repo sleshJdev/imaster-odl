@@ -18,10 +18,7 @@ class DocumentController extends AbstractController{
 
   get("/?")(Document.getAll)
 
-  get("/:id"){
-    val id = params("id").toInt
-    Document.getById(id)
-  }
+  get("/:id")(Document.getById(params("id").toInt))
 
   post("/?"){
     logger.debug("creating a new document")
@@ -33,4 +30,6 @@ class DocumentController extends AbstractController{
     fileItem.write(FileService.create(document.fileId.get))
     Document.add(document)
   }
+
+  delete("/:id")(Document.remove(params("id").toInt))
 }
