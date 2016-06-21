@@ -16,9 +16,7 @@ case class Teacher(var id: Option[Int],
                    var patronymic: Option[String] = None,
                    var email: String,
                    var birthday: Date,
-                   var user: Option[User] = None,
-                   var groups: List[Group] = List.empty,
-                   var essays: List[Essay] = List.empty)
+                   var user: Option[User] = None)
 
 class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
   def id = column[Int]("id", O.PrimaryKey)
@@ -38,7 +36,7 @@ class Teachers(tag: Tag) extends Table[Teacher](tag, "teacher") {
   }
 
   def fromTeacher: PartialFunction[Teacher, Option[Data]] = {
-    case Teacher(id, firstName, lastName, patronymic, email, birthday, _, _, _) =>
+    case Teacher(id, firstName, lastName, patronymic, email, birthday, user) =>
       Option((id, firstName, lastName, patronymic, email, birthday))
   }
 
@@ -51,34 +49,12 @@ object Teacher extends Repositorie with TeacherExtensions {
   val models = TableQuery(new Teachers(_))
 
   def getByUserId(userId: Int) = db.run(models.filter(_.id === userId).result.headOption)
-  def getAll = db.run(models.joinEssayAndGroup.result).map(_.toTeacher)
+  def getAll = db.run(models.result)
   def getAllPublicTeachers = db.run(models.result)
 }
 
 
 trait TeacherExtensions {
 
-  implicit class ToTeacher[C[_]](list: Seq[((((Teacher, UserEssay), Essay), TeacherGroup), Group)]) {
-    def toTeacher = {
-      var map: Map[Int, Teacher] = Map.empty
-      list foreach {
-        case ((((t, _), e), _), g) =>
-          val id = t.id.get
-          val teacher = if (map.isDefinedAt(id)) map(id) else { map += id -> t; t}
-          if(!teacher.essays.exists(_.id == e.id)) teacher.essays = e :: teacher.essays
-          if(!teacher.groups.exists(_.id == g.id)) teacher.groups = g :: teacher.groups
-        case _ => throw new IllegalArgumentException("bad data format")
-      }
-      map.values.toList
-    }
-  }
-
-  implicit class JoinEssayAndGroup[C[_]](query: Query[Teachers, Teacher, C]) {
-    def joinEssayAndGroup = query
-        .join(UserEssay.models).on(_.id === _.userId)
-          .join(Essay.models).on(_._2.essayId === _.id)
-        .join(TeacherGroup.models).on(_._1._1.id === _.teacherId)
-          .join(Group.models).on(_._1._1._1.id === _.id)
-  }
 
 }

@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.{Essay, UserEssay}
+import by.slesh.bntu.imaster.persistence.{StudentEssay, Essay}
 import by.slesh.bntu.imaster.util.FileService
 import by.slesh.bntu.imaster.web.AbstractController
 import org.json4s.JsonDSL._
@@ -17,7 +17,6 @@ class EssayController extends AbstractController with FileUploadSupport {
   override val logger = LoggerFactory.getLogger(getClass)
 
   get("/?") {
-    logger.debug("getting all essays")
     Essay.getAll
   }
 
@@ -34,9 +33,9 @@ class EssayController extends AbstractController with FileUploadSupport {
     essay.fileId = fileItem.getName + "_" + fileItem.getName.hashCode
     fileItem.write(FileService.create(essay.fileId))
     Essay.add(essay) map { essayId =>
-      val userId = userDetails.id
-      UserEssay.add(userId, essayId)
-      Future(("userId" -> userId) ~ ("essayId" -> essayId))
+      val studentId = userDetails.id
+      StudentEssay.add(studentId, essayId)
+      Future(("userId" -> studentId) ~ ("essayId" -> essayId))
     }
   }
 

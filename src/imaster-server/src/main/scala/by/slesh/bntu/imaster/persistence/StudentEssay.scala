@@ -10,10 +10,10 @@ import scala.concurrent.Future
   * @author slesh
   */
 
-case class UserEssay(studentId: Int,
-                     essayId: Int)
+case class StudentEssay(studentId: Int,
+                        essayId: Int)
 
-class UserEssays(tag: Tag) extends Table[UserEssay](tag, "student_essay") {
+class StudentEssays(tag: Tag) extends Table[StudentEssay](tag, "student_essay") {
   def userId = column[Int]("user_id")
   def essayId = column[Int]("essay_id")
 
@@ -22,18 +22,18 @@ class UserEssays(tag: Tag) extends Table[UserEssay](tag, "student_essay") {
 
   def id = primaryKey("pk_user_x_essay", (userId, essayId))
 
-  override def *  = (userId, essayId) <> ((UserEssay.apply _).tupled, UserEssay.unapply)
+  override def *  = (userId, essayId) <> ((StudentEssay.apply _).tupled, StudentEssay.unapply)
 }
 
-object UserEssay extends Repositorie {
-  var models = TableQuery(new UserEssays(_))
+object StudentEssay extends Repositorie {
+  var models = TableQuery(new StudentEssays(_))
 
   def getByStudentId(studentId: Int) = {
     db.run(models.filter(_.userId === studentId).result.headOption)
   }
 
   def add(studentId: Int, essayId: Int): Future[Int] = {
-    db.run(models.insertOrUpdate(UserEssay(studentId, essayId))).map(_.toInt)
+    db.run(models.insertOrUpdate(StudentEssay(studentId, essayId))).map(_.toInt)
   }
 }
 

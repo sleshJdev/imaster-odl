@@ -1,6 +1,6 @@
 package by.slesh.bntu.imaster.web.controller
 
-import by.slesh.bntu.imaster.persistence.{UserEssay, Student}
+import by.slesh.bntu.imaster.persistence.{StudentEssay, Student}
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory
 
@@ -19,7 +19,7 @@ class StudentController extends AbstractController {
   get("/:id/essay/exists") {
     val id = params("id").toInt
     logger.info("check essay is existing for student {}", id)
-    UserEssay.getByStudentId(id).map(_.isDefined)
+    StudentEssay.getByStudentId(id).map(_.isDefined)
 
   }
 

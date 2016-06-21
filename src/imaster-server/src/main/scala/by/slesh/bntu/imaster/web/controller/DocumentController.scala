@@ -2,7 +2,7 @@ package by.slesh.bntu.imaster.web.controller
 
 import java.util.Date
 
-import by.slesh.bntu.imaster.persistence.{UserEssay, Essay, Document}
+import by.slesh.bntu.imaster.persistence.{StudentEssay$, Essay, Document}
 import by.slesh.bntu.imaster.util.FileService
 import by.slesh.bntu.imaster.web.AbstractController
 import org.slf4j.LoggerFactory

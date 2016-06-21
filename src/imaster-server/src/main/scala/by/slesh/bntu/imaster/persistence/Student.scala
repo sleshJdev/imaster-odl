@@ -53,38 +53,14 @@ object Student extends Repositorie with StudentExtensions {
   val models = TableQuery(new Students(_))
 
   def getByUserId(userId: Int) = db.run(models.filter(_.id === userId).result.headOption)
-  def getById(id: Int) = db.run(models.filter(_.id === id).joinEssay.result).map(_.toStudent.headOption)
+  def getById(id: Int) = db.run(models.filter(_.id === id).result.headOption)
   def getAllPublicStudents = db.run(models.result)
-  def getAll = db.run(models.joinEssay.result).map(_.toStudent)
+  def getAll = db.run(models.result)
   def add(student: Student) = db.run((models returning models.map(_.id)) += student).map(_.toInt)
 }
 
 
 trait StudentExtensions {
-  implicit class ToStudent[C[_]](list: Seq[((((Student, Option[UserEssay]), Option[Essay]), Option[Status]), Option[Group])]) {
-    def toStudent = {
-      var map: Map[Int, Student] = Map.empty
-      list foreach {
-        case ((((s, _), e), t), g) =>
-          val id = s.id.get
-          val student = if (map.isDefinedAt(id)) map(id) else { map += id -> s; s}
-          if(e.isDefined && !student.essays.exists(_.id == e.orNull)) {
-            e.get.status = t
-            student.essays = e.get :: student.essays
-          }
-          student.group = g
-        case _ => throw new IllegalArgumentException("bad data format")
-      }
-      map.values.toList
-    }
-  }
 
-  implicit class JoinEssay[C[_]](query: Query[Students, Student, C]) {
-    def joinEssay = query
-        .joinLeft(UserEssay.models).on(_.id === _.userId)
-        .joinLeft(Essay.models).on(_._2.map(_.essayId) === _.id)
-        .joinLeft(Status.models).on(_._2.map(_.statusId) === _.id)
-        .joinLeft(Group.models).on(_._1._1._1.groupId === _.id)
-  }
 
 }
