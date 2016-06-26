@@ -13,6 +13,7 @@ object ImagisterBuild extends Build {
       organization := "bntu",
       name := "imaster-server",
       version := "0.1.0-SNAPSHOT",
+      mainClass in Compile := Some("JettyLauncher"),
       scalaVersion := "2.11.7",
       resolvers += Classpaths.typesafeReleases,
       libraryDependencies ++= Seq(
@@ -20,8 +21,8 @@ object ImagisterBuild extends Build {
         "org.scalatra" %% "scalatra-scalatest" % scalatraVersion % "test",
 
         "org.scalatra" %% "scalatra-json" % scalatraVersion,
-        "org.json4s" %% "json4s-jackson" % "3.3.0.RC2",
-      
+        "org.json4s" %% "json4s-jackson" % "3.4.0",
+
         "org.scalatra" %% "scalatra-auth" % scalatraVersion,
         "com.jason-goodwin" %% "authentikat-jwt" % "0.4.1",
 
@@ -34,6 +35,7 @@ object ImagisterBuild extends Build {
 
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime"
       ),
+
       javaOptions ++= Seq("-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005")
     )
   ).enablePlugins(JettyPlugin)
