@@ -4,7 +4,7 @@
   "description": "light-weight application to manage some workflow in university",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "bower-install": "bower install"
   },
   "repository": {
     "type": "git",

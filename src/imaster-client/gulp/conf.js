@@ -17,7 +17,7 @@ conf.index = path.join(conf.src, '/index.html');
 conf.favicon = path.join(conf.src, 'favicon.ico');
 
 conf.resources  = path.join(conf.src, '/resources');
-conf.dependencies = path.join(conf.src, '/dependencies');
+conf.dependencies = path.join(conf.src, '/bower_components');
 
 conf.scripts = path.join(conf.app, '/**/*.js');
 conf.templates = path.join(conf.app, '/**/*.html');
