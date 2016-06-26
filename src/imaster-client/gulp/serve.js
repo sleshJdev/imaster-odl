@@ -89,6 +89,19 @@ gulp.task('build', ['clean'], function () {
         .pipe(gulp.dest(conf.target));
 });
 
+gulp.task('server', ['build'], function () {
+    var proxyMiddleware = require('http-proxy-middleware');
+    var proxy = new proxyMiddleware('/api', {target: 'http://localhost:8010'});
+    browserSync.init({
+        open: false,
+        port: 3000,
+        server: {
+            baseDir: conf.target,
+            middleware: [proxy]
+        }
+    });
+});
+
 gulp.task('serve', ['build'], function () {
     var proxyMiddleware = require('http-proxy-middleware');
     var proxy = new proxyMiddleware('/api', {target: 'http://localhost:8010'});
